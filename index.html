@@ -13,8 +13,94 @@
 
   <body>
 
+    <header>
+
+      
+      
+    </header>
+
     <div id="list" class="view visible">
-      List
+
+      <!-- <button id="add-filter" type="button" onclick="filter.showFilters();">Filter hinzufügen</button> -->
+
+      <button id="filter-button" type="button" onclick="filter.showFilters()">Filter bearbeiten</button>
+      
+      <div id="filter-overlay">
+        
+        <form id="filters">
+  
+          <ul id="filter-list">
+            <!-- <li>
+              <label for="category-0">Brot</label>
+              <input id="category-0" type="checkbox" name="0" />
+            </li>
+            <li>
+              <label for="category-1">Zucker</label>
+              <input id="category-1" type="checkbox" name="1" />
+            </li>
+            <li>
+              <label for="category-2">Milch</label>
+              <input id="category-2" type="checkbox" name="2" />
+            </li>
+            <li>
+              <label for="category-3">Mehl</label>
+              <input id="category-3" type="checkbox" name="3" />
+            </li> -->
+          </ul>
+
+          <input id="done-button" type="button" value="Fertig" onclick="filter.apply();">
+          
+        </form>
+        
+      </div>
+      
+      <!-- <select id="filters" oninput="alert(this.value)" multiple>
+        <option value="0">Brot</option>
+        <option value="1">Zucker</option>
+        <option value="2">Milch</option>
+        <option value="3">Mehl</option>
+      </select> -->
+      
+      <ul>
+        <li class="market">
+
+          <h2 class="market-header">Supermarkt 1</h2>
+
+          <div class="stock-info">
+
+            <ul class="category-list">
+              <li class="category">
+                <!-- <img src="/media/icons/list.svg" alt="Kategorie-Icon" /> -->
+                <div class="availability high"></div>
+                <span>Brot</span>
+              </li>
+              <li class="category">
+                <!-- <img src="/media/icons/list.svg" alt="Kategorie-Icon" /> -->
+                <div class="availability low"></div>
+                <span>Zucker</span>
+              </li>
+              <li class="category">
+                <!-- <img src="/media/icons/list.svg" alt="Kategorie-Icon" /> -->
+                <div class="availability medium"></div>
+                <span>Milch</span>
+              </li>
+              <li class="category">
+                <!-- <img src="/media/icons/list.svg" alt="Kategorie-Icon" /> -->
+                <div class="availability unknown"></div>
+                <span>Mehl</span>
+              </li>
+            </ul>
+            
+          </div>
+
+          <div class="distance">5 km</div>
+          
+          <hr>
+          
+        </li>
+
+      </ul>
+      
     </div>
 
     <div id="shopping-list" class="view">
@@ -52,15 +138,19 @@
     <script src="/scripts/api.js"></script>
     <script src="/scripts/market.js"></script>
     <script src="/scripts/listings.js"></script>
+    <script src="/scripts/filter.js"></script>
     <script>
 
-      var viewSwitcher, api, listing, map, mapContext;
+      var viewSwitcher, api, listing, filter, map, mapContext;
 
       window.onload = async () => {
+
+        document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
 
         viewSwitcher = new ViewSwitcher('list', 'shopping-list', 'map');
         api = new API();
         listing = new Listing();
+        filter = new Filter(document.querySelector('#filter-overlay'), document.querySelector('#filters'), document.querySelector('#filter-list'));
 
         try {
           map = await initMap();
