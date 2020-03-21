@@ -1,0 +1,10 @@
+{
+  "name": "KWVV Stock Tracking",
+  "short_name": "WVV S T",
+  "description": "A short description",
+  "theme_color": "#ffffff",
+  "background_color": "#e6ddc5",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone"
+}
