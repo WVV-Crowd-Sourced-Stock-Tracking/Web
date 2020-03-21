@@ -32,6 +32,13 @@ html, body {
   display: block;
 }
 
+/* MAP VIEW */
+
+.view#map #map-embedded {
+  width: 100%;
+  height: 100%;
+}
+
 /* NAV BAR */
 
 nav {
