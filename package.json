@@ -9,13 +9,9 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
-<<<<<<< HEAD
     "tailwindcss": "^1.2.0",
-    "vue": "^2.6.11"
-=======
     "vue": "^2.6.11",
     "vue2-google-maps": "^0.10.7"
->>>>>>> b1c85b1d2b679962c5c2a67561f440772e81e21f
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.1.0",

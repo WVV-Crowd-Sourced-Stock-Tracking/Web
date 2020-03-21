@@ -1,11 +1,8 @@
 <template>
-<<<<<<< HEAD
   <div id="app" class="container mx-auto px-4">
     <h1>Shops</h1>
     <p>in Ihrer Umgebung</p>
-    <Listings />
-=======
-  <div>
+
     <header>
       <ViewSwitcher
         :_marketView="'list'"
@@ -81,28 +78,20 @@
     <API></API>
 
     <Listing></Listing>
->>>>>>> b1c85b1d2b679962c5c2a67561f440772e81e21f
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
-import Listings from "./components/Listings.vue";
-=======
 import { google } from 'vue2-google-maps'
 import ViewSwitcher from './components/ViewSwitcher.vue'
 import MapContext from './components/MapContext.vue'
 import API from './components/API.vue'
 import Listing from './components/Listing.vue'
 import AppFilter from './components/Filter.vue'
->>>>>>> b1c85b1d2b679962c5c2a67561f440772e81e21f
 
 export default {
   name: "App",
   components: {
-<<<<<<< HEAD
-    Listings
-=======
     ViewSwitcher,
     MapContext,
     API,
@@ -158,7 +147,6 @@ export default {
         }
       });
     }
->>>>>>> b1c85b1d2b679962c5c2a67561f440772e81e21f
   }
 };
 </script>
