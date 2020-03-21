@@ -1,14 +1,19 @@
 <template>
   <div>
-    <header></header>
+    <header>
+      <ViewSwitcher
+        :_marketView="'list'"
+        :_cartView="'shopping-list'"
+        :_mapView="'map'"
+        @show="show = $event"
+      ></ViewSwitcher>
+    </header>
 
-    <div id="list" class="view visible">
-      <!-- <button id="add-filter" type="button" onclick="filter.showFilters();">Filter hinzufügen</button> -->
-
-      <button id="filter-button" type="button" onclick="filter.showFilters()">
-        Filter bearbeiten
-      </button>
-
+    <div
+      v-if="show === 'list'"
+      id="list"
+      class="view visible"
+    >
       <AppFilter></AppFilter>
 
       <ul>
@@ -47,19 +52,21 @@
       </ul>
     </div>
 
-    <div id="shopping-list" class="view">
+    <div
+      v-if="show === 'shopping-list'"
+      id="shopping-list"
+      class="view"
+    >
       Shopping List
     </div>
 
-    <div id="map" class="view">
+    <div
+      v-if="show === 'map'"
+      id="map"
+      class="view"
+    >
       <div id="map-embedded"></div>
     </div>
-
-    <ViewSwitcher
-      :_marketView="'list'"
-      :_cartView="'shopping-list'"
-      :_mapView="'map'"
-    ></ViewSwitcher>
 
     <MapContext
       :_map="map"
@@ -87,6 +94,11 @@ export default {
     API,
     Listing,
     AppFilter
+  },
+  data() {
+    return {
+      show: 'list'
+    }
   },
   props: {
     map: Object
