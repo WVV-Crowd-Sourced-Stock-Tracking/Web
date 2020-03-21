@@ -27,17 +27,17 @@
 
     <nav>
       <ul>
-        <li class="active">
+        <li id="nav-list" class="active" onclick="viewSwitcher.showMarkets();">
           <img src="/media/icons/search.svg" alt="Suche">
           <br>
           <span>Suche</span>
         </li>
-        <li>
+        <li id="nav-shopping-list" onclick="viewSwitcher.showCart();">
           <img src="/media/icons/shopping-cart.svg" alt="Einkaufsliste">
           <br>
           <span>Einkaufsliste</span>
         </li>
-        <li>
+        <li id="nav-map" onclick="viewSwitcher.showMap();">
           <img src="/media/icons/map-2.svg" alt="Karte">
           <br>
           <span>Karte</span>
@@ -57,7 +57,7 @@
 
       window.onload = () => {
 
-        viewSwitcher = new ViewSwitcher(document.querySelector('#list'), document.querySelector('#shopping-list'), document.querySelector('#map'));
+        viewSwitcher = new ViewSwitcher('list', 'shopping-list', 'map');
         api = new API();
         listing = new Listing();
         map = initMap();
