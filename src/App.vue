@@ -1,102 +1,39 @@
 <template>
   <div id="app" class="container mx-auto px-4">
-    <h1>Shops</h1>
-    <p>in Ihrer Umgebung</p>
+    
+    <MarketInListing>
 
-    <header>
-      <ViewSwitcher
-        :_marketView="'list'"
-        :_cartView="'shopping-list'"
-        :_mapView="'map'"
-        @show="show = $event"
-      ></ViewSwitcher>
-    </header>
-
-    <div
-      v-if="show === 'list'"
-      id="list"
-      class="view visible"
-    >
-      <AppFilter></AppFilter>
-
-      <ul>
-        <li class="market">
-          <h2 class="market-header">Supermarkt 1</h2>
-
-          <div class="stock-info">
-            <ul class="category-list">
-              <li class="category">
-                <!-- <img src="/media/icons/list.svg" alt="Kategorie-Icon" /> -->
-                <div class="availability high"></div>
-                <span>Brot</span>
-              </li>
-              <li class="category">
-                <!-- <img src="/media/icons/list.svg" alt="Kategorie-Icon" /> -->
-                <div class="availability low"></div>
-                <span>Zucker</span>
-              </li>
-              <li class="category">
-                <!-- <img src="/media/icons/list.svg" alt="Kategorie-Icon" /> -->
-                <div class="availability medium"></div>
-                <span>Milch</span>
-              </li>
-              <li class="category">
-                <!-- <img src="/media/icons/list.svg" alt="Kategorie-Icon" /> -->
-                <div class="availability unknown"></div>
-                <span>Mehl</span>
-              </li>
-            </ul>
-          </div>
-
-          <div class="distance">5 km</div>
-
-          <hr />
-        </li>
-      </ul>
-    </div>
-
-    <div
-      v-if="show === 'shopping-list'"
-      id="shopping-list"
-      class="view"
-    >
-      Shopping List
-    </div>
-
-    <div
-      v-if="show === 'map'"
-      id="map"
-      class="view"
-    >
-      <div id="map-embedded"></div>
-    </div>
-
-    <MapContext
-      :_map="map"
-    ></MapContext>
-
-    <API></API>
-
-    <Listing></Listing>
+      :name= "'REWE'"
+      :address= "'Testadresse'"
+      :distance= "'5 km'"
+      :statusText= "'Closed'"
+      :statusAction= "'opens'"
+      :statusTime= "'12 Uhr'"
+      :mainCategories= "[ {name: 'Test', availability: 'high'}, {name: 'Test1', availability: 'medium'}, {name: 'Test2', availability: 'low'}, ]"
+      
+    </MarketInListing>
+    
   </div>
 </template>
 
 <script>
 import { google } from 'vue2-google-maps'
-import ViewSwitcher from './components/ViewSwitcher.vue'
-import MapContext from './components/MapContext.vue'
-import API from './components/API.vue'
-import Listing from './components/Listing.vue'
-import AppFilter from './components/Filter.vue'
+// import ViewSwitcher from './components/ViewSwitcher.vue'
+// import MapContext from './components/MapContext.vue'
+// import API from './components/API.vue'
+// import Listing from './components/Listing.vue'
+// import AppFilter from './components/Filter.vue'
+import MarketInListing from './components/MarketInListing.vue'
 
 export default {
   name: "App",
   components: {
-    ViewSwitcher,
-    MapContext,
-    API,
-    Listing,
-    AppFilter
+    // ViewSwitcher,
+    // MapContext,
+    // API,
+    // Listing,
+    // AppFilter,
+    MarketInListing
   },
   data() {
     return {
