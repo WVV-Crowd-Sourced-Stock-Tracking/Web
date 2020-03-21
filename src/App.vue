@@ -54,11 +54,9 @@
       Shopping List
     </div>
 
-    <div v-if="show === 'map'" id="map" class="view">
-      <div id="map-embedded"></div>
+    <div v-if="show === 'map'" id="map" class="container">
+      <Map></Map>
     </div>
-
-    <MapContext :_map="map"></MapContext>
 
     <API></API>
 
@@ -68,9 +66,8 @@
 
 <script>
 import Listings from "./components/Listings.vue";
-import { google } from "vue2-google-maps";
 import ViewSwitcher from "./components/ViewSwitcher.vue";
-import MapContext from "./components/MapContext.vue";
+import Map from "./components/Map.vue";
 import API from "./components/API.vue";
 import AppFilter from "./components/Filter.vue";
 
@@ -79,7 +76,7 @@ export default {
   components: {
     Listings,
     ViewSwitcher,
-    MapContext,
+    Map,
     API,
     AppFilter
   },
@@ -88,50 +85,13 @@ export default {
       show: "list"
     };
   },
-  props: {
-    map: Object
-  },
   async mounted() {
     document.documentElement.style.setProperty(
       "--vh",
       `${window.innerHeight * 0.01}px`
     );
-
-    try {
-      this.map = await this.initMap();
-    } catch (err) {
-      console.error(err);
-    }
-    console.log("map:", this.map);
   },
   methods: {
-    initMap() {
-      return new Promise((resolve, reject) => {
-        if (!navigator.geolocation) {
-          console.log("Geolocation is not supported by your browser");
-        } else {
-          console.log("Locating…");
-          navigator.geolocation.getCurrentPosition(
-            position => {
-              console.log("position:", position);
-
-              return resolve(
-                new google.maps.Map(this.$el.querySelector("#map-embedded"), {
-                  center: {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                  },
-                  zoom: 15
-                })
-              );
-            },
-            err => {
-              reject(err);
-            }
-          );
-        }
-      });
-    }
   }
 };
 </script>
@@ -160,6 +120,14 @@ body {
   width: 100%;
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+#app {
+  height: 100%;
+}
+
+#map {
+  height: 100%;
 }
 
 /* VIEWS */
