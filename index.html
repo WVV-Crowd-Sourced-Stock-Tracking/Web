@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/style/index.css">
+
+    <title>WVV</title>
+
+  </head>
+
+  <body>
+
+    <div id="list" class="view visible">
+      List
+    </div>
+
+    <div id="shopping-list" class="view">
+      Shopping List
+    </div>
+
+    <div id="map" class="view">
+      <div id="map"></div>
+    </div>
+
+    <nav>
+      <ul>
+        <li class="active">
+          <img src="/media/icons/search.svg" alt="Suche">
+          <br>
+          <span>Suche</span>
+        </li>
+        <li>
+          <img src="/media/icons/shopping-cart.svg" alt="Einkaufsliste">
+          <br>
+          <span>Einkaufsliste</span>
+        </li>
+        <li>
+          <img src="/media/icons/map-2.svg" alt="Karte">
+          <br>
+          <span>Karte</span>
+        </li>
+      </ul>
+    </nav>
+
+    <script src="/scripts/view-switcher.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHJCRgVNdpdHQigIEebTzT4RDiTwt6jk&callback=initMap"
+    defer></script>
+    <script src="/scripts/api.js"></script>
+    <script src="/scripts/market.js"></script>
+    <script src="/scripts/listings.js"></script>
+    <script>
+
+      var viewSwitcher, api, listing, map;
+
+      window.onload = () => {
+
+        viewSwitcher = new ViewSwitcher(document.querySelector('#list'), document.querySelector('#shopping-list'), document.querySelector('#map'));
+        api = new API();
+        listing = new Listing();
+        map = initMap();
+        
+      }
+
+      function initMap() {
+
+        if (!navigator.geolocation) {
+          console.log('Geolocation is not supported by your browser');
+        } else {
+          console.log('Locating…');
+          navigator.geolocation.getCurrentPosition(position => {
+            console.log('position:', position);
+
+            return new google.maps.Map(document.querySelector('#map'), {
+              center: {lat: position.coords.latitude, lng: position.coords.longitude},
+              zoom: 15,
+            });
+            
+          }, err => {
+            console.error(err);
+          });
+        }
+      }
+
+      
+      
+    </script>
+    
+  </body>
+
+</html>
