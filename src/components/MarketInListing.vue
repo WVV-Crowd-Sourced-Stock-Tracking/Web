@@ -4,7 +4,7 @@
 
     <div class="header">
 
-      <h3>{{ name }}</h3>
+      <h2>{{ name }}</h2>
       
       <img src="../../public/media/icons/chevron-right.svg" alt="Markt anzeigen">
       
@@ -48,7 +48,52 @@
 
 <style scoped>
 
+  .card {
+    display: block;
+    position: relative;
+    width: 100%;
+    left: 0%;
+    height: 15rem;
+    border-radius: .5rem;
+    overflow: hidden;
+  }
 
+  .card .header {
+    display: block;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: var(--header-height);
+    background-color: #006BAB;
+    padding-left: 1%;
+    color: white;
+  }
+
+  .card .header h2 {
+    display: inline-block;
+    position: relative;
+    top: 0;
+    width: 60%;
+    font-size: calc(var(--header-height) / 2);
+  }
+  
+  .card .header img {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: calc(var(--header-height));
+    height: calc(var(--header-height));
+  }
+  
+  .card .main {
+    position: absolute;
+    top: var(--header-height);
+    width: 100%;
+    height: calc(100% - var(--header-height));
+    padding: 3%;
+    background-color: white;
+  }
 
 </style>
 

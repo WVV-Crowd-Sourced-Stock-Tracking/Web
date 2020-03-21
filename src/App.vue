@@ -1,7 +1,7 @@
 <template>
-  <div id="app" class="container mx-auto px-4">
+  <div id="app" class="container h-full mx-auto px-4">
     
-    <MarketInListing>
+    <MarketInListing
 
       :name= "'REWE'"
       :address= "'Testadresse'"
@@ -10,8 +10,8 @@
       :statusAction= "'opens'"
       :statusTime= "'12 Uhr'"
       :mainCategories= "[ {name: 'Test', availability: 'high'}, {name: 'Test1', availability: 'medium'}, {name: 'Test2', availability: 'low'}, ]"
-      
-    </MarketInListing>
+
+    ></MarketInListing>
     
   </div>
 </template>
@@ -89,6 +89,7 @@ export default {
 </script>
 
 <style>
+
 :root {
   --nav-bar-height: 7%;
   --category-list-width: 50%;
@@ -96,6 +97,8 @@ export default {
   --market-height: calc(var(--vh, 1vh) * (100/5));
   --filter-height: calc(var(--vh, 1vh) * 7);
   --filter-list-height: 60%;
+
+  --header-height: 2.5rem;
 }
 
 * {
@@ -111,6 +114,10 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+#app {
+  background-color: #E5E5E5;
 }
 
 /* VIEWS */
