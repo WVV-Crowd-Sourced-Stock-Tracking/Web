@@ -1,11 +1,7 @@
 <template>
-<<<<<<< HEAD
   <div id="app" class="container mx-auto px-4">
     <h1>Shops</h1>
     <p>in Ihrer Umgebung</p>
-    <Listings />
-=======
-  <div>
     <header>
       <ViewSwitcher
         :_marketView="'list'"
@@ -15,11 +11,7 @@
       ></ViewSwitcher>
     </header>
 
-    <div
-      v-if="show === 'list'"
-      id="list"
-      class="view visible"
-    >
+    <div v-if="show === 'list'" id="list" class="view visible">
       <AppFilter></AppFilter>
 
       <ul>
@@ -58,61 +50,43 @@
       </ul>
     </div>
 
-    <div
-      v-if="show === 'shopping-list'"
-      id="shopping-list"
-      class="view"
-    >
+    <div v-if="show === 'shopping-list'" id="shopping-list" class="view">
       Shopping List
     </div>
 
-    <div
-      v-if="show === 'map'"
-      id="map"
-      class="view"
-    >
+    <div v-if="show === 'map'" id="map" class="view">
       <div id="map-embedded"></div>
     </div>
 
-    <MapContext
-      :_map="map"
-    ></MapContext>
+    <MapContext :_map="map"></MapContext>
 
     <API></API>
 
-    <Listing></Listing>
->>>>>>> b1c85b1d2b679962c5c2a67561f440772e81e21f
+    <Listings></Listings>
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
 import Listings from "./components/Listings.vue";
-=======
-import { google } from 'vue2-google-maps'
-import ViewSwitcher from './components/ViewSwitcher.vue'
-import MapContext from './components/MapContext.vue'
-import API from './components/API.vue'
-import Listing from './components/Listing.vue'
-import AppFilter from './components/Filter.vue'
->>>>>>> b1c85b1d2b679962c5c2a67561f440772e81e21f
+import { google } from "vue2-google-maps";
+import ViewSwitcher from "./components/ViewSwitcher.vue";
+import MapContext from "./components/MapContext.vue";
+import API from "./components/API.vue";
+import AppFilter from "./components/Filter.vue";
 
 export default {
   name: "App",
   components: {
-<<<<<<< HEAD
-    Listings
-=======
+    Listings,
     ViewSwitcher,
     MapContext,
     API,
-    Listing,
     AppFilter
   },
   data() {
     return {
-      show: 'list'
-    }
+      show: "list"
+    };
   },
   props: {
     map: Object
@@ -158,7 +132,6 @@ export default {
         }
       });
     }
->>>>>>> b1c85b1d2b679962c5c2a67561f440772e81e21f
   }
 };
 </script>
@@ -168,7 +141,7 @@ export default {
   --nav-bar-height: 7%;
   --category-list-width: 50%;
   --category-item-list-width: calc(var(--category-list-width));
-  --market-height: calc(var(--vh, 1vh) * (100/5));
+  --market-height: calc(var(--vh, 1vh) * (100 / 5));
   --filter-height: calc(var(--vh, 1vh) * 7);
   --filter-list-height: 60%;
 }
@@ -179,7 +152,8 @@ export default {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   font-size: 1em;
   margin: 0;
   padding: 0;
@@ -282,12 +256,12 @@ html, body {
 
 .view#list ul li.market h2 {
   /* text-align: center; */
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 .view#list ul li.market hr {
   position: absolute;
-  bottom: .5rem;
+  bottom: 0.5rem;
   width: 100%;
 }
 
@@ -340,7 +314,7 @@ html, body {
   height: 2rem;
   text-align: right;
   font-size: 1.2rem;
-  padding-right: .5rem;
+  padding-right: 0.5rem;
 }
 
 /* MAP VIEW */
@@ -370,9 +344,9 @@ nav ul {
 }
 
 nav ul li {
-  width: calc(100%/3);
+  width: calc(100% / 3);
   height: 100%;
-  font-size: .8rem;
+  font-size: 0.8rem;
   /* font-weight: s; */
 }
 
