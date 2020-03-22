@@ -1,6 +1,16 @@
 export default class Market {
-
-  constructor (id, name, city, street, lat, lng, distance, status, products, updated) {
+  constructor(
+    id,
+    name,
+    city,
+    street,
+    lat,
+    lng,
+    distance,
+    status,
+    products,
+    updated
+  ) {
     this.id = id;
     this.name = name;
     this.city = city;
@@ -10,7 +20,6 @@ export default class Market {
     this.distance = distance;
     this.status = this.computeStatus(status);
     this.products = products;
-    console.log('this.products:', this.products);
     this.address = this.computeAddress();
     this.updated = updated;
   }
@@ -20,27 +29,20 @@ export default class Market {
   }
 
   computeStatus(rawStatus) {
-
     let status = {};
 
     if (rawStatus.open) {
-
       status.text = `Geöffnet`;
       status.action = `Schließt`;
       status.time = rawStatus.closes;
       status.class = `opened`;
-      
     } else {
-
       status.text = `Geschlossen`;
       status.action = `Öffnet`;
       status.time = rawStatus.opens;
       status.class = `closed`;
-      
     }
-    
+
     return status;
-    
   }
-  
 }

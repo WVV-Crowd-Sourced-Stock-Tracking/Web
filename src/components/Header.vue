@@ -1,8 +1,6 @@
 <template>
-  <nav
-    class="flex items-center justify-between flex-wrap bg-white shadow-md p-6"
-  >
-    <div class="w-1/2 flex items-center flex-shrink-0 text-black">
+  <nav class="flex items-center justify-between flex-wrap bg-white shadow-md">
+    <div class="w-1/2 p-3 flex items-center flex-shrink-0 text-black">
       <!-- <span class="font-semibold text-xl tracking-tight">Logo</span> -->
       <img class="w-10" src="media/logo-whats_left.png" alt srcset />
     </div>
@@ -59,18 +57,7 @@
 </template>
 
 <script>
-// import Settings from "vue-material-design-icons/SettingsOutline.vue";
-// import Filter from "vue-material-design-icons/UltraHighDefinition.vue";
-// import Filter from "./FilterIcon.vue";
-// import Shopping from "vue-material-design-icons/Shopping.vue";
-
-export default {
-  components: {
-    // Settings,
-    // Filter
-    // Shopping
-  }
-};
+export default {};
 </script>
 
 <style lang="scss" scoped></style>

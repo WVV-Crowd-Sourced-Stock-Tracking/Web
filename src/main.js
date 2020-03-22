@@ -17,12 +17,6 @@ Vue.use(VueGoogleMaps, {
 
 Vue.config.productionTip = false;
 
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: "AIzaSyCIHJCRgVNdpdHQigIEebTzT4RDiTwt6jk"
-  }
-});
-
 new Vue({
   render: h => h(App)
 }).$mount("#app");

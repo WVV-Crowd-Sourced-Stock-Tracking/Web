@@ -7,8 +7,9 @@
         :center="this.center"
         :zoom="15"
         :options="this.mapStyle"
+        :styles="google && new google.maps.LatLng(1.38, 103.8)"
         map-type-id="roadmap"
-        class="w-full h-48"
+        class="w-full h-40"
       >
         <GmapMarker
           :key="index"
@@ -24,6 +25,8 @@
 </template>
 
 <script>
+import { gmapApi } from "vue2-google-maps";
+
 export default {
   data() {
     return {
@@ -34,8 +37,7 @@ export default {
         streetViewControl: false,
         rotateControl: false,
         fullscreenControl: false,
-        disableDefaultUi: false,
-        supressMarkers: true
+        disableDefaultUi: false
       },
       // Berlin as Center :D
       center: {
@@ -46,23 +48,26 @@ export default {
     };
   },
   mounted() {
-    // this.addMarker(this.map.center.lat(), this.map.center.lng());
+    console.log(this);
     this.getAllMarkers();
+  },
+  computed: {
+    google: gmapApi
   },
   methods: {
     getAllMarkers() {
-      this.axios.get("http://localhost:3000/markets").then(response => {
-        // console.log(response.data);
-        response.data.forEach(market => {
-          // console.log(market);
-          this.markers.push({
-            position: {
-              lat: market.lat,
-              lng: market.lng
-            }
+      this.axios
+        .get(`http://${window.location.hostname}:3000/markets`)
+        .then(response => {
+          response.data.forEach(market => {
+            this.markers.push({
+              position: {
+                lat: market.lat,
+                lng: market.lng
+              }
+            });
           });
         });
-      });
     }
   }
 };

@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="container h-full mx-auto px-4">
+    <!-- <ProductFilter /> -->
     <Header />
 
     <div class="intro m-4">
@@ -10,28 +11,22 @@
     <Map></Map>
 
     <Listings></Listings>
-
   </div>
 </template>
 
 <script>
 import Header from "./components/Header.vue";
 import Listings from "./components/Listings.vue";
-// import ViewSwitcher from "./components/ViewSwitcher.vue";
 import Map from "./components/Map.vue";
-// import MarketInListing from "./components/MarketInListing.vue";
-// import API from "./components/API.vue";
+// import ProductFilter from "./components/Filter.vue";
 
 export default {
   name: "App",
   components: {
+    // ProductFilter,
     Header,
     Listings,
-    // MarketInListing,
-    // API,
-    // ViewSwitcher,
     Map
-    // AppFilter
   },
   data() {
     return {

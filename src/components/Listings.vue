@@ -1,19 +1,16 @@
 <template>
-
   <div class="listing">
-
-    <MarketInListing :key="index" v-for="(market, index) in markets"
-      :name= "market.name"
-      :address= "market.address"
-      :distance= "market.distance"
-      :status = "market.status"
-      :mainProducts= "market.products"
-      :updated= "market.updated"
+    <MarketInListing
+      :key="index"
+      v-for="(market, index) in markets"
+      :name="market.name"
+      :address="market.address"
+      :distance="market.distance"
+      :status="market.status"
+      :mainProducts="market.products"
+      :updated="market.updated"
     ></MarketInListing>
-
   </div>
-
-
 </template>
 
 <script>
@@ -25,11 +22,11 @@ import Market from "../classes/market";
 export default {
   name: "Listing",
   components: {
-    MarketInListing,
+    MarketInListing
   },
   // props: {
   //   markets: [{
-  //     name: String, 
+  //     name: String,
   //     address: String,
   //     distance: String,
   //     status: {
@@ -46,34 +43,34 @@ export default {
   // },
   data: () => {
     return {
-      markets: [],
-    }
+      markets: []
+    };
   },
   methods: {
     async loadAll() {
-
       let rawMarkets;
       let markets = [];
-      
-      // rawMarkets = await API.loadMarkets();
-      rawMarkets = (await this.axios.get(`http://${window.location.hostname}:3000/markets`)).data;
 
-      console.log('rawMarkets:', rawMarkets);
+      // rawMarkets = await API.loadMarkets();
+      rawMarkets = (
+        await this.axios.get(`http://${window.location.hostname}:3000/markets`)
+      ).data;
 
       rawMarkets.forEach(rawMarket => {
-        console.log('rawMarket:', rawMarket);
-        markets.push(new Market(
-          rawMarket.id,
-          rawMarket.name,
-          rawMarket.city,
-          rawMarket.street,
-          rawMarket.gps_length,
-          rawMarket.gps_width,
-          rawMarket.distance,
-          rawMarket.status,
-          rawMarket.products,
-          rawMarket.updated
-        ));
+        markets.push(
+          new Market(
+            rawMarket.id,
+            rawMarket.name,
+            rawMarket.city,
+            rawMarket.street,
+            rawMarket.gps_length,
+            rawMarket.gps_width,
+            rawMarket.distance,
+            rawMarket.status,
+            rawMarket.products,
+            rawMarket.updated
+          )
+        );
       });
 
       if (rawMarkets.length != markets.length) {
@@ -81,9 +78,6 @@ export default {
       }
 
       this.markets = markets;
-
-      console.log('this.markets:', this.markets);
-      
     },
 
     addItem() {}
