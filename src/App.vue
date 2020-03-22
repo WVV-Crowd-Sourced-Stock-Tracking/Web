@@ -1,17 +1,61 @@
 <template>
   <div id="app" class="container h-full mx-auto px-4 bg-100">
     <Header />
-    <router-view />
+    <router-view 
+      :userPosition= "this.userPosition"
+    />
   </div>
 </template>
 
 <script>
 import Header from "@/components/Header.vue";
 export default {
+  name: "App",
   components: {
     Header
   },
-  name: "App"
+  data() {
+    return {
+      userPosition: this.getCurrentPosition(),
+    }
+  },
+  methods: {
+    async getCurrentPosition() {
+      
+        if (!navigator.geolocation) {
+          console.error('Geolocation is not supported by your browser');
+        } else {
+          console.log('Locating…');
+          let position;
+
+          try {
+            position = await (async () => {
+              return new Promise((resolve, reject) => {
+              
+                navigator.geolocation.getCurrentPosition(position => {
+
+                console.log('user lat:', position.coords.latitude);
+                console.log('user lng:', position.coords.longitude);
+
+                resolve({lat: position.coords.latitude, lng: position.coords.longitude});
+                
+              }, err => {
+                console.error(`Couldn't acces user's position:`, err);
+                reject({lat: 0, lng: 0});
+              });
+              
+              })
+            })
+          } catch (err) {
+            console.error(err);
+          }
+
+          return position;
+          
+        }
+      
+    }
+  },
 };
 </script>
 

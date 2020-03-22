@@ -62,6 +62,50 @@
   </div>
 </template>
 
+<script>
+
+import API from "../assets/js/api";
+
+export default {
+  name: 'MarketDetail',
+  props: {
+    userPosition: {
+      lat: Number,
+      lng: Number,
+    }
+  },
+  data() {
+    return {
+      API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
+      products: [],
+    }
+  },
+  methods: {
+    async loadData() {
+
+      let rawProducts;
+
+      console.log('this.$route.params.id:', this.$route.params.id);
+
+      try {
+        rawProducts = this.API.loadMarketStock(this.$route.params.id);
+      } catch (err) {
+        console.error(err);
+      }
+
+      this.products = rawProducts;
+      
+    }
+  },
+  async mounted() {
+    this.userPosition.then(pos => {
+      console.log('pos:', pos);
+    })
+    this.loadData();
+  }
+}
+</script>
+
 <style lang="sass">
 .zwei-spalten
   display: grid

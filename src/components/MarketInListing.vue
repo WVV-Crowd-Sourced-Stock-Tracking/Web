@@ -71,11 +71,6 @@ export default {
       time: String
     }
   },
-  mainProducts: Array,
-  updated: {
-    date: String,
-    time: String
-  }
 };
 </script>
 

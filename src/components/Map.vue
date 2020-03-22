@@ -89,6 +89,7 @@ export default {
 
     },
     getAllMarkers() {
+      //TODO get from api
       this.axios.get("http://localhost:3000/markets").then(response => {
         // console.log(response.data);
         response.data.forEach(market => {
