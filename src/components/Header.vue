@@ -4,9 +4,13 @@
   >
     <div class="w-1/2 flex items-center flex-shrink-0 text-black">
       <!-- <span class="font-semibold text-xl tracking-tight">Logo</span> -->
-      <a href="/">
+      <router-link
+        :to="{
+          name: 'Home',
+        }"
+      >
         <img class="w-12 ml-2 mt-1 rounded" src="/media/logo-whats_left.png" alt srcset />
-      </a>
+      </router-link>
     </div>
     <div class="w-1/2 flex flex-row-reverse">
       <!-- Shopping Bag -->

@@ -1,56 +1,59 @@
 <template>
-  <div class="card">
-    <div class="header">
-      <router-link
-        :to="{
-          name: 'MarketDetail',
-          params: {
-            id: id,
-            name: name,
-            address: address,
-            status: status,
-            products: mainProducts
-          }
-        }"
-      >
+  <router-link
+    :to="{
+      name: 'MarketDetail',
+      params: {
+        id: id,
+        name: name,
+        address: address,
+        status: status,
+        products: mainProducts
+      }
+    }"
+  >
+    <div class="card">
+      <div class="header">
+        
         <h2>{{ name }}</h2>
-
         <img
           src="../../public/media/icons/chevron-right.svg"
           alt="Markt anzeigen"
         />
-      </router-link>
+
+      </div>
+
+      <div class="main">
+        <div class="address">
+          {{ address }}
+        </div>
+
+        <span class="distance"> {{ distance }} m </span>
+
+        <div class="status">
+          <span v-bind:class="status.class">{{ status.text }}</span>
+          <!-- statusAction ist entweder 'Schließt' oder 'Öffnet', ne nachdem ob der Markt gerade offen ist.
+          statusTime ist die Uhrzeit, zu der der Markt schließt/öffnet -->
+        </div>
+
+        <div class="categories">
+          <ul>
+            <li :key="index" v-for="(category, index) in mainProducts">
+              <div v-bind:class="'traffic-light ' + category.availability"></div>
+              <span class="label">{{ category.name }}</span>
+            </li>
+          </ul>
+        </div>
+        <!-- 
+        <div class="updated">
+
+          zuletzt aktualisiert am {{updated.date}} um {{updated.time}}
+          
+        </div> -->
+      </div>
     </div>
 
-    <div class="main">
-      <div class="address">
-        {{ address }}
-      </div>
-
-      <span class="distance"> {{ distance }} m </span>
-
-      <div class="status">
-        <span v-bind:class="status.class">{{ status.text }}</span>
-        <!-- statusAction ist entweder 'Schließt' oder 'Öffnet', ne nachdem ob der Markt gerade offen ist.
-        statusTime ist die Uhrzeit, zu der der Markt schließt/öffnet -->
-      </div>
-
-      <div class="categories">
-        <ul>
-          <li :key="index" v-for="(category, index) in mainProducts">
-            <div v-bind:class="'traffic-light ' + category.availability"></div>
-            <span class="label">{{ category.name }}</span>
-          </li>
-        </ul>
-      </div>
-      <!-- 
-      <div class="updated">
-
-        zuletzt aktualisiert am {{updated.date}} um {{updated.time}}
-        
-      </div> -->
-    </div>
-  </div>
+  </router-link>
+  
 </template>
 
 <script>
