@@ -77,6 +77,9 @@ export default {
           this.center.lat = position.coords.latitude;
           this.center.lng = position.coords.longitude;
 
+          console.log('this.center.lat:', this.center.lat);
+          console.log('this.center.lng:', this.center.lng);
+
           this.zoom = 15;
           
         }, err => {
