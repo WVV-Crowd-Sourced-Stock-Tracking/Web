@@ -23,7 +23,7 @@ export default {
     // ProductFilter,
     Listings,
     Map
-  }
+  },
 };
 </script>
 

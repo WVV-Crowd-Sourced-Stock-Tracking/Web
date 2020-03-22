@@ -28,10 +28,6 @@ export default {
     return {
       markets: [],
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      userPosition: {
-        lat: 0,
-        lng: 0
-      },
     };
   },
   methods: {

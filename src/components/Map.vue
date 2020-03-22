@@ -35,10 +35,13 @@
 
 <script>
 import { gmapApi } from "vue2-google-maps";
+import Market from "../assets/js/market";
+import API from "../assets/js/api";
 
 export default {
   data() {
     return {
+      API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
       mapStyle: {
         zoomControl: false,
         mapTypeControl: false,
@@ -58,35 +61,83 @@ export default {
     };
   },
   mounted() {
-    console.log(this);
-    this.centerOnUser();
-    this.getAllMarkers();
+    this.centerOnUser().then(() => {
+      this.loadAll();
+    })
+    // this.getAllMarkers();
   },
   computed: {
     google: gmapApi
   },
   methods: {
     centerOnUser() {
+      return new Promise((resolve, reject) => {
+      
+        if (!navigator.geolocation) {
+          console.error('Geolocation is not supported by your browser');
+        } else {
+          console.log('Locating…');
+          navigator.geolocation.getCurrentPosition(position => {
 
-      if (!navigator.geolocation) {
-        console.error('Geolocation is not supported by your browser');
-      } else {
-        console.log('Locating…');
-        navigator.geolocation.getCurrentPosition(position => {
+            this.center.lat = position.coords.latitude;
+            this.center.lng = position.coords.longitude;
 
-          this.center.lat = position.coords.latitude;
-          this.center.lng = position.coords.longitude;
+            console.log('this.center.lat:', this.center.lat);
+            console.log('this.center.lng:', this.center.lng);
 
-          console.log('this.center.lat:', this.center.lat);
-          console.log('this.center.lng:', this.center.lng);
+            this.zoom = 15;
 
-          this.zoom = 15;
-          
-        }, err => {
-          console.error(`Couldn't acces user's position:`, err);
-        });
+            resolve();
+            
+          }, err => {
+            console.error(`Couldn't acces user's position:`, err);
+            reject();
+          });
+        }
+      
+      })
+    },
+    async loadAll() {
+      let rawMarkets;
+      let markets = [];
+
+      console.log('this.center:', this.center);
+
+      rawMarkets = await this.API.loadMarkets(this.center.lat, this.center.lng, 2000);
+      console.log('rawMarkets:', rawMarkets);
+      // rawMarkets = (
+      //   await this.axios.get(`http://${window.location.hostname}:3000/markets`)
+      // ).data;
+
+      rawMarkets.forEach(rawMarket => {
+        markets.push(
+          new Market(
+            rawMarket.id,
+            rawMarket.name,
+            rawMarket.city,
+            rawMarket.street,
+            rawMarket.lat,
+            rawMarket.lng,
+            rawMarket.distance,
+            rawMarket.open,
+            rawMarket.products
+          )
+        );
+      });
+
+      if (rawMarkets.length != markets.length) {
+        throw new Error(`Conversion from raw to parsed markets failed!`);
       }
 
+      markets.forEach(market => {
+        this.markers.push({
+          position: {
+            lat: market.lat,
+            lng: market.lng
+          }
+        });
+      });
+      
     },
     getAllMarkers() {
       //TODO get from api
