@@ -1,20 +1,21 @@
 <template>
   <div class="card">
     <div class="header">
-      <h2>{{ this.$route.params.name }} {{$store.state.userPosition}}</h2>
+      <h2>{{ market.name }}</h2>
     </div>
 
     <div class="main">
+
       <div class="zwei-spalten">
         <div class="address">
           <h1 class="text-m font-semibold">Addresse:</h1>
-          {{ this.$route.params.address }}
+          {{ market.address }}
         </div>
         <div>
           <h1 class="text-m font-semibold">Öffnungszeiten:</h1>
           <div class="status">
-            <span v-bind:class="this.$route.params.status.class">{{
-              this.$route.params.status.text
+            <span v-bind:class="market.status.class">{{
+              market.status.text
             }}</span>
           </div>
         </div>
@@ -32,7 +33,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in this.$route.params.products" :key="item.name">
+          <tr v-for="item in market.products" :key="item.name">
             <td class="border px-4 py-2">{{ item.name }}</td>
             <td class="border px-4 py-2">
               <div class="verfugbarkeit-item">
@@ -78,7 +79,16 @@ export default {
   data() {
     return {
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      products: [],
+      market: {
+        name: '',
+        address: '',
+        status: {
+          text: '',
+          class: '',
+        },
+        products: [],
+
+      },
     }
   },
   methods: {
@@ -89,10 +99,12 @@ export default {
       console.log('this.$route.params.id:', this.$route.params.id);
 
       try {
-        rawMarket = this.API.loadMarket(this.$route.params.id);
+        rawMarket = (await this.API.loadMarket(this.$route.params.id)).supermarket;
       } catch (err) {
         console.error(err);
       }
+
+      console.log('rawMarket:', rawMarket);
 
       let market = new Market(
         rawMarket.id,
@@ -101,13 +113,43 @@ export default {
         rawMarket.street,
         rawMarket.lat,
         rawMarket.lng,
-        0,
-        true,
+        rawMarket.distance,
+        rawMarket.open,
         rawMarket.products,
         rawMarket.mapsId
       );
 
-      this.products = rawProducts;
+      console.log('market:', market);
+
+      this.market = market;
+      
+    },
+    async loadDistance() {
+
+      let rawMarkets, rawCurrentMarket, currentMarket;
+
+      try {
+        rawMarkets = await this.API.loadMarkets(this.$store.state.userPosition.lat, this.$store.state.userPosition.lng, 5000);
+      } catch (err) {
+        console.error(err);
+      }
+
+      [rawCurrentMarket] = rawMarkets.filter(market => market.id == this.$route.params.id);
+
+      currentMarket = new Market(
+        rawCurrentMarket.id,
+        rawCurrentMarket.name,
+        rawCurrentMarket.city,
+        rawCurrentMarket.street,
+        rawCurrentMarket.lat,
+        rawCurrentMarket.lng,
+        rawCurrentMarket.distance,
+        rawCurrentMarket.open,
+        rawCurrentMarket.products,
+        rawCurrentMarket.mapsId
+      );
+
+      this.market.distance = currentMarket.distance;
       
     }
   },
@@ -116,7 +158,10 @@ export default {
     //   console.log('pos:', pos);
     // })  
     this.$store.commit("getCurrentPosition");
+    // if params are missing, this will cause errors because of missing nested objects
+    this.market = this.$route.params;
     this.loadData();
+    this.loadDistance();
   }
 }
 </script>

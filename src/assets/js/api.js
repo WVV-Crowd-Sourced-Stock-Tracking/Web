@@ -35,17 +35,17 @@ export default class API {
     })
   }
 
-  loadMarket(googleId) {
+  loadMarket(dbId) {
     return new Promise((resolve, reject) => {
-    
-      fetch(this.baseUrl + `/market/stock`, {
+
+      fetch(this.baseUrl + `/market/details`, {
         mode: 'cors',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          google_id: googleId,
+          id: dbId,
         })
       })
       .then(response => {
