@@ -1,8 +1,9 @@
 <template>
-  <div id="home" >
+  <div>
+    <!-- <ProductFilter /> -->
 
-    <div class="ml-4 my-2">
-      <h1 class="text-2xl font-semibold">Shops</h1>
+    <div class="intro m-4">
+      <h1 class="text-xl font-semibold">Shops</h1>
       <p>in Ihrer Umgebung</p>
     </div>
 
@@ -16,21 +17,29 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import Listings from "@/components/Listings.vue";
 import Map from "@/components/Map.vue";
-
+// import ProductFilter from "./components/Filter.vue";
 export default {
-  name: 'Home',
   components: {
+    // ProductFilter,
     Listings,
     Map
-  },
-  data() {
-    return {
-      show: "list"
-    };
-  },
-}
+  }
+};
 </script>
 
+<style lang="scss">
+#home {
+  padding-bottom: 25px;
+}
+.traffic-light.high {
+  background-color: #6dd400;
+}
+.traffic-light.medium {
+  background-color: #f7b500;
+}
+.traffic-light.low {
+  background-color: #e02020;
+}
+</style>
