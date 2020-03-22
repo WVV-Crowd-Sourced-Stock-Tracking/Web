@@ -28,6 +28,10 @@ export default {
     return {
       markets: [],
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
+      userPosition: {
+        lat: 0,
+        lng: 0
+      },
     };
   },
   methods: {
@@ -35,7 +39,7 @@ export default {
       let rawMarkets;
       let markets = [];
 
-      rawMarkets = await this.API.loadMarkets(this.$store.state.userPosition.lat, this.$store.state.userPosition.lng, 2000);
+      rawMarkets = await this.API.loadMarkets(this.userPosition.lat, this.userPosition.lng, 2000);
       console.log('rawMarkets:', rawMarkets);
       // rawMarkets = (
       //   await this.axios.get(`http://${window.location.hostname}:3000/markets`)
@@ -63,13 +67,47 @@ export default {
 
       this.markets = markets;
     },
+    async getCurrentPosition() {
+      
+        if (!navigator.geolocation) {
+          console.error('Geolocation is not supported by your browser');
+        } else {
+          console.log('Locating…');
+          let position;
 
-    addItem() {}
+          try {
+            position = await (async () => {
+              return new Promise((resolve, reject) => {
+              
+                navigator.geolocation.getCurrentPosition(position => {
+
+                console.log('user lat:', position.coords.latitude);
+                console.log('user lng:', position.coords.longitude);
+
+                resolve({lat: position.coords.latitude, lng: position.coords.longitude});
+                
+              }, err => {
+                console.error(`Couldn't acces user's position:`, err);
+                reject({lat: 0, lng: 0});
+              });
+              
+              })
+            })();
+          } catch (err) {
+            console.error(err);
+          }
+
+          this.userPosition = position;
+          this.loadAll();
+          
+        }
+      
+    }
   },
   mounted() {
-    console.log('test:');
-    this.$store.commit("getCurrentPosition");
-    this.loadAll();
+    // this.$store.commit("getCurrentPosition");
+    // this.loadAll();
+    this.getCurrentPosition();
   }
 };
 </script>

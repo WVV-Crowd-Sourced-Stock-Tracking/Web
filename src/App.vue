@@ -56,6 +56,9 @@ export default {
       
     }
   },
+  mounted() {
+    this.$store.commit("getCurrentPosition");
+  }
 };
 </script>
 

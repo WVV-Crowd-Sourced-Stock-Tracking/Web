@@ -33,7 +33,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in this.$route.params.products" :key="item.name">
+          <tr v-for="item in market.products" :key="item.name">
             <td class="border px-4 py-2">{{ item.name }}</td>
             <td class="border px-4 py-2" v-if="editMode">
                 <div class="editButtons">
@@ -80,12 +80,6 @@ import API from "../assets/js/api";
 
 export default {
   name: 'MarketDetail',
-  props: {
-    userPosition: {
-      lat: Number,
-      lng: Number,
-    }
-  },
   data() {
     return {
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
@@ -100,6 +94,10 @@ export default {
 
       },
       editMode: false,
+      userPosition: {
+        lat: 0,
+        lng: 0
+      },
     }
   },
   methods: {
@@ -143,8 +141,10 @@ export default {
 
       let rawMarkets, rawCurrentMarket, currentMarket;
 
+      console.log('this.userPosition.lat:', this.userPosition.lat);
+
       try {
-        rawMarkets = await this.API.loadMarkets(this.$store.state.userPosition.lat, this.$store.state.userPosition.lng, 5000);
+        rawMarkets = await this.API.loadMarkets(this.userPosition.lat, this.userPosition.lng, 5000);
       } catch (err) {
         console.error(err);
       }
@@ -166,15 +166,49 @@ export default {
 
       this.market.distance = currentMarket.distance;
       
+    },
+    async getCurrentPosition() {
+      
+        if (!navigator.geolocation) {
+          console.error('Geolocation is not supported by your browser');
+        } else {
+          console.log('Locating…');
+          let position;
+
+          try {
+            position = await (async () => {
+              return new Promise((resolve, reject) => {
+              
+                navigator.geolocation.getCurrentPosition(position => {
+
+                resolve({lat: position.coords.latitude, lng: position.coords.longitude});
+                
+              }, err => {
+                console.error(`Couldn't acces user's position:`, err);
+                reject({lat: 0, lng: 0});
+              });
+              
+              })
+            })();
+          } catch (err) {
+            console.error(err);
+          }
+
+          this.userPosition = position;
+          this.loadDistance();
+          
+        }
+      
     }
   },
-  async mounted() {
-    this.$store.commit("getCurrentPosition");
+  mounted() {
+    // this.$store.commit("getCurrentPosition");
     // if params are missing, this will cause errors because of missing nested objects
     this.market = this.$route.params;
     this.loadData();
-    this.loadDistance();
-  }
+    // this.getCurrentPosition();
+    // this.loadDistance();
+  },
 }
 </script>
 
