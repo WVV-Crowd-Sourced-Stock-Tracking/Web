@@ -1,20 +1,21 @@
 <template>
   <div class="w-full rounded overflow-hidden shadow-lg">
-    <div class="px-6 py-4">
-      <div class="font-bold text-xl mb-2">Karte</div>
+    <div class="bg-white">
+      <div class="font-bold text-xl px-4 py-2">Karte</div>
       <!-- <div id="map" class="text-gray-700 text-base"></div> -->
       <GmapMap
         :center="this.center"
         :zoom="15"
+        :options="this.mapStyle"
         map-type-id="roadmap"
-        style="width: 100%; height: 300px"
+        class="w-full h-40"
       >
         <GmapMarker
           :key="index"
           v-for="(m, index) in markers"
           :position="m.position"
           :clickable="true"
-          :draggable="true"
+          :draggable="false"
           @click="center = m.position"
         />
       </GmapMap>
@@ -24,13 +25,22 @@
 
 <script>
 export default {
-  name: "MapContext",
   data() {
     return {
+      mapStyle: {
+        zoomControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false,
+        disableDefaultUi: false,
+        supressMarkers: true
+      },
       // Berlin as Center :D
       center: {
-        lat: 52.520008,
-        lng: 13.404954
+        lat: 52.5204579,
+        lng: 13.3885896
       },
       markers: []
     };
@@ -53,7 +63,6 @@ export default {
           });
         });
       });
-      // return this.markers;
     }
   }
 };

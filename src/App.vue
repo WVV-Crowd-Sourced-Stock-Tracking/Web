@@ -1,9 +1,9 @@
 <template>
-  <div id="app" class="container h-full mx-auto px-4">
+  <div id="app" class="container h-full mx-auto px-4 bg-gray-100">
     <Header />
 
-    <div class="intro m-4">
-      <h1 class="text-xl font-semibold">Shops</h1>
+    <div class="ml-4 my-2">
+      <h1 class="text-2xl font-semibold">Shops</h1>
       <p>in Ihrer Umgebung</p>
     </div>
 
@@ -11,23 +11,6 @@
 
     <Listings></Listings>
 
-    <MarketInListing
-      :name="'REWE'"
-      :address="'Marktplatz 3, Frankfurt a. M.'"
-      :distance="'200 m'"
-      :status="{
-        text: 'Geschlossen',
-        action: 'Öffnet',
-        time: '12 Uhr',
-        class: 'closed'
-      }"
-      :mainCategories="[
-        { name: 'Toilettenpapier', availability: 'high' },
-        { name: 'Seife', availability: 'medium' },
-        { name: 'Milch', availability: 'low' }
-      ]"
-      :modified="{ date: '19.03.', time: '16:45 Uhr' }"
-    ></MarketInListing>
   </div>
 </template>
 
@@ -36,7 +19,7 @@ import Header from "./components/Header.vue";
 import Listings from "./components/Listings.vue";
 // import ViewSwitcher from "./components/ViewSwitcher.vue";
 import Map from "./components/Map.vue";
-import MarketInListing from "./components/MarketInListing.vue";
+// import MarketInListing from "./components/MarketInListing.vue";
 // import API from "./components/API.vue";
 
 export default {
@@ -44,11 +27,10 @@ export default {
   components: {
     Header,
     Listings,
-    MarketInListing,
+    // MarketInListing,
     // API,
     // ViewSwitcher,
     Map
-    // API,
     // AppFilter
   },
   data() {
@@ -77,6 +59,10 @@ body {
   width: 100%;
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+#app {
+  background-color: #E5E5E5;
 }
 
 .traffic-light.high {
