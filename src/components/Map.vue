@@ -24,13 +24,6 @@
   </div>
 </template>
 
-<style scoped>
-.vue-map {
-  height: 100%;
-  width: 100%;
-}
-</style>
-
 <script>
 import { gmapApi } from "vue2-google-maps";
 

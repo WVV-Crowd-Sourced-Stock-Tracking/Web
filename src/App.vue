@@ -60,4 +60,12 @@ body {
 .traffic-light.low {
   background-color: #e02020;
 }
+.vue-map {
+  overflow: visible !important;
+  height: 100% !important;
+  width: 100% !important;
+}
+.vue-map-container {
+  overflow: hidden;
+}
 </style>
