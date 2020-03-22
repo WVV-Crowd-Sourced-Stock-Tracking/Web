@@ -1,31 +1,26 @@
 <template>
-  <div id="app" class="container h-full mx-auto px-4">
-    <!-- <ProductFilter /> -->
-    <Header />
+  <div id="home" class="container h-full mx-auto px-4 bg-gray-100">
 
-    <div class="intro m-4">
-      <h1 class="text-xl font-semibold">Shops</h1>
+    <div class="ml-4 my-2">
+      <h1 class="text-2xl font-semibold">Shops</h1>
       <p>in Ihrer Umgebung</p>
     </div>
 
     <Map></Map>
 
     <Listings></Listings>
-    <router-view />
+
   </div>
 </template>
 
 <script>
-import Header from "./components/Header.vue";
-import Listings from "./components/Listings.vue";
-import Map from "./components/Map.vue";
-// import ProductFilter from "./components/Filter.vue";
+// @ is an alias to /src
+import Listings from "@/components/Listings.vue";
+import Map from "@/components/Map.vue";
 
 export default {
-  name: "App",
+  name: 'Home',
   components: {
-    // ProductFilter,
-    Header,
     Listings,
     Map
   },
@@ -33,8 +28,8 @@ export default {
     return {
       show: "list"
     };
-  }
-};
+  },
+}
 </script>
 
 <style>
@@ -54,15 +49,9 @@ body {
   width: 100%;
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #e5e5e5;
 }
 #app {
-  background-color: #e5e5e5;
-  height: auto;
-  padding-bottom: 50px;
-}
-#home {
-  padding-bottom: 25px;
+  background-color: #E5E5E5;
 }
 .traffic-light.high {
   background-color: #6dd400;

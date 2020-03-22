@@ -1,7 +1,7 @@
 <template>
   <div class="w-full rounded overflow-hidden shadow-lg">
-    <div class="px-6 py-4">
-      <div class="font-bold text-xl mb-2">Karte</div>
+    <div class="bg-white">
+      <div class="font-bold text-xl px-4 py-2">Karte</div>
       <!-- <div id="map" class="text-gray-700 text-base"></div> -->
       <GmapMap
         :center="this.center"
