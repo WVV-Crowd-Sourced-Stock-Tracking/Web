@@ -168,6 +168,7 @@
   export default {
     name: 'MarketInListing',
     props: {
+      id: Number,
       name: String, 
       address: String,
       distance: Number,

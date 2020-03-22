@@ -13,14 +13,12 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
 import Listings from "@/components/Listings.vue";
 import Map from "@/components/Map.vue";
 // import ProductFilter from "./components/Filter.vue";
 export default {
   components: {
     // ProductFilter,
-    Header,
     Listings,
     Map
   }
