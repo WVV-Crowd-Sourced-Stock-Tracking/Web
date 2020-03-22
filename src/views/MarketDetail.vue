@@ -2,29 +2,54 @@
   <div class="card">
     <div class="header">
       <h2>{{ this.$route.params.name }}</h2>
-
-      <img src="../../public/media/icons/chevron-right.svg" alt="Zurück" />
     </div>
 
     <div class="main">
       <div class="address">
+        <h1 class="text-m font-semibold">Addresse:</h1>
         {{ this.$route.params.address }}
       </div>
-
+      <h1 class="text-m font-semibold">Öffnungszeiten:</h1>
       <div class="status">
         <span v-bind:class="this.$route.params.status.class">{{
           this.$route.params.status.text
         }}</span>
-        ({{ this.$route.params.status.action }} um
-        {{ this.$route.params.status.time }})
-        <!-- statusAction ist entweder 'Schließt' oder 'Öffnet', ne nachdem ob der Markt gerade offen ist.
-        statusTime ist die Uhrzeit, zu der der Markt schließt/öffnet -->
       </div>
 
-      <div class="updated">
-        zuletzt aktualisiert am {{ this.$route.params.updated.date }} um
-        {{ this.$route.params.updated.time }}
-      </div>
+      <table class="table-auto">
+        <thead>
+          <tr>
+            <th class="px-4 py-2"></th>
+            <th class="px-4 py-2">Produkte</th>
+            <th class="px-4 py-2">Bestand</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in this.$route.params.products" :key="item.name">
+            <td class="border px-4 py-2">
+              <div
+                class="h-5 w-5 rounded-full bg-green-500"
+                v-if="item.availability === 'high'"
+              ></div>
+              <div
+                class="h-5 w-5 rounded-full bg-yellow-500"
+                v-else-if="item.availability === 'medium'"
+              ></div>
+              <div class="h-5 w-5 rounded-full bg-red-500" v-else></div>
+            </td>
+            <td class="border px-4 py-2">{{ item.name }}</td>
+            <td class="border px-4 py-2">
+              <span v-if="item.availability === 'high'">vorrätig</span>
+              <span v-else-if="item.availability === 'medium'"
+                >fast ausverkauft</span
+              >
+              <span v-else>ausverkauft</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- {{ this.$route.params.products }} -->
     </div>
   </div>
 </template>
@@ -35,7 +60,7 @@
   position: relative;
   margin-top: 2%;
   width: 100%;
-  height: 14rem;
+  height: 100vh;
   border-radius: 0.5rem;
   overflow: hidden;
 }
@@ -45,7 +70,7 @@
   position: absolute;
   top: 0;
   width: 100%;
-  height: var(--header-height);
+  height: 100vh;
   background-color: #006bab;
   padding-left: 1rem;
   color: white;

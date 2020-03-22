@@ -11,6 +11,7 @@ export default {
       name: this._name,
       city: this._city,
       street: this._street,
+      zip: this._zip,
       gpsLength: this._gpsLength,
       gpsWidth: this._gpsWidth
     };
@@ -19,6 +20,7 @@ export default {
     _id: Number,
     _name: String,
     _city: String,
+    _zip: Number,
     _street: String,
     _gpsLength: Number,
     _gpsWidth: Number

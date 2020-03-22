@@ -1,18 +1,21 @@
 <template>
   <div id="app" class="container h-full mx-auto px-4 bg-100">
+    <Header />
     <router-view />
   </div>
 </template>
 
 <script>
+import Header from "@/components/Header.vue";
 export default {
-  name: "App",
-  data() {}
+  components: {
+    Header
+  },
+  name: "App"
 };
 </script>
 
 <style>
-
 :root {
   --header-height: 2.5rem;
 }
@@ -29,10 +32,10 @@ body {
   width: 100%;
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #E5E5E5;
+  background-color: #e5e5e5;
 }
 #app {
-  background-color: #E5E5E5;
+  background-color: #e5e5e5;
   height: auto;
   padding-bottom: 50px;
 }
