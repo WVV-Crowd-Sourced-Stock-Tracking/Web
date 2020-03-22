@@ -12,19 +12,26 @@
 </template>
 
 <script>
-// import API from "./API.vue";
 // import Market from "./Market.vue";
 import MarketInListing from "./MarketInListing.vue";
 import Market from "../assets/js/market";
+import API from "../assets/js/api";
 
 export default {
   name: "Listing",
   components: {
     MarketInListing
   },
+  props: {
+    userPosition: {
+      lat: Number,
+      lng: Number
+    }
+  },
   data: () => {
     return {
-      markets: []
+      markets: [],
+      API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
     };
   },
   methods: {
@@ -32,12 +39,17 @@ export default {
       let rawMarkets;
       let markets = [];
 
-      // rawMarkets = await API.loadMarkets();
-      rawMarkets = (
-        await this.axios.get(`http://${window.location.hostname}:3000/markets`)
-      ).data;
+      console.log('this.userPosition.lat:', this.userPosition.lat);
+      console.log('this.userPosition.lng:', this.userPosition.lng);
+
+      rawMarkets = await this.API.loadMarkets(this.userPosition.lat, this.userPosition.lng, 2000);
+      console.log('rawMarkets:', rawMarkets);
+      // rawMarkets = (
+      //   await this.axios.get(`http://${window.location.hostname}:3000/markets`)
+      // ).data;
 
       rawMarkets.forEach(rawMarket => {
+        console.log('rawMarket:', rawMarket);
         markets.push(new Market(
           rawMarket.id,
           rawMarket.name,
@@ -47,7 +59,8 @@ export default {
           rawMarket.lng,
           rawMarket.distance,
           rawMarket.open,
-          rawMarket.products
+          rawMarket.products,
+          rawMarket.mapsId,
         ));
       });
 

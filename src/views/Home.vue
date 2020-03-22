@@ -8,7 +8,9 @@
 
     <Map></Map>
 
-    <Listings></Listings>
+    <Listings
+      :userPosition = "{lat: 49.970067, lng: 8.663653}"
+    ></Listings>
 
   </div>
 </template>

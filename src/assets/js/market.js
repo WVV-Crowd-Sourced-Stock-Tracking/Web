@@ -1,16 +1,17 @@
 export default class Market {
 
-  constructor (id, name, city, street, lat, lng, distance, isOpen, products) {
+  constructor (id, name, city, street, lat, lng, distance, isOpen, products, mapsId) {
     this.id = id;
     this.name = name;
     this.city = city;
     this.street = street;
     this.lat = parseFloat(lat);
     this.lng = parseFloat(lng);
-    this.distance = distance;
+    this.distance = parseInt(distance);
     this.status = this.computeStatus(isOpen);
     this.products = this.computeAvailability(products);
     this.address = this.computeAddress();
+    this.mapsId = mapsId;
   }
 
   computeAddress() {
