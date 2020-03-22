@@ -1,21 +1,20 @@
 <template>
   <div class="card">
     <div class="header">
-      <h2>{{ market.name }}</h2>
+      <h2>{{ this.$route.params.name }} {{$store.state.userPosition}}</h2>
     </div>
 
     <div class="main">
-
       <div class="zwei-spalten">
         <div class="address">
           <h1 class="text-m font-semibold">Addresse:</h1>
-          {{ market.address }}
+          {{ this.$route.params.address }}
         </div>
         <div>
           <h1 class="text-m font-semibold">Öffnungszeiten:</h1>
           <div class="status">
-            <span v-bind:class="market.status.class">{{
-              market.status.text
+            <span v-bind:class="this.$route.params.status.class">{{
+              this.$route.params.status.text
             }}</span>
           </div>
         </div>
@@ -33,9 +32,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in market.products" :key="item.name">
+          <tr v-for="item in this.$route.params.products" :key="item.name">
             <td class="border px-4 py-2">{{ item.name }}</td>
-            <td class="border px-4 py-2">
+            <td class="border px-4 py-2" v-if="editMode">
+                <div class="editButtons">
+                  <div>verfügbar</div>
+                  <div>fast leer</div>
+                  <div>leer</div>
+                </div>
+            </td>
+            <td class="border px-4 py-2" v-else>
               <div class="verfugbarkeit-item">
                 <span v-if="item.availability === 'high'">vorrätig</span>
               <span v-else-if="item.availability === 'medium'"
@@ -58,6 +64,11 @@
         </tbody>
       </table>
 
+      <button class="EditButton" v-on:click="toggleEdit">
+        <span v-if="editMode">Bestand senden</span>
+        <span v-else>Bestand aktualisieren</span>
+      </button>
+
       <!-- {{ this.$route.params.products }} -->
     </div>
   </div>
@@ -65,7 +76,7 @@
 
 <script>
 
-import Market from "../assets/js/market";
+// import Market from "../assets/js/market";
 import API from "../assets/js/api";
 
 export default {
@@ -74,24 +85,20 @@ export default {
     userPosition: {
       lat: Number,
       lng: Number,
-    }
+    },
   },
   data() {
     return {
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      market: {
-        name: '',
-        address: '',
-        status: {
-          text: '',
-          class: '',
-        },
-        products: [],
-
-      },
+      products: [],
+      editMode: false,
     }
   },
   methods: {
+    toggleEdit: function() {
+      this.editMode = !this.editMode
+      console.log(this.editMode)
+    },
     async loadData() {
 
       let rawMarket;
@@ -99,57 +106,25 @@ export default {
       console.log('this.$route.params.id:', this.$route.params.id);
 
       try {
-        rawMarket = (await this.API.loadMarket(this.$route.params.id)).supermarket;
+        rawMarket = this.API.loadMarket(this.$route.params.id);
       } catch (err) {
         console.error(err);
       }
 
-      console.log('rawMarket:', rawMarket);
+      // let market = new Market(
+      //   rawMarket.id,
+      //   rawMarket.name,
+      //   rawMarket.city,
+      //   rawMarket.street,
+      //   rawMarket.lat,
+      //   rawMarket.lng,
+      //   0,
+      //   true,
+      //   rawMarket.products,
+      //   rawMarket.mapsId
+      // );
 
-      let market = new Market(
-        rawMarket.id,
-        rawMarket.name,
-        rawMarket.city,
-        rawMarket.street,
-        rawMarket.lat,
-        rawMarket.lng,
-        rawMarket.distance,
-        rawMarket.open,
-        rawMarket.products,
-        rawMarket.mapsId
-      );
-
-      console.log('market:', market);
-
-      this.market = market;
-      
-    },
-    async loadDistance() {
-
-      let rawMarkets, rawCurrentMarket, currentMarket;
-
-      try {
-        rawMarkets = await this.API.loadMarkets(this.$store.state.userPosition.lat, this.$store.state.userPosition.lng, 5000);
-      } catch (err) {
-        console.error(err);
-      }
-
-      [rawCurrentMarket] = rawMarkets.filter(market => market.id == this.$route.params.id);
-
-      currentMarket = new Market(
-        rawCurrentMarket.id,
-        rawCurrentMarket.name,
-        rawCurrentMarket.city,
-        rawCurrentMarket.street,
-        rawCurrentMarket.lat,
-        rawCurrentMarket.lng,
-        rawCurrentMarket.distance,
-        rawCurrentMarket.open,
-        rawCurrentMarket.products,
-        rawCurrentMarket.mapsId
-      );
-
-      this.market.distance = currentMarket.distance;
+      this.products = rawMarket;
       
     }
   },
@@ -158,15 +133,29 @@ export default {
     //   console.log('pos:', pos);
     // })  
     this.$store.commit("getCurrentPosition");
-    // if params are missing, this will cause errors because of missing nested objects
-    this.market = this.$route.params;
     this.loadData();
-    this.loadDistance();
   }
 }
 </script>
 
 <style lang="sass">
+.EditButton 
+  position: relative
+  left: 50%
+  transform: translate(-50%)
+  background: blue
+  padding: 10px
+  border-radius: 10px
+  color: white
+  margin-top: 30px
+
+.editButtons 
+  display: grid
+  grid-template-columns: 1fr 1fr 1fr
+  > div
+    text-align: center
+    background: gray
+
 .zwei-spalten
   display: grid
   grid-template-columns: 1fr 1fr
