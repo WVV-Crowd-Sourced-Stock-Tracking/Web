@@ -1,57 +1,37 @@
 <template>
-  <div id="home" class="container h-full mx-auto px-4 bg-gray-100">
+  <div>
+    <!-- <ProductFilter /> -->
+    <Header />
 
-    <div class="ml-4 my-2">
-      <h1 class="text-2xl font-semibold">Shops</h1>
+    <div class="intro m-4">
+      <h1 class="text-xl font-semibold">Shops</h1>
       <p>in Ihrer Umgebung</p>
     </div>
 
     <Map></Map>
 
     <Listings></Listings>
-
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+import Header from "@/components/Header.vue";
 import Listings from "@/components/Listings.vue";
 import Map from "@/components/Map.vue";
-
+// import ProductFilter from "./components/Filter.vue";
 export default {
-  name: 'Home',
   components: {
+    // ProductFilter,
+    Header,
     Listings,
     Map
-  },
-  data() {
-    return {
-      show: "list"
-    };
-  },
-}
+  }
+};
 </script>
 
-<style>
-:root {
-  --header-height: 2.5rem;
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-html,
-body {
-  font-size: 1em;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  font-family: Arial, Helvetica, sans-serif;
-}
-#app {
-  background-color: #E5E5E5;
+<style lang="scss">
+#home {
+  padding-bottom: 25px;
 }
 .traffic-light.high {
   background-color: #6dd400;

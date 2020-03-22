@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'Market',
+  name: "Market",
   data() {
     return {
       id: this._id,
@@ -13,10 +13,10 @@ export default {
       street: this._street,
       gpsLength: this._gpsLength,
       gpsWidth: this._gpsWidth
-    }
+    };
   },
   props: {
-    _id: String,
+    _id: Number,
     _name: String,
     _city: String,
     _street: String,
@@ -28,8 +28,7 @@ export default {
       return `${this.name} (${this.city})`;
     },
 
-    getBody() {
-    }
+    getBody() {}
   }
-}
+};
 </script>

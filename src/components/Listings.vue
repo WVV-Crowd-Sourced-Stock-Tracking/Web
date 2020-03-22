@@ -3,6 +3,7 @@
     <MarketInListing
       :key="index"
       v-for="(market, index) in markets"
+      :id="market.id"
       :name="market.name"
       :address="market.address"
       :distance="market.distance"
@@ -24,23 +25,6 @@ export default {
   components: {
     MarketInListing
   },
-  // props: {
-  //   markets: [{
-  //     name: String,
-  //     address: String,
-  //     distance: String,
-  //     status: {
-  //       text: String,
-  //       action: String,
-  //       time: String,
-  //     },
-  //     mainCategories: Array,
-  //     modified: {
-  //       date: String,
-  //       time: String,
-  //     },
-  //   }]
-  // },
   data: () => {
     return {
       markets: []
