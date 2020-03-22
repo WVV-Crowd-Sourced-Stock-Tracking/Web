@@ -2,81 +2,47 @@
   "markets": [
     {
       "id": 1,
+      "mapsId": "rx59ghdkgsg",
       "name": "Rewe",
       "city": "Berlin",
       "zip": 12345,
       "street": "Bla",
-      "lat": 52.5204579,
-      "lng": 13.3885896,
+      "lat": "52.5221232",
+      "lng": "13.4034752",
       "distance": 200,
-      "status": {
-        "open": true,
-        "closes": "22 Uhr"
-      },
+      "open": false,
       "products": [{
+          "id": 3,
           "name": "Eier",
-          "availability": "high"
+          "availability": 25
         },
         {
-          "name": "Milch",
-          "availability": "medium"
-        }],
-      "updated": {
-        "date": "19.03.",
-        "time": "16:45"
-      }
+          "id": 2,
+          "name": "Eis",
+          "availability": 60
+        }]
     },
     {
       "id": 2,
+      "mapsId": "rx59ghdk",
       "name": "Rewe",
       "city": "Berlin",
       "zip": 12345,
       "street": "Bla",
-      "lat": 52.5221422,
-      "lng": 13.4034652,
+      "lat": "52.5221422",
+      "lng": "13.4034652",
       "distance": 500,
-      "status": {
-        "open": false,
-        "opens": "8 Uhr"
-      },
+      "open": true,
       "products": [{
-        "name": "Club Mate",
-        "availability": "low"
-      },
-      {
-        "name": "Eis",
-        "availability": "medium"
-      }],
-      "updated": {
-        "date": "19.03.",
-        "time": "16:45"
-      }
-    },
-    {
-      "id": 3,
-      "name": "Edeka",
-      "city": "Berlin",
-      "zip": 12345,
-      "street": "Bla",
-      "lat": 52.5199716,
-      "lng": 13.4147251,
-      "distance": 2000,
-      "status": {
-        "open": true,
-        "closes": "20 Uhr"
-      },
-      "products": [{
-        "name": "Klopapier",
-        "availability": "low"
-      },
-      {
-        "name": "Saft",
-        "availability": "medium"
-      }],
-      "updated": {
-        "date": "19.03.",
-        "time": "16:45"
-      }
+          "id": 1,
+          "name": "Club Mate",
+          "availability": 50
+        },
+        {
+          "id": 2,
+          "name": "Eis",
+          "availability": 90
+        }]
     }
   ]
 }

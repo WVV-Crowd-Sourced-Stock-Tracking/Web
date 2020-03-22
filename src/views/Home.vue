@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <!-- <ProductFilter /> -->
-    <Header />
-
+  <div id="home" >
+  
     <div class="intro m-4">
       <h1 class="text-xl font-semibold">Shops</h1>
       <p>in Ihrer Umgebung</p>
