@@ -17,7 +17,7 @@
       </div>
 
       <span class="distance">
-        {{distance}}
+        {{distance}} m
       </span>
 
       <div class="status">
@@ -31,7 +31,7 @@
         <ul>
 
           <li :key="index"
-          v-for="(category, index) in mainCategories">
+          v-for="(category, index) in mainProducts">
             <div v-bind:class="'traffic-light '+ category.availability"></div>
             <span class="label">{{category.name}}</span>  
           </li>
@@ -40,9 +40,9 @@
         
       </div>
 
-      <div class="modified">
+      <div class="updated">
 
-        zuletzt aktualisiert am {{modified.date}} um {{modified.time}}
+        zuletzt aktualisiert am {{updated.date}} um {{updated.time}}
         
       </div>
       
@@ -120,7 +120,7 @@
     font-weight: bold;
   }
 
-  .card .main .status span.open {
+  .card .main .status span.opened {
     color: limegreen;
   }
 
@@ -154,7 +154,7 @@
     margin-right: 2rem;
   }
 
-  .card .main .modified {
+  .card .main .updated {
     width: 100%;
     text-align: center;
     margin-top: .5rem;
@@ -169,14 +169,15 @@
     props: {
       name: String, 
       address: String,
-      distance: String,
+      distance: Number,
       status: {
         text: String,
         action: String,
         time: String,
+        class: String,
       },
-      mainCategories: Array,
-      modified: {
+      mainProducts: Array,
+      updated: {
         date: String,
         time: String,
       },

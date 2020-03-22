@@ -48,7 +48,6 @@ export default {
     // API,
     // ViewSwitcher,
     Map
-    // API,
     // AppFilter
   },
   data() {
