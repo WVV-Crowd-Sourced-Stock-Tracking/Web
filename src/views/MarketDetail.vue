@@ -169,9 +169,6 @@ export default {
     }
   },
   async mounted() {
-    // this.userPosition.then(pos => {
-    //   console.log('pos:', pos);
-    // })  
     this.$store.commit("getCurrentPosition");
     // if params are missing, this will cause errors because of missing nested objects
     this.market = this.$route.params;
