@@ -4,10 +4,6 @@ import "@/assets/css/output.css";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import * as VueGoogleMaps from "vue2-google-maps";
-import VueMaterial from "vue-material";
-import "vue-material/dist/vue-material.min.css";
-import "vue-material/dist/theme/default.css";
-Vue.use(VueMaterial);
 
 Vue.use(VueAxios, axios);
 
