@@ -11,23 +11,6 @@
 
     <Listings></Listings>
 
-    <MarketInListing
-      :name="'REWE'"
-      :address="'Marktplatz 3, Frankfurt a. M.'"
-      :distance="'200 m'"
-      :status="{
-        text: 'Geschlossen',
-        action: 'Öffnet',
-        time: '12 Uhr',
-        class: 'closed'
-      }"
-      :mainCategories="[
-        { name: 'Toilettenpapier', availability: 'high' },
-        { name: 'Seife', availability: 'medium' },
-        { name: 'Milch', availability: 'low' }
-      ]"
-      :modified="{ date: '19.03.', time: '16:45 Uhr' }"
-    ></MarketInListing>
   </div>
 </template>
 
@@ -36,7 +19,7 @@ import Header from "./components/Header.vue";
 import Listings from "./components/Listings.vue";
 // import ViewSwitcher from "./components/ViewSwitcher.vue";
 import Map from "./components/Map.vue";
-import MarketInListing from "./components/MarketInListing.vue";
+// import MarketInListing from "./components/MarketInListing.vue";
 // import API from "./components/API.vue";
 
 export default {
@@ -44,7 +27,7 @@ export default {
   components: {
     Header,
     Listings,
-    MarketInListing,
+    // MarketInListing,
     // API,
     // ViewSwitcher,
     Map
