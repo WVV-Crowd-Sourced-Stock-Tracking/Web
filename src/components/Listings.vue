@@ -1,15 +1,11 @@
 <template>
   <div class="listing">
-    <MarketInListing
-      :key="index"
-      v-for="(market, index) in markets"
-      :id="market.id"
-      :name="market.name"
-      :address="market.address"
-      :distance="market.distance"
-      :status="market.status"
-      :mainProducts="market.products"
-      :updated="market.updated"
+    <MarketInListing :key="index" v-for="(market, index) in markets"
+      :name= "market.name"
+      :address= "market.address"
+      :distance= "market.distance"
+      :status = "market.status"
+      :mainProducts= "market.products"
     ></MarketInListing>
   </div>
 </template>
@@ -18,7 +14,7 @@
 // import API from "./API.vue";
 // import Market from "./Market.vue";
 import MarketInListing from "./MarketInListing.vue";
-import Market from "../classes/market";
+import Market from "../assets/js/market";
 
 export default {
   name: "Listing",
@@ -41,20 +37,17 @@ export default {
       ).data;
 
       rawMarkets.forEach(rawMarket => {
-        markets.push(
-          new Market(
-            rawMarket.id,
-            rawMarket.name,
-            rawMarket.city,
-            rawMarket.street,
-            rawMarket.gps_length,
-            rawMarket.gps_width,
-            rawMarket.distance,
-            rawMarket.status,
-            rawMarket.products,
-            rawMarket.updated
-          )
-        );
+        markets.push(new Market(
+          rawMarket.id,
+          rawMarket.name,
+          rawMarket.city,
+          rawMarket.street,
+          rawMarket.lat,
+          rawMarket.lng,
+          rawMarket.distance,
+          rawMarket.open,
+          rawMarket.products
+        ));
       });
 
       if (rawMarkets.length != markets.length) {
