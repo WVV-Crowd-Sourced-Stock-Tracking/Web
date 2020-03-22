@@ -9,8 +9,6 @@
 
     <Map></Map>
 
-    <API></API>
-
     <Listings></Listings>
   </div>
 </template>
