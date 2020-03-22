@@ -1,6 +1,5 @@
 <template>
   <div class="listing">
-
     <MarketInListing :key="index" v-for="(market, index) in markets"
       :name= "market.name"
       :address= "market.address"

@@ -1,26 +1,14 @@
 <template>
-  <div id="app" class="container h-full mx-auto px-4 bg-gray-100">
-    <Header />
-    <router-view/>
+  <div id="app" class="container h-full mx-auto px-4 bg-100">
+    <router-view />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import Header from "@/components/Header.vue";
-
-
 export default {
-  name: 'App',
-  components: {
-    Header
-  },
-  data() {
-    return {
-      show: "list"
-    };
-  },
-}
+  name: "App",
+  data() {}
+};
 </script>
 
 <style>
@@ -48,6 +36,7 @@ body {
   height: auto;
   padding-bottom: 50px;
 }
+
 #home {
   padding-bottom: 25px;
 }

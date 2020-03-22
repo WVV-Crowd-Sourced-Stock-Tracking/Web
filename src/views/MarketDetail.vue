@@ -1,56 +1,30 @@
 <template>
   <div class="card">
     <div class="header">
-      <router-link
-        :to="{
-          name: 'MarketDetail',
-          params: {
-            id: id,
-            name: name,
-            address: address,
-            status: status,
-            updated: updated,
-            products: mainProducts
-          }
-        }"
-      >
-        <h2>{{ name }}</h2>
+      <h2>{{ this.$route.params.name }}</h2>
 
-        <img
-          src="../../public/media/icons/chevron-right.svg"
-          alt="Markt anzeigen"
-        />
-      </router-link>
+      <img src="../../public/media/icons/chevron-right.svg" alt="Zurück" />
     </div>
 
     <div class="main">
       <div class="address">
-        {{ address }}
+        {{ this.$route.params.address }}
       </div>
 
-      <span class="distance"> {{ distance }} m </span>
-
       <div class="status">
-        <span v-bind:class="status.class">{{status.text}}</span>
+        <span v-bind:class="this.$route.params.status.class">{{
+          this.$route.params.status.text
+        }}</span>
+        ({{ this.$route.params.status.action }} um
+        {{ this.$route.params.status.time }})
         <!-- statusAction ist entweder 'Schließt' oder 'Öffnet', ne nachdem ob der Markt gerade offen ist.
         statusTime ist die Uhrzeit, zu der der Markt schließt/öffnet -->
       </div>
 
-      <div class="categories">
-        <ul>
-          <li :key="index" v-for="(category, index) in mainProducts">
-            <div v-bind:class="'traffic-light ' + category.availability"></div>
-            <span class="label">{{ category.name }}</span>
-          </li>
-        </ul>
-      </div>
-<!-- 
       <div class="updated">
-
-        zuletzt aktualisiert am {{updated.date}} um {{updated.time}}
-        
-      </div> -->
-      
+        zuletzt aktualisiert am {{ this.$route.params.updated.date }} um
+        {{ this.$route.params.updated.time }}
+      </div>
     </div>
   </div>
 </template>
@@ -163,28 +137,3 @@
   color: #c8cbcd;
 }
 </style>
-
-<script>
-  export default {
-    name: 'MarketInListing',
-    props: {
-      name: String, 
-      address: String,
-      distance: Number,
-      status: {
-        text: String,
-        class: String,
-      },
-      mainProducts: Array,
-      updated: {
-        date: String,
-        time: String,
-      },
-    },
-    mainProducts: Array,
-    updated: {
-      date: String,
-      time: String
-    }
-  };
-</script>
