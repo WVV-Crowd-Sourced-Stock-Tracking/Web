@@ -14,16 +14,8 @@
         <span v-bind:class="this.$route.params.status.class">{{
           this.$route.params.status.text
         }}</span>
-        ({{ this.$route.params.status.action }} um
-        {{ this.$route.params.status.time }})
-        <!-- statusAction ist entweder 'Schließt' oder 'Öffnet', ne nachdem ob der Markt gerade offen ist.
-        statusTime ist die Uhrzeit, zu der der Markt schließt/öffnet -->
       </div>
 
-      <div class="updated">
-        zuletzt aktualisiert am {{ this.$route.params.updated.date }} um
-        {{ this.$route.params.updated.time }}
-      </div>
       <table class="table-auto">
         <thead>
           <tr>
