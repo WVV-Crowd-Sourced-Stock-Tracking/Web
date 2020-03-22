@@ -1,11 +1,14 @@
 <template>
   <div class="listing">
-    <MarketInListing :key="index" v-for="(market, index) in markets"
-      :name= "market.name"
-      :address= "market.address"
-      :distance= "market.distance"
-      :status = "market.status"
-      :mainProducts= "market.products"
+    <MarketInListing
+      :key="index"
+      v-for="(market, index) in markets"
+      :id="market.id"
+      :name="market.name"
+      :address="market.address"
+      :distance="market.distance"
+      :status="market.status"
+      :mainProducts="market.products"
     ></MarketInListing>
   </div>
 </template>
@@ -37,17 +40,19 @@ export default {
       ).data;
 
       rawMarkets.forEach(rawMarket => {
-        markets.push(new Market(
-          rawMarket.id,
-          rawMarket.name,
-          rawMarket.city,
-          rawMarket.street,
-          rawMarket.lat,
-          rawMarket.lng,
-          rawMarket.distance,
-          rawMarket.open,
-          rawMarket.products
-        ));
+        markets.push(
+          new Market(
+            rawMarket.id,
+            rawMarket.name,
+            rawMarket.city,
+            rawMarket.street,
+            rawMarket.lat,
+            rawMarket.lng,
+            rawMarket.distance,
+            rawMarket.open,
+            rawMarket.products
+          )
+        );
       });
 
       if (rawMarkets.length != markets.length) {

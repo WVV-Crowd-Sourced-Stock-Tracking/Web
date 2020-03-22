@@ -7,9 +7,8 @@
           params: {
             id: id,
             name: name,
-            address: address,
-            status: status,
-            updated: updated,
+            address: street + ', ' + zip + ' ' + city,
+            status: open,
             products: mainProducts
           }
         }"
@@ -31,7 +30,7 @@
       <span class="distance"> {{ distance }} m </span>
 
       <div class="status">
-        <span v-bind:class="status.class">{{status.text}}</span>
+        <span v-bind:class="status.class">{{ status.text }}</span>
         <!-- statusAction ist entweder 'Schließt' oder 'Öffnet', ne nachdem ob der Markt gerade offen ist.
         statusTime ist die Uhrzeit, zu der der Markt schließt/öffnet -->
       </div>
@@ -44,13 +43,12 @@
           </li>
         </ul>
       </div>
-<!-- 
+      <!-- 
       <div class="updated">
 
         zuletzt aktualisiert am {{updated.date}} um {{updated.time}}
         
       </div> -->
-      
     </div>
   </div>
 </template>
@@ -165,27 +163,27 @@
 </style>
 
 <script>
-  export default {
-    name: 'MarketInListing',
-    props: {
-      id: Number,
-      name: String, 
-      address: String,
-      distance: Number,
-      status: {
-        text: String,
-        class: String,
-      },
-      mainProducts: Array,
-      updated: {
-        date: String,
-        time: String,
-      },
+export default {
+  name: "MarketInListing",
+  props: {
+    id: Number,
+    name: String,
+    address: String,
+    distance: Number,
+    status: {
+      text: String,
+      class: String
     },
     mainProducts: Array,
     updated: {
       date: String,
       time: String
     }
-  };
+  },
+  mainProducts: Array,
+  updated: {
+    date: String,
+    time: String
+  }
+};
 </script>
