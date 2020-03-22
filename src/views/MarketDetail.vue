@@ -1,20 +1,21 @@
 <template>
   <div class="card">
     <div class="header">
-      <h2>{{ this.$route.params.name }}</h2>
+      <h2>{{ market.name }}</h2>
     </div>
 
     <div class="main">
+
       <div class="zwei-spalten">
         <div class="address">
           <h1 class="text-m font-semibold">Addresse:</h1>
-          {{ this.$route.params.address }}
+          {{ market.address }}
         </div>
         <div>
           <h1 class="text-m font-semibold">Öffnungszeiten:</h1>
           <div class="status">
-            <span v-bind:class="this.$route.params.status.class">{{
-              this.$route.params.status.text
+            <span v-bind:class="market.status.class">{{
+              market.status.text
             }}</span>
           </div>
         </div>
@@ -34,7 +35,14 @@
         <tbody>
           <tr v-for="item in this.$route.params.products" :key="item.name">
             <td class="border px-4 py-2">{{ item.name }}</td>
-            <td class="border px-4 py-2">
+            <td class="border px-4 py-2" v-if="editMode">
+                <div class="editButtons">
+                  <div><div class="h-5 w-5 rounded-full bg-green-500"></div></div>
+                  <div><div class="h-5 w-5 rounded-full bg-yellow-500"></div></div>
+                  <div><div class="h-5 w-5 rounded-full bg-red-500"></div></div>
+                </div>
+            </td>
+            <td class="border px-4 py-2" v-else>
               <div class="verfugbarkeit-item">
                 <span v-if="item.availability === 'high'">vorrätig</span>
               <span v-else-if="item.availability === 'medium'"
@@ -57,13 +65,17 @@
         </tbody>
       </table>
 
-      <!-- {{ this.$route.params.products }} -->
+      <button class="EditButton" v-on:click="toggleEdit">
+        <span v-if="editMode">Bestand senden</span>
+        <span v-else>Bestand aktualisieren</span>
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 
+import Market from "../assets/js/market";
 import API from "../assets/js/api";
 
 export default {
@@ -77,36 +89,113 @@ export default {
   data() {
     return {
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      products: [],
+      market: {
+        name: '',
+        address: '',
+        status: {
+          text: '',
+          class: '',
+        },
+        products: [],
+
+      },
+      editMode: false,
     }
   },
   methods: {
+    toggleEdit: function() {
+      this.editMode = !this.editMode
+      console.log(this.editMode)
+    },
     async loadData() {
 
-      let rawProducts;
+      let rawMarket;
 
       console.log('this.$route.params.id:', this.$route.params.id);
 
       try {
-        rawProducts = this.API.loadMarketStock(this.$route.params.id);
+        rawMarket = (await this.API.loadMarket(this.$route.params.id)).supermarket;
       } catch (err) {
         console.error(err);
       }
 
-      this.products = rawProducts;
+      console.log('rawMarket:', rawMarket);
+
+      let market = new Market(
+        rawMarket.id,
+        rawMarket.name,
+        rawMarket.city,
+        rawMarket.street,
+        rawMarket.lat,
+        rawMarket.lng,
+        rawMarket.distance,
+        rawMarket.open,
+        rawMarket.products,
+        rawMarket.mapsId
+      );
+
+      console.log('market:', market);
+
+      this.market = market;
+      
+    },
+    async loadDistance() {
+
+      let rawMarkets, rawCurrentMarket, currentMarket;
+
+      try {
+        rawMarkets = await this.API.loadMarkets(this.$store.state.userPosition.lat, this.$store.state.userPosition.lng, 5000);
+      } catch (err) {
+        console.error(err);
+      }
+
+      [rawCurrentMarket] = rawMarkets.filter(market => market.id == this.$route.params.id);
+
+      currentMarket = new Market(
+        rawCurrentMarket.id,
+        rawCurrentMarket.name,
+        rawCurrentMarket.city,
+        rawCurrentMarket.street,
+        rawCurrentMarket.lat,
+        rawCurrentMarket.lng,
+        rawCurrentMarket.distance,
+        rawCurrentMarket.open,
+        rawCurrentMarket.products,
+        rawCurrentMarket.mapsId
+      );
+
+      this.market.distance = currentMarket.distance;
       
     }
   },
   async mounted() {
-    this.userPosition.then(pos => {
-      console.log('pos:', pos);
-    })
+    this.$store.commit("getCurrentPosition");
+    // if params are missing, this will cause errors because of missing nested objects
+    this.market = this.$route.params;
     this.loadData();
+    this.loadDistance();
   }
 }
 </script>
 
 <style lang="sass">
+.EditButton 
+  position: relative
+  left: 50%
+  transform: translate(-50%)
+  background: blue
+  padding: 10px
+  border-radius: 10px
+  color: white
+  margin-top: 30px
+
+.editButtons 
+  display: grid
+  grid-template-columns: 1fr 1fr 1fr
+  > div
+    text-align: center
+    margin: 0 10px
+
 .zwei-spalten
   display: grid
   grid-template-columns: 1fr 1fr

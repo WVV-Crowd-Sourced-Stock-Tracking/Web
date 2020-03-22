@@ -35,15 +35,32 @@ export default class API {
     })
   }
 
-  loadMarket(googleId) {
+  loadMarket(dbId) {
     return new Promise((resolve, reject) => {
-    
-      console.log('googleId:', googleId);
-      console.log('resolve:', resolve);
-      console.log('reject:', reject);
+
+      fetch(this.baseUrl + `/market/details`, {
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: dbId,
+        })
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then(result => {
+        return resolve(result);
+      })
+      .catch(err => {
+        console.error(err);
+        return reject(`An error occured during the request!`);
+      })
     
     })
-  }
+  }  
 
   loadMarketStock(googleId) {
     return new Promise((resolve, reject) => {

@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import MarketDetail from "../views/MarketDetail.vue";
 import Filter from "../views/Filter.vue";
+import FourOhFour from "../views/FourOhFour.vue";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,12 @@ const routes = [
     component: Filter,
     props: true
   }
+  // 404, leave this as last route!!!
+  {
+    path: '/*',
+    component: FourOhFour,
+    props: true
+  },
 ];
 
 const router = new VueRouter({

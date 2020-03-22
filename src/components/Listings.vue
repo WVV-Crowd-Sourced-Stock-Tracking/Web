@@ -24,12 +24,6 @@ export default {
   components: {
     MarketInListing
   },
-  props: {
-    userPosition: {
-      lat: Number,
-      lng: Number
-    }
-  },
   data: () => {
     return {
       markets: [],
@@ -41,10 +35,7 @@ export default {
       let rawMarkets;
       let markets = [];
 
-      console.log('this.userPosition.lat:', this.userPosition.lat);
-      console.log('this.userPosition.lng:', this.userPosition.lng);
-
-      rawMarkets = await this.API.loadMarkets(this.userPosition.lat, this.userPosition.lng, 2000);
+      rawMarkets = await this.API.loadMarkets(this.$store.state.userPosition.lat, this.$store.state.userPosition.lng, 2000);
       console.log('rawMarkets:', rawMarkets);
       // rawMarkets = (
       //   await this.axios.get(`http://${window.location.hostname}:3000/markets`)
@@ -76,6 +67,8 @@ export default {
     addItem() {}
   },
   mounted() {
+    console.log('test:');
+    this.$store.commit("getCurrentPosition");
     this.loadAll();
   }
 };

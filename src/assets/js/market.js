@@ -15,7 +15,8 @@ export default class Market {
   }
 
   computeAddress() {
-    return `${this.street}, ${this.city} `;
+    return this.street;
+    // return `${this.street}, ${this.city} `;
   }
 
   computeStatus(isOpen) {
