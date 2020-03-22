@@ -14,9 +14,9 @@ export default {
   components: {
     Header
   },
-  data() {
+  async data() {
     return {
-      userPosition: this.getCurrentPosition(),
+      userPosition: await this.getCurrentPosition(),
     }
   },
   methods: {

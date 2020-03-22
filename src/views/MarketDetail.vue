@@ -64,6 +64,7 @@
 
 <script>
 
+import Market from "../assets/js/market";
 import API from "../assets/js/api";
 
 export default {
@@ -83,15 +84,28 @@ export default {
   methods: {
     async loadData() {
 
-      let rawProducts;
+      let rawMarket;
 
       console.log('this.$route.params.id:', this.$route.params.id);
 
       try {
-        rawProducts = this.API.loadMarketStock(this.$route.params.id);
+        rawMarket = this.API.loadMarket(this.$route.params.id);
       } catch (err) {
         console.error(err);
       }
+
+      let market = new Market(
+        rawMarket.id,
+        rawMarket.name,
+        rawMarket.city,
+        rawMarket.street,
+        rawMarket.lat,
+        rawMarket.lng,
+        0,
+        true,
+        rawMarket.products,
+        rawMarket.mapsId
+      );
 
       this.products = rawProducts;
       
