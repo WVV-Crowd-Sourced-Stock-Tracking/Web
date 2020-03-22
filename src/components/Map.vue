@@ -49,18 +49,35 @@ export default {
   },
   mounted() {
     console.log(this);
+    this.centerOnUser();
     this.getAllMarkers();
   },
   computed: {
     google: gmapApi
   },
   methods: {
+    centerOnUser() {
+
+      if (!navigator.geolocation) {
+        console.error('Geolocation is not supported by your browser');
+      } else {
+        console.log('Locating…');
+        navigator.geolocation.getCurrentPosition(position => {
+
+          this.center.lat = position.coords.latitude;
+          this.center.lng = position.coords.longitude;
+          
+        }, err => {
+          console.error(`Couldn't acces user's position:`, err);
+        });
+      }
+
+    },
     getAllMarkers() {
       this.axios.get("http://localhost:3000/markets").then(response => {
         // console.log(response.data);
         response.data.forEach(market => {
           // console.log(market);
-          console.log('market.lat:', market.lat);
           this.markers.push({
             position: {
               lat: parseFloat(market.lat),

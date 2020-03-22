@@ -38,7 +38,6 @@ export default {
       ).data;
 
       rawMarkets.forEach(rawMarket => {
-        console.log('rawMarket:', rawMarket);
         markets.push(new Market(
           rawMarket.id,
           rawMarket.name,

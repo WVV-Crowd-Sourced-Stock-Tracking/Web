@@ -10,7 +10,6 @@ export default class Market {
     this.distance = distance;
     this.status = this.computeStatus(isOpen);
     this.products = this.computeAvailability(products);
-    console.log('this.products:', this.products);
     this.address = this.computeAddress();
   }
 
@@ -37,7 +36,6 @@ export default class Market {
   computeAvailability(products) {
 
     products.map(product => {
-      console.log('product:', product);
       
       if (product.availability >= 80) {
         product.availability = 'high';
@@ -49,8 +47,6 @@ export default class Market {
       
     });
 
-    console.log('products:', products);
-    
     return products;
     
   }
