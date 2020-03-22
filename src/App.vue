@@ -7,7 +7,7 @@
       <p>in Ihrer Umgebung</p>
     </div>
 
-    <MapContext></MapContext>
+    <Map></Map>
 
     <API></API>
 
@@ -19,18 +19,18 @@
 import Header from "./components/Header.vue";
 import Listings from "./components/Listings.vue";
 // import ViewSwitcher from "./components/ViewSwitcher.vue";
-import MapContext from "./components/MapContext.vue";
-import API from "./components/API.vue";
-// import AppFilter from "./components/Filter.vue";
+import Map from "./components/Map.vue";
+// import API from "./components/API.vue";
 
 export default {
   name: "App",
   components: {
     Header,
-    MapContext,
     Listings,
+    // API,
     // ViewSwitcher,
-    API
+    Map
+    // API,
     // AppFilter
   },
   data() {
