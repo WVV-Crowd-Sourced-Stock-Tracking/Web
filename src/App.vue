@@ -60,6 +60,10 @@ body {
 .traffic-light.low {
   background-color: #e02020;
 }
+
+/*
+show the app in production
+*/
 .vue-map {
   overflow: visible !important;
   height: 100% !important;
