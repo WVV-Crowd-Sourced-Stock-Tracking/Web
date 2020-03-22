@@ -1,18 +1,23 @@
-class API {
+<template>
+  <div></div>
+</template>
 
-  constructor(baseUrl) {
-
-    this.baseUrl = baseUrl;
-    
-  }
-
-  loadMarkets(gpsLength, gpsWidth, radius) {
-    return new Promise(async (resolve, reject) => {
-
+<script>
+export default {
+  name: 'API',
+  data() {
+    return {
+      baseUrl: this._baseUrl
+    }
+  },
+  props: {
+    _baseUrl: String
+  },
+  methods: {
+    async loadMarkets(gpsLength, gpsWidth, radius) {
       let response, result;
-    
+
       try {
-        
         response = await fetch(this.baseUrl + `/market`, {
           method: 'POST',
           body: JSON.stringify({
@@ -21,22 +26,20 @@ class API {
             radius: radius,
           })
         })
-
       } catch (err) {
         console.error(err);
-        return reject(`An error occured during the request!`);
+        return `An error occured during the request!`;
       }
-      
+
       try {
         result = await response.json();
       } catch (err) {
         console.error(`The server's response was invalid: ${err} `);
-        return reject(`The server's response was invalid!`);
+        return `The server's response was invalid!`;
       }
 
-      return resolve(result);
-    
-    })
+      return result;
+    }
   }
-  
 }
+</script>
