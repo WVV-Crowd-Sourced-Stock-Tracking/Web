@@ -1,49 +1,60 @@
 <template>
-  <div></div>
+  <div class="w-full rounded overflow-hidden shadow-lg">
+    <div class="px-6 py-4">
+      <div class="font-bold text-xl mb-2">Karte</div>
+      <!-- <div id="map" class="text-gray-700 text-base"></div> -->
+      <GmapMap
+        :center="this.center"
+        :zoom="15"
+        map-type-id="roadmap"
+        style="width: 100%; height: 300px"
+      >
+        <GmapMarker
+          :key="index"
+          v-for="(m, index) in markers"
+          :position="m.position"
+          :clickable="true"
+          :draggable="true"
+          @click="center = m.position"
+        />
+      </GmapMap>
+    </div>
+  </div>
 </template>
 
 <script>
-import { google } from 'vue2-google-maps'
-
 export default {
-  name: 'MapContext',
+  name: "MapContext",
   data() {
     return {
-      map: this._map,
+      // Berlin as Center :D
+      center: {
+        lat: 52.520008,
+        lng: 13.404954
+      },
       markers: []
-    }
-  },
-  props: {
-    _map: Object
+    };
   },
   mounted() {
-    this.addMarker(this.map.center.lat(), this.map.center.lng());
+    // this.addMarker(this.map.center.lat(), this.map.center.lng());
+    this.getAllMarkers();
   },
   methods: {
-    addMarker(latitude, longitude, icon = null, name = false) {
-      console.log('latitude:', latitude);
-      console.log('longitude:', longitude);
-
-      let markerOptions = {
-        position: {lat: latitude, lng: longitude},
-        map: this.map,
-      };
-
-      if (icon != null) {
-        console.log('icon:', icon);
-        markerOptions.icon = icon;
-      }
-
-      let marker = new google.maps.Marker(markerOptions);
-
-      // set the marker to the array index it will be at, or to the given id
-      marker.name = name === false ? this.markers.length : name;
-
-      this.markers.push(marker);
-    },
     getAllMarkers() {
-      return this.markers;
+      this.axios.get("http://localhost:3000/markets").then(response => {
+        // console.log(response.data);
+        response.data.forEach(market => {
+          // console.log(market);
+          this.markers.push({
+            position: {
+              lat: market.lat,
+              lng: market.lng
+            }
+          });
+        });
+      });
+      // return this.markers;
     }
   }
-}
+};
 </script>

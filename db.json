@@ -1,0 +1,34 @@
+{
+  "markets": [
+    {
+      "id": 1,
+      "name": "Rewe",
+      "city": "Berlin",
+      "zip": 12345,
+      "street": "Bla",
+      "lat": 52.5204579,
+      "lng": 13.3885896,
+      "products": ["Eier", "Milch"]
+    },
+    {
+      "id": 2,
+      "name": "Rewe",
+      "city": "Berlin",
+      "zip": 12345,
+      "street": "Bla",
+      "lat": 52.5221422,
+      "lng": 13.4034652,
+      "products": ["Club Mate", "Eis"]
+    },
+    {
+      "id": 3,
+      "name": "Edeka",
+      "city": "Berlin",
+      "zip": 12345,
+      "street": "Bla",
+      "lat": 52.5199716,
+      "lng": 13.4147251,
+      "products": ["Klopapier", "Saft"]
+    }
+  ]
+}
