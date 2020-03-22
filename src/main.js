@@ -4,6 +4,7 @@ import "@/assets/css/output.css";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import * as VueGoogleMaps from "vue2-google-maps";
+import router from './router'
 
 Vue.use(VueAxios, axios);
 
@@ -24,5 +25,6 @@ Vue.use(VueGoogleMaps, {
 });
 
 new Vue({
+  router,
   render: h => h(App)
 }).$mount("#app");

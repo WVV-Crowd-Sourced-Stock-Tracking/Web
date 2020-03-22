@@ -1,19 +1,28 @@
 <template>
-  <div id="app" class="container h-full mx-auto px-4 bg-gray-100">
-    <Header />
-    <router-view/>
+  <div id="home" class="container h-full mx-auto px-4 bg-gray-100">
+
+    <div class="ml-4 my-2">
+      <h1 class="text-2xl font-semibold">Shops</h1>
+      <p>in Ihrer Umgebung</p>
+    </div>
+
+    <Map></Map>
+
+    <Listings></Listings>
+
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Header from "@/components/Header.vue";
-
+import Listings from "@/components/Listings.vue";
+import Map from "@/components/Map.vue";
 
 export default {
-  name: 'App',
+  name: 'Home',
   components: {
-    Header
+    Listings,
+    Map
   },
   data() {
     return {
@@ -24,7 +33,6 @@ export default {
 </script>
 
 <style>
-
 :root {
   --header-height: 2.5rem;
 }
@@ -41,15 +49,9 @@ body {
   width: 100%;
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #E5E5E5;
 }
 #app {
   background-color: #E5E5E5;
-  height: auto;
-  padding-bottom: 50px;
-}
-#home {
-  padding-bottom: 25px;
 }
 .traffic-light.high {
   background-color: #6dd400;
