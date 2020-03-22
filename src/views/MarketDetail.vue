@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="header">
-      <h2>{{ this.$route.params.name }}</h2>
+      <h2>{{ this.$route.params.name }} {{$store.state.userPosition}}</h2>
     </div>
 
     <div class="main">
@@ -112,9 +112,10 @@ export default {
     }
   },
   async mounted() {
-    this.userPosition.then(pos => {
-      console.log('pos:', pos);
-    })
+    // this.userPosition.then(pos => {
+    //   console.log('pos:', pos);
+    // })  
+    this.$store.commit("getCurrentPosition");
     this.loadData();
   }
 }
