@@ -4,7 +4,9 @@
   >
     <div class="w-1/2 flex items-center flex-shrink-0 text-black">
       <!-- <span class="font-semibold text-xl tracking-tight">Logo</span> -->
-      <img class="w-12 ml-2 mt-1" src="media/logo-whats_left.png" alt srcset />
+      <a href="/">
+        <img class="w-12 ml-2 mt-1" src="media/logo-whats_left.png" alt srcset />
+      </a>
     </div>
     <div class="w-1/2 flex flex-row-reverse">
       <!-- Shopping Bag -->
