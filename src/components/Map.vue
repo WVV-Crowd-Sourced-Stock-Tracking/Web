@@ -56,18 +56,19 @@ export default {
   },
   methods: {
     getAllMarkers() {
-      this.axios
-        .get(`http://${window.location.hostname}:3000/markets`)
-        .then(response => {
-          response.data.forEach(market => {
-            this.markers.push({
-              position: {
-                lat: market.lat,
-                lng: market.lng
-              }
-            });
+      this.axios.get("http://localhost:3000/markets").then(response => {
+        // console.log(response.data);
+        response.data.forEach(market => {
+          // console.log(market);
+          console.log('market.lat:', market.lat);
+          this.markers.push({
+            position: {
+              lat: parseFloat(market.lat),
+              lng: parseFloat(market.lng)
+            }
           });
         });
+      })
     }
   }
 };

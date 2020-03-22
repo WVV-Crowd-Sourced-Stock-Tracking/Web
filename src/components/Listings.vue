@@ -1,14 +1,12 @@
 <template>
   <div class="listing">
-    <MarketInListing
-      :key="index"
-      v-for="(market, index) in markets"
-      :name="market.name"
-      :address="market.address"
-      :distance="market.distance"
-      :status="market.status"
-      :mainProducts="market.products"
-      :updated="market.updated"
+
+    <MarketInListing :key="index" v-for="(market, index) in markets"
+      :name= "market.name"
+      :address= "market.address"
+      :distance= "market.distance"
+      :status = "market.status"
+      :mainProducts= "market.products"
     ></MarketInListing>
   </div>
 </template>
@@ -24,23 +22,6 @@ export default {
   components: {
     MarketInListing
   },
-  // props: {
-  //   markets: [{
-  //     name: String,
-  //     address: String,
-  //     distance: String,
-  //     status: {
-  //       text: String,
-  //       action: String,
-  //       time: String,
-  //     },
-  //     mainCategories: Array,
-  //     modified: {
-  //       date: String,
-  //       time: String,
-  //     },
-  //   }]
-  // },
   data: () => {
     return {
       markets: []
@@ -57,20 +38,18 @@ export default {
       ).data;
 
       rawMarkets.forEach(rawMarket => {
-        markets.push(
-          new Market(
-            rawMarket.id,
-            rawMarket.name,
-            rawMarket.city,
-            rawMarket.street,
-            rawMarket.gps_length,
-            rawMarket.gps_width,
-            rawMarket.distance,
-            rawMarket.status,
-            rawMarket.products,
-            rawMarket.updated
-          )
-        );
+        console.log('rawMarket:', rawMarket);
+        markets.push(new Market(
+          rawMarket.id,
+          rawMarket.name,
+          rawMarket.city,
+          rawMarket.street,
+          rawMarket.lat,
+          rawMarket.lng,
+          rawMarket.distance,
+          rawMarket.open,
+          rawMarket.products
+        ));
       });
 
       if (rawMarkets.length != markets.length) {

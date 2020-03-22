@@ -7,14 +7,14 @@
       "city": "Berlin",
       "zip": 12345,
       "street": "Bla",
-      "lat": "52.5221222",
+      "lat": "52.5221232",
       "lng": "13.4034752",
       "distance": 200,
       "open": false,
       "products": [{
           "id": 3,
           "name": "Eier",
-          "availability": 30
+          "availability": 25
         },
         {
           "id": 2,
@@ -36,12 +36,12 @@
       "products": [{
           "id": 1,
           "name": "Club Mate",
-          "availability": 30
+          "availability": 50
         },
         {
           "id": 2,
           "name": "Eis",
-          "availability": 60
+          "availability": 90
         }]
     }
   ]

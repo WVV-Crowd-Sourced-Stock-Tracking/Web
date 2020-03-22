@@ -1,48 +1,58 @@
 export default class Market {
-  constructor(
-    id,
-    name,
-    city,
-    street,
-    lat,
-    lng,
-    distance,
-    status,
-    products,
-    updated
-  ) {
+
+  constructor (id, name, city, street, lat, lng, distance, isOpen, products) {
     this.id = id;
     this.name = name;
     this.city = city;
     this.street = street;
-    this.lat = lat;
-    this.lng = lng;
+    this.lat = parseFloat(lat);
+    this.lng = parseFloat(lng);
     this.distance = distance;
-    this.status = this.computeStatus(status);
-    this.products = products;
+    this.status = this.computeStatus(isOpen);
+    this.products = this.computeAvailability(products);
+    console.log('this.products:', this.products);
     this.address = this.computeAddress();
-    this.updated = updated;
   }
 
   computeAddress() {
     return `${this.street}, ${this.city} `;
   }
 
-  computeStatus(rawStatus) {
+  computeStatus(isOpen) {
+
     let status = {};
 
-    if (rawStatus.open) {
+    if (isOpen) {
+
       status.text = `Geöffnet`;
-      status.action = `Schließt`;
-      status.time = rawStatus.closes;
       status.class = `opened`;
     } else {
       status.text = `Geschlossen`;
-      status.action = `Öffnet`;
-      status.time = rawStatus.opens;
       status.class = `closed`;
     }
 
     return status;
   }
+
+  computeAvailability(products) {
+
+    products.map(product => {
+      console.log('product:', product);
+      
+      if (product.availability >= 80) {
+        product.availability = 'high';
+      } else if (product.availability < 80 && product.availability >= 30) {
+        product.availability = 'medium';
+      } else {
+        product.availability = 'low';
+      }
+      
+    });
+
+    console.log('products:', products);
+    
+    return products;
+    
+  }
+  
 }
