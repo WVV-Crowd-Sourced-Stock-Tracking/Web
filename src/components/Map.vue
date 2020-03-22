@@ -6,8 +6,17 @@
       <GmapMap
         :center="this.center"
         :zoom="15"
+        :options="{
+          zoomControl: false,
+          mapTypeControl: false,
+          scaleControl: false,
+          streetViewControl: false,
+          rotateControl: false,
+          fullscreenControl: false,
+          disableDefaultUi: false
+        }"
         map-type-id="roadmap"
-        style="width: 100%; height: 300px"
+        class="w-full h-48"
       >
         <GmapMarker
           :key="index"
@@ -29,8 +38,8 @@ export default {
     return {
       // Berlin as Center :D
       center: {
-        lat: 52.520008,
-        lng: 13.404954
+        lat: 52.5204579,
+        lng: 13.3885896
       },
       markers: []
     };
@@ -53,7 +62,6 @@ export default {
           });
         });
       });
-      // return this.markers;
     }
   }
 };

@@ -4,7 +4,7 @@
   >
     <div class="w-1/2 flex items-center flex-shrink-0 text-black">
       <!-- <span class="font-semibold text-xl tracking-tight">Logo</span> -->
-      <img class="w-20" src="media/logo-whats_left.png" alt srcset />
+      <img class="w-16" src="media/logo-whats_left.png" alt srcset />
     </div>
     <div class="w-1/2 flex flex-row-reverse">
       <!-- Shopping Bag -->
