@@ -1,6 +1,18 @@
 <template>
   <div id="app" class="container h-full mx-auto px-4">
     
+    <Header />
+    
+    <div class="intro m-4">
+      <h1 class="text-xl font-semibold">Shops</h1>
+      <p>in Ihrer Umgebung</p>
+    </div>
+    
+    <Map></Map>
+
+    
+    <Listings></Listings>
+    
     <MarketInListing
 
       :name= "'REWE'"
@@ -16,87 +28,36 @@
 </template>
 
 <script>
-import { google } from 'vue2-google-maps'
-// import ViewSwitcher from './components/ViewSwitcher.vue'
-// import MapContext from './components/MapContext.vue'
-// import API from './components/API.vue'
-// import Listing from './components/Listing.vue'
-// import AppFilter from './components/Filter.vue'
+
+import Header from "./components/Header.vue";
+import Listings from "./components/Listings.vue";
+// import ViewSwitcher from "./components/ViewSwitcher.vue";
+import Map from "./components/Map.vue";
 import MarketInListing from './components/MarketInListing.vue'
+// import API from "./components/API.vue";
 
 export default {
   name: "App",
   components: {
-    // ViewSwitcher,
-    // MapContext,
+    Header,
+    Listings,
+    MarketInListing,
     // API,
-    // Listing,
-    // AppFilter,
-    MarketInListing
+    // ViewSwitcher,
+    Map
+    // API,
+    // AppFilter
   },
   data() {
     return {
-      show: 'list'
-    }
-  },
-  props: {
-    map: Object
-  },
-  async mounted() {
-    document.documentElement.style.setProperty(
-      "--vh",
-      `${window.innerHeight * 0.01}px`
-    );
-
-    try {
-      this.map = await this.initMap();
-    } catch (err) {
-      console.error(err);
-    }
-    console.log("map:", this.map);
-  },
-  methods: {
-    initMap() {
-      return new Promise((resolve, reject) => {
-        if (!navigator.geolocation) {
-          console.log("Geolocation is not supported by your browser");
-        } else {
-          console.log("Locating…");
-          navigator.geolocation.getCurrentPosition(
-            position => {
-              console.log("position:", position);
-
-              return resolve(
-                new google.maps.Map(this.$el.querySelector("#map-embedded"), {
-                  center: {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                  },
-                  zoom: 15
-                })
-              );
-            },
-            err => {
-              reject(err);
-            }
-          );
-        }
-      });
-    }
+      show: "list"
+    };
   }
 };
 </script>
-
 <style>
 
   :root {
-    --nav-bar-height: 7%;
-    --category-list-width: 50%;
-    --category-item-list-width: calc(var(--category-list-width));
-    --market-height: calc(var(--vh, 1vh) * (100/5));
-    --filter-height: calc(var(--vh, 1vh) * 7);
-    --filter-list-height: 60%;
-
     --header-height: 2.5rem;
   }
 

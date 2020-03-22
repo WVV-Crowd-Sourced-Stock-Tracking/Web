@@ -3,11 +3,11 @@
 </template>
 
 <script>
-import API from './API.vue'
-import Market from './Market.vue'
+import API from "./API.vue";
+import Market from "./Market.vue";
 
 export default {
-  name: 'Listing',
+  name: "Listing",
   methods: {
     async loadAll() {
       let rawMarkets, markets;
@@ -15,7 +15,16 @@ export default {
       rawMarkets = await API.loadMarkets();
 
       rawMarkets.forEach(rawMarket => {
-        markets.push(new Market(rawMarket.id, rawMarket.name, rawMarket.city, rawMarkets.street, rawMarket.gps_length, rawMarket.gps_width));
+        markets.push(
+          new Market(
+            rawMarket.id,
+            rawMarket.name,
+            rawMarket.city,
+            rawMarkets.street,
+            rawMarket.gps_length,
+            rawMarket.gps_width
+          )
+        );
       });
 
       if (rawMarkets.length != markets.length) {
@@ -23,8 +32,7 @@ export default {
       }
     },
 
-    addItem() {
-    }
+    addItem() {}
   }
-}
+};
 </script>
