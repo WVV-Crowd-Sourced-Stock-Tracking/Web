@@ -18,12 +18,6 @@ Vue.use(VueGoogleMaps, {
 
 Vue.config.productionTip = false;
 
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: "AIzaSyCIHJCRgVNdpdHQigIEebTzT4RDiTwt6jk"
-  }
-});
-
 new Vue({
   router,
   render: h => h(App)
