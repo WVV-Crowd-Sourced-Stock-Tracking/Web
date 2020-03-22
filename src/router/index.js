@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import MarketDetail from "../views/MarketDetail.vue";
+import Filter from "../views/Filter.vue";
 
 Vue.use(VueRouter);
 
@@ -14,11 +15,14 @@ const routes = [
   {
     path: "/market/:id",
     name: "MarketDetail",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: MarketDetail,
-    props: true,
+    props: true
+  },
+  {
+    path: "/filter",
+    name: "ProductFilter",
+    component: Filter,
+    props: true
   }
 ];
 
