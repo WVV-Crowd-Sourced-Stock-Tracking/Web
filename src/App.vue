@@ -15,31 +15,32 @@
 </template>
 
 <script>
-import Header from "./components/Header.vue";
-import Listings from "./components/Listings.vue";
-// import ViewSwitcher from "./components/ViewSwitcher.vue";
-import Map from "./components/Map.vue";
-// import MarketInListing from "./components/MarketInListing.vue";
-// import API from "./components/API.vue";
+  import Header from "./components/Header.vue";
+  import Listings from "./components/Listings.vue";
+  // import ViewSwitcher from "./components/ViewSwitcher.vue";
+  import Map from "./components/Map.vue";
+  // import MarketInListing from "./components/MarketInListing.vue";
+  // import API from "./components/API.vue";
 
-export default {
-  name: "App",
-  components: {
-    Header,
-    Listings,
-    // MarketInListing,
-    // API,
-    // ViewSwitcher,
-    Map
-    // AppFilter
-  },
-  data() {
-    return {
-      show: "list"
-    };
-  }
-};
+  export default {
+    name: "App",
+    components: {
+      Header,
+      Listings,
+      // MarketInListing,
+      // API,
+      // ViewSwitcher,
+      Map
+      // AppFilter
+    },
+    data() {
+      return {
+        show: "list"
+      };
+    },
+  };
 </script>
+
 <style>
 :root {
   --header-height: 2.5rem;
