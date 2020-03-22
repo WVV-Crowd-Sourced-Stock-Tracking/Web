@@ -6,15 +6,7 @@
       <GmapMap
         :center="this.center"
         :zoom="15"
-        :options="{
-          zoomControl: false,
-          mapTypeControl: false,
-          scaleControl: false,
-          streetViewControl: false,
-          rotateControl: false,
-          fullscreenControl: false,
-          disableDefaultUi: false
-        }"
+        :options="this.mapStyle"
         map-type-id="roadmap"
         class="w-full h-48"
       >
@@ -33,9 +25,18 @@
 
 <script>
 export default {
-  name: "MapContext",
   data() {
     return {
+      mapStyle: {
+        zoomControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false,
+        disableDefaultUi: false,
+        supressMarkers: true
+      },
       // Berlin as Center :D
       center: {
         lat: 52.5204579,
