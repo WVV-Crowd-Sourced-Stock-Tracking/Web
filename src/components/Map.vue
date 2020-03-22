@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full rounded overflow-hidden shadow-lg">
+  <div class="w-full rounded shadow-lg">
     <div class="bg-white">
       <div class="font-bold text-xl px-4 py-2">Karte</div>
       <!-- <div id="map" class="text-gray-700 text-base"></div> -->
@@ -23,6 +23,13 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+.vue-map {
+  height: 100%;
+  width: 100%;
+}
+</style>
 
 <script>
 import { gmapApi } from "vue2-google-maps";
