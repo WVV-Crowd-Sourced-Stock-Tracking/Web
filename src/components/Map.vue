@@ -1,39 +1,18 @@
 <template>
   <div class="w-full rounded overflow-hidden shadow-lg">
+    
     <div class="bg-white">
       <div class="font-bold text-xl px-4 py-2">Karte</div>
-      <!-- <div id="map" class="text-gray-700 text-base"></div> -->
-      <GmapMap
-        :center="this.center"
-        :zoom="this.zoom"
-        :options="this.mapStyle"
-        :styles="google && new google.maps.LatLng(1.38, 103.8)"
-        map-type-id="roadmap"
-        class="w-full h-40"
-      >
+      
+      <div id="map" class="w-full h-40"></div>
 
-        <!-- User Position -->
-        <GmapMarker
-          :position="this.center"
-          :clickable="true"
-          :draggable="false"
-        />
-
-        <!-- Shop Markers -->
-        <GmapMarker
-          :key="index"
-          v-for="(m, index) in markers"
-          :position="m.position"
-          :clickable="true"
-          :draggable="false"
-        />
-      </GmapMap>
     </div>
+
   </div>
 </template>
 
 <script>
-import { gmapApi } from "vue2-google-maps";
+// import { gmapApi } from "vue2-google-maps";
 import Market from "../assets/js/market";
 import API from "../assets/js/api";
 
@@ -41,34 +20,167 @@ export default {
   data() {
     return {
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      mapStyle: {
-        zoomControl: false,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        rotateControl: false,
-        fullscreenControl: false,
-        disableDefaultUi: false
-      },
+      map: {},
+      homeMarker: {},
+      mapMarkers: [],
       // Berlin as Center :D
       center: {
         lat: 52.5204579,
         lng: 13.3885896
       },
       zoom: 4,
-      markers: []
     };
   },
+  watch: {
+    zoom: {
+      handler: function(newZoomLevel) {
+
+        switch (newZoomLevel) {
+          case 11:
+            this.radius = 14000;
+            break;
+          case 12:
+            this.radius = 7000;
+            break;
+          case 13:
+            this.radius = 3500;
+            break;
+          case 14:
+            this.radius = 1400;
+            break;
+          case 15:
+            this.radius = 700;
+            break;
+          case 16:
+            this.radius = 350;
+            break;
+          case 17:
+            this.radius = 140;
+            break;
+          case 18:
+            this.radius = 70;
+            break;
+          case 19:
+            this.radius = 35;
+            break;
+          case 20:
+            this.radius = 14;
+            break;
+        
+          default:
+            this.radius = 15000;
+            break;
+        }
+
+        console.log('this.radius:', this.radius);
+        
+      }
+    },
+    center: {
+      handler: function(newCenter) {
+
+        console.log('newCenter:', newCenter);
+        
+        this.loadAll().then(markets => {
+
+          console.log('markegasdgadsts:', markets);
+
+          this.mapMarkers.forEach(marker => {
+            marker.setMap(null);
+          })
+
+          this.mapMarkers = [];
+
+          markets.forEach(market => {
+            this.mapMarkers.push(
+              new window.google.maps.Marker({
+                position: {lat: market.lat, lng: market.lng},
+                map: this.map,
+              })
+            )
+          });
+          
+        })
+        
+      }
+    }
+  },
   mounted() {
-    this.centerOnUser().then(() => {
-      this.loadAll();
-    })
-    // this.getAllMarkers();
+
+    let mapsApiScript = document.createElement('script');
+    mapsApiScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHJCRgVNdpdHQigIEebTzT4RDiTwt6jk');
+    document.body.appendChild(mapsApiScript);
+    mapsApiScript.onload = this.initMap;
+
   },
-  computed: {
-    google: gmapApi
-  },
+  // computed: {
+  //   google: gmapApi
+  // },
   methods: {
+    initMap() {
+
+      this.map = new window.google.maps.Map(document.getElementById('map'), {
+          center: this.center,
+          zoom: this.zoom,
+          gestureHandling: 'greedy',
+          // zoomControl: false, == default (only show in fullscreen)
+          // mapTypeControl: false, == default (only show in fullscreen)
+          scaleControl: true,
+          streetViewControl: false,
+          rotateControl: false,
+          fullscreenControl: true
+        });
+
+      this.homeMarker = new window.google.maps.Marker({
+        position: this.center,
+        map: this.map,
+        title: 'Dein Standort',
+      });
+
+      this.map.addListener('click', () => {
+        console.log('tesgdsagjdlskjhgdsahgdjsk'); 
+      })
+
+      this.map.addListener('zoom_changed', () => {
+        this.zoom = this.map.getZoom();
+      })
+
+      // reload markets in the vicinity when the user drags the map
+      this.map.addListener('dragend', () => {
+        this.center = {lat: this.map.center.lat(), lng: this.map.center.lng()};
+      })
+
+      this.centerOnUser().then(() => {
+
+        this.homeMarker.setMap(null);
+
+        this.homeMarker = new window.google.maps.Marker({
+          position: this.center,
+          map: this.map,
+          title: 'Dein Standort',
+        })
+
+        this.map.panTo(this.center);
+        this.zoom = 14;
+        this.map.setZoom(this.zoom);
+
+        // initial loading of markers for user position
+        this.loadAll().then(markets => {
+
+          markets.forEach(market => {
+            this.mapMarkers.push(
+              new window.google.maps.Marker({
+                position: {lat: market.lat, lng: market.lng},
+                map: this.map,
+              })
+            )
+          });
+          
+        })
+        
+      })
+      
+    },
     centerOnUser() {
       return new Promise((resolve, reject) => {
       
@@ -80,9 +192,6 @@ export default {
 
             this.center.lat = position.coords.latitude;
             this.center.lng = position.coords.longitude;
-
-            console.log('this.center.lat:', this.center.lat);
-            console.log('this.center.lng:', this.center.lng);
 
             this.zoom = 15;
 
@@ -102,6 +211,7 @@ export default {
 
       console.log('this.center:', this.center);
 
+      console.log('1000 * 10/this.zoom:', 1000 * 10/this.zoom);
       rawMarkets = await this.API.loadMarkets(this.center.lat, this.center.lng, 2000);
       console.log('rawMarkets:', rawMarkets);
       // rawMarkets = (
@@ -128,15 +238,8 @@ export default {
         throw new Error(`Conversion from raw to parsed markets failed!`);
       }
 
-      markets.forEach(market => {
-        this.markers.push({
-          position: {
-            lat: market.lat,
-            lng: market.lng
-          }
-        });
-      });
-      
+      return markets;
+
     },
     getAllMarkers() {
       //TODO get from api
