@@ -4,6 +4,7 @@
       :key="index"
       v-for="(market, index) in markets"
       :id="market.id"
+      :mapsId="market.mapsId"
       :name="market.name"
       :address="market.address"
       :distance="market.distance"
@@ -52,7 +53,8 @@ export default {
             rawMarket.lng,
             rawMarket.distance,
             rawMarket.open,
-            rawMarket.products
+            rawMarket.products,
+            rawMarket.mapsId
           )
         );
       });
@@ -60,6 +62,8 @@ export default {
       if (rawMarkets.length != markets.length) {
         throw new Error(`Conversion from raw to parsed markets failed!`);
       }
+
+      console.log('markets:', markets);
 
       this.markets = markets;
     },

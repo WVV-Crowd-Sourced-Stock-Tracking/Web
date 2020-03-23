@@ -4,6 +4,7 @@
       name: 'MarketDetail',
       params: {
         id: id,
+        mapsId: mapsId,
         name: name,
         address: address,
         status: status,
@@ -13,7 +14,7 @@
   >
     <div class="card">
       <div class="header">
-        
+
         <h2>{{ name }}</h2>
         <img
           src="../../public/media/icons/chevron-right.svg"
@@ -61,6 +62,7 @@ export default {
   name: "MarketInListing",
   props: {
     id: Number,
+    mapsId: String,
     name: String,
     address: String,
     distance: Number,
@@ -69,10 +71,6 @@ export default {
       class: String
     },
     mainProducts: Array,
-    updated: {
-      date: String,
-      time: String
-    }
   },
 };
 </script>
