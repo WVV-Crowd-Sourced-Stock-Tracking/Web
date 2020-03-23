@@ -1,11 +1,21 @@
 <template>
   <div>
+
+    <vue-headful
+      title="Seite nicht gefunden!"
+      description="What's Left? Crowed Sourced Stock Tracking!"
+    />
+
+    <div class="w-full rounded mt-4 p-4 bg-white">
+
+      <h1 class="text-center text-4xl">Diese Seite existiert leider nicht!</h1>
+
+      <img src="https://http.cat/404" alt="404" class="w-1/2 rounded m-auto mt-10">
+
+      <a href="/" class="inline-block ml-4 mt-10 p-2 shadow bg-gray-100"><h2 class="text-2xl text-blue-500">zurück zur Startseite</h2></a>
+        
+    </div>
     
-    <h1 class="text-4xl">Diese Seite existier leider nicht!</h1>
-
-    <br>
-
-    <a href="/"><h2 class="text-2xl text-blue-900">Klicke hier, um zur Startseite zu gelangen!</h2></a>
     
   </div>
 </template>
