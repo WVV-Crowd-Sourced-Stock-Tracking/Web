@@ -81,7 +81,7 @@ export default {
     position: relative;
     margin-top: 2%;
     width: 100%;
-    height: 11rem;
+    height: 14rem;
     border-radius: 0.5rem;
     overflow: hidden;
   }
