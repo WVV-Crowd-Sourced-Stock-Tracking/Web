@@ -12,7 +12,15 @@
 
       <img src="https://http.cat/404" alt="404" class="w-1/2 rounded m-auto mt-10">
 
-      <a href="/" class="inline-block ml-4 mt-10 p-2 shadow bg-gray-100"><h2 class="text-2xl text-blue-500">zurück zur Startseite</h2></a>
+      <router-link
+        :to="{
+          name: 'Home',
+        }"
+      >
+        <div class="inline-block ml-4 mt-10 p-2 shadow bg-gray-100">
+          <h2 class="text-2xl text-blue-500">zurück zur Startseite</h2>
+        </div>
+      </router-link>
         
     </div>
     
