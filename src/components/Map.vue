@@ -44,11 +44,11 @@ export default {
       mapStyle: {
         zoomControl: false,
         mapTypeControl: false,
-        scaleControl: false,
+        scaleControl: true,
         streetViewControl: false,
         rotateControl: false,
-        fullscreenControl: false,
-        disableDefaultUi: false
+        fullscreenControl: true,
+        disableDefaultUi: true
       },
       // Berlin as Center :D
       center: {
@@ -58,6 +58,13 @@ export default {
       zoom: 4,
       markers: []
     };
+  },
+  watch: {
+    zoom: {
+      handler: (newZoomLevel) => {
+        console.log('newZoomLevel:', newZoomLevel);
+      }
+    }
   },
   mounted() {
     this.centerOnUser().then(() => {
@@ -80,9 +87,6 @@ export default {
 
             this.center.lat = position.coords.latitude;
             this.center.lng = position.coords.longitude;
-
-            console.log('this.center.lat:', this.center.lat);
-            console.log('this.center.lng:', this.center.lng);
 
             this.zoom = 15;
 
