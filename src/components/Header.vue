@@ -1,16 +1,22 @@
 <template>
   <nav
-    class="flex items-center justify-between flex-wrap bg-white shadow-md p-6"
+    class="flex w-full items-center justify-between flex-wrap bg-white shadow-md p-2 rounded"
   >
     <div class="w-1/2 flex items-center flex-shrink-0 text-black">
       <!-- <span class="font-semibold text-xl tracking-tight">Logo</span> -->
-      <img class="w-20" src="media/logo-whats_left.png" alt srcset />
+      <router-link
+        :to="{
+          name: 'Home',
+        }"
+      >
+        <img class="w-12 ml-2 mt-1 rounded" src="/media/logo-whats_left.png" alt srcset />
+      </router-link>
     </div>
     <div class="w-1/2 flex flex-row-reverse">
       <!-- Shopping Bag -->
       <a
         href="#"
-        class="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-white hover:border-transparent hover:text-blue-400 hover:bg-white mt-4 lg:mt-0"
+        class="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-white hover:border-transparent hover:text-blue-400 hover:bg-white mt-1 lg:mt-0"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +32,7 @@
       <!-- Filter -->
       <a
         href="#"
-        class="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-white hover:border-transparent hover:text-blue-400 hover:bg-white mt-4 lg:mt-0"
+        class="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-white hover:border-transparent hover:text-blue-400 hover:bg-white mt-1 lg:mt-0"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +48,7 @@
       <!-- Settings -->
       <a
         href="#"
-        class="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-white hover:border-transparent hover:text-blue-400 hover:bg-white mt-4 lg:mt-0"
+        class="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-white hover:border-transparent hover:text-blue-400 hover:bg-white mt-1 lg:mt-0"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -59,18 +65,7 @@
 </template>
 
 <script>
-// import Settings from "vue-material-design-icons/SettingsOutline.vue";
-// import Filter from "vue-material-design-icons/UltraHighDefinition.vue";
-// import Filter from "./FilterIcon.vue";
-// import Shopping from "vue-material-design-icons/Shopping.vue";
-
-export default {
-  components: {
-    // Settings,
-    // Filter
-    // Shopping
-  }
-};
+export default {};
 </script>
 
 <style lang="scss" scoped></style>

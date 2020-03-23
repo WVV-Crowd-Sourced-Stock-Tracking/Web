@@ -1,74 +1,81 @@
 <template>
-  <div id="app" class="container h-full mx-auto px-4">
+  <div id="app" class="container h-full mx-auto px-4 bg-100">
     <Header />
-
-    <div class="intro m-4">
-      <h1 class="text-xl font-semibold">Shops</h1>
-      <p>in Ihrer Umgebung</p>
-    </div>
-
-    <Map></Map>
-
-    <Listings></Listings>
-
-    <MarketInListing
-      :name="'REWE'"
-      :address="'Marktplatz 3, Frankfurt a. M.'"
-      :distance="'200 m'"
-      :status="{
-        text: 'Geschlossen',
-        action: 'Öffnet',
-        time: '12 Uhr',
-        class: 'closed'
-      }"
-      :mainCategories="[
-        { name: 'Toilettenpapier', availability: 'high' },
-        { name: 'Seife', availability: 'medium' },
-        { name: 'Milch', availability: 'low' }
-      ]"
-      :modified="{ date: '19.03.', time: '16:45 Uhr' }"
-    ></MarketInListing>
+    <router-view 
+      :userPosition= "this.userPosition"
+    />
   </div>
 </template>
 
 <script>
-import Header from "./components/Header.vue";
-import Listings from "./components/Listings.vue";
-// import ViewSwitcher from "./components/ViewSwitcher.vue";
-import Map from "./components/Map.vue";
-import MarketInListing from "./components/MarketInListing.vue";
-// import API from "./components/API.vue";
-
+import Header from "@/components/Header.vue";
 export default {
   name: "App",
   components: {
-    Header,
-    Listings,
-    MarketInListing,
-    // API,
-    // ViewSwitcher,
-    Map
-    // API,
-    // AppFilter
+    Header
   },
   data() {
     return {
-      show: "list"
-    };
+      userPosition: this.getCurrentPosition(),
+    }
+  },
+  watch: {
+    '$route' (to) {
+      document.title = to.meta.title || 'Your Website'
+    }
+  },
+  methods: {
+    async getCurrentPosition() {
+      
+        if (!navigator.geolocation) {
+          console.error('Geolocation is not supported by your browser');
+        } else {
+          console.log('Locating…');
+          let position;
+
+          try {
+            position = await (async () => {
+              return new Promise((resolve, reject) => {
+              
+                navigator.geolocation.getCurrentPosition(position => {
+
+                console.log('user lat:', position.coords.latitude);
+                console.log('user lng:', position.coords.longitude);
+
+                resolve({lat: position.coords.latitude, lng: position.coords.longitude});
+                
+              }, err => {
+                console.error(`Couldn't acces user's position:`, err);
+                reject({lat: 0, lng: 0});
+              });
+              
+              })
+            })
+          } catch (err) {
+            console.error(err);
+          }
+
+          return position;
+          
+        }
+      
+    }
+  },
+  mounted() {
+    this.$store.commit("getCurrentPosition");
   }
 };
 </script>
+
 <style>
 :root {
   --header-height: 2.5rem;
 }
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 html,
 body {
   font-size: 1em;
@@ -77,17 +84,36 @@ body {
   width: 100%;
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #e5e5e5;
+}
+#app {
+  background-color: #e5e5e5;
+  height: auto;
+  padding-bottom: 50px;
 }
 
+#home {
+  padding-bottom: 25px;
+}
 .traffic-light.high {
   background-color: #6dd400;
 }
-
 .traffic-light.medium {
   background-color: #f7b500;
 }
-
 .traffic-light.low {
   background-color: #e02020;
+}
+
+/*
+show the app in production
+*/
+.vue-map {
+  overflow: visible !important;
+  height: 100% !important;
+  width: 100% !important;
+}
+.vue-map-container {
+  overflow: hidden;
 }
 </style>

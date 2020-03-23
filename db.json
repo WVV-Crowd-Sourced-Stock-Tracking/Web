@@ -2,33 +2,47 @@
   "markets": [
     {
       "id": 1,
+      "mapsId": "rx59ghdkgsg",
       "name": "Rewe",
       "city": "Berlin",
       "zip": 12345,
       "street": "Bla",
-      "lat": 52.5204579,
-      "lng": 13.3885896,
-      "products": ["Eier", "Milch"]
+      "lat": "52.5221232",
+      "lng": "13.4034752",
+      "distance": 200,
+      "open": false,
+      "products": [{
+          "id": 3,
+          "name": "Eier",
+          "availability": 25
+        },
+        {
+          "id": 2,
+          "name": "Eis",
+          "availability": 60
+        }]
     },
     {
       "id": 2,
+      "mapsId": "rx59ghdk",
       "name": "Rewe",
       "city": "Berlin",
       "zip": 12345,
       "street": "Bla",
-      "lat": 52.5221422,
-      "lng": 13.4034652,
-      "products": ["Club Mate", "Eis"]
-    },
-    {
-      "id": 3,
-      "name": "Edeka",
-      "city": "Berlin",
-      "zip": 12345,
-      "street": "Bla",
-      "lat": 52.5199716,
-      "lng": 13.4147251,
-      "products": ["Klopapier", "Saft"]
+      "lat": "52.5221422",
+      "lng": "13.4034652",
+      "distance": 500,
+      "open": true,
+      "products": [{
+          "id": 1,
+          "name": "Club Mate",
+          "availability": 50
+        },
+        {
+          "id": 2,
+          "name": "Eis",
+          "availability": 90
+        }]
     }
   ]
 }
