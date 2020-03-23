@@ -1,5 +1,11 @@
 <template>
   <div class="card">
+
+    <vue-headful
+      :title="market.name"
+      description="What's Left? Crowed Sourced Stock Tracking!"
+    />
+    
     <div class="header">
       <h2>{{ market.name }}</h2>
     </div>

@@ -19,6 +19,11 @@ export default {
       userPosition: this.getCurrentPosition(),
     }
   },
+  watch: {
+    '$route' (to) {
+      document.title = to.meta.title || 'Your Website'
+    }
+  },
   methods: {
     async getCurrentPosition() {
       

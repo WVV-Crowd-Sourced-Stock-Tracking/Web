@@ -10,7 +10,10 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
+    meta: {
+      title: 'Home',
+    }
   },
   {
     path: "/store/:mapsId",
@@ -20,6 +23,9 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: MarketDetail,
     props: true,
+    meta: {
+      title: 'Store',
+    }
   },
   // 404, leave this as last route!!!
   {

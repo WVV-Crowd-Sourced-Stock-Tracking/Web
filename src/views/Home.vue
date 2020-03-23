@@ -1,6 +1,10 @@
 <template>
   <div>
-    <!-- <ProductFilter /> -->
+
+    <vue-headful
+      title="What's Left?"
+      description="What's Left? Crowed Sourced Stock Tracking!"
+    />
 
     <div class="intro m-4">
       <h1 class="text-xl font-semibold">Shops</h1>
