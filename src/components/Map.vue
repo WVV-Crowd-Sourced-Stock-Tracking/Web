@@ -26,7 +26,6 @@
           :position="m.position"
           :clickable="true"
           :draggable="false"
-          @click="center = m.position"
         />
       </GmapMap>
     </div>
