@@ -17,7 +17,7 @@
         }"
       >
 
-        <div class="w-full h-32">
+        <div class="w-screen h-32">
           <img class="w-full h-full object-cover object-center" src="/img/arch-bridge-clouds-814499.jpg" alt="Placeholder">
           <div class="absolute top-0 ml-4 mt-10 overflow-hidden rounded-full w-10 h-10">
             <div class="absolute w-full h-full bg-black opacity-75"></div>
@@ -32,7 +32,7 @@
 
       </router-link>
 
-      <div class="bg-white h-full p-6">
+      <div class="bg-white w-screen h-full p-6">
 
         <div class="w-full whitespace-no-wrap overflow-hidden">
           <h2 class="text-3xl text-gray-700 font-bold overflow-y-scroll tracking-tight">{{ market.name }}</h2>
