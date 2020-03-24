@@ -11,9 +11,13 @@
       <p>in Ihrer Umgebung</p>
     </div>
 
-    <Map></Map>
+    <Map
+      :userPosition="userPosition"
+    ></Map>
 
-    <Listings></Listings>
+    <Listings
+      :userPosition="userPosition"
+    ></Listings>
 
   </div>
 </template>
@@ -28,6 +32,9 @@ export default {
     Listings,
     Map
   },
+  props: {
+    userPosition: Object,
+  }
 };
 </script>
 

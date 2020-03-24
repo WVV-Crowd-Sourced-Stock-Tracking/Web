@@ -2,7 +2,7 @@
   <div id="app" class="container h-full mx-auto px-4 bg-100">
     <Header />
     <router-view 
-      :userPosition= "this.userPosition"
+      :userPosition="userPosition"
     />
   </div>
 </template>
@@ -16,7 +16,11 @@ export default {
   },
   data() {
     return {
-      userPosition: this.getCurrentPosition(),
+      // Berlin
+      userPosition: {
+        lat: 52.5204579,
+        lng: 13.3885896
+      },
     }
   },
   watch: {
@@ -25,44 +29,42 @@ export default {
     }
   },
   methods: {
-    async getCurrentPosition() {
+    getCurrentPosition() {
+      return new Promise((resolve, reject) => {
       
         if (!navigator.geolocation) {
           console.error('Geolocation is not supported by your browser');
         } else {
           console.log('Locating…');
-          let position;
 
-          try {
-            position = await (async () => {
-              return new Promise((resolve, reject) => {
-              
-                navigator.geolocation.getCurrentPosition(position => {
+          navigator.geolocation.getCurrentPosition(position => {
 
-                console.log('user lat:', position.coords.latitude);
-                console.log('user lng:', position.coords.longitude);
+            console.log('user lat:', position.coords.latitude);
+            console.log('user lng:', position.coords.longitude);
 
-                resolve({lat: position.coords.latitude, lng: position.coords.longitude});
-                
-              }, err => {
-                console.error(`Couldn't acces user's position:`, err);
-                reject({lat: 0, lng: 0});
-              });
-              
-              })
-            })
-          } catch (err) {
-            console.error(err);
-          }
-
-          return position;
+            resolve({lat: position.coords.latitude, lng: position.coords.longitude});
+            
+          }, err => {
+            console.error(`Couldn't acces user's position:`, err);
+            reject(`Couldn't acces user's position!`);
+          });
           
         }
       
+      })
     }
   },
   mounted() {
-    this.$store.commit("getCurrentPosition");
+    // this.$store.commit("getCurrentPosition");
+    this.getCurrentPosition()
+    .then(position => {
+      console.log('position:', position);
+      this.userPosition = position;
+    })
+    .catch(err => {
+      console.error(err);
+    })
+
   }
 };
 </script>

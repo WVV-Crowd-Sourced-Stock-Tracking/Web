@@ -2,9 +2,16 @@
   <div class="w-full rounded overflow-hidden shadow-lg">
     
     <div class="bg-white">
-      <div class="font-bold text-xl px-4 py-2">Karte</div>
+      <div class="font-bold text-xl px-4 py-2 shadow-lg">Karte</div>
       
-      <div id="map" class="w-full h-40"></div>
+      <div id="map" class="w-full h-40">
+        <!-- Content inside of the div#map will be overwritten once the map is loaded -->
+
+        <div class="w-full h-full text-xl text-center pt-12">
+          Warte auf GPS-Daten...
+        </div>
+        
+      </div>
 
     </div>
 
@@ -12,11 +19,15 @@
 </template>
 
 <script>
+//TODO exchange loadingMessage for LoadingIndicator component combined with v-if
 // import { gmapApi } from "vue2-google-maps";
 import Market from "../assets/js/market";
 import API from "../assets/js/api";
 
 export default {
+  props: {
+    userPosition: Object,
+  },
   data() {
     return {
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
@@ -32,6 +43,13 @@ export default {
     };
   },
   watch: {
+    userPosition: {
+      handler: function() {
+        
+        this.loadScript();
+
+      }
+    },
     zoom: {
       handler: function(newZoomLevel) {
 
@@ -105,22 +123,20 @@ export default {
       }
     }
   },
-  mounted() {
-
-    let mapsApiScript = document.createElement('script');
-    mapsApiScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHJCRgVNdpdHQigIEebTzT4RDiTwt6jk');
-    document.body.appendChild(mapsApiScript);
-    mapsApiScript.onload = this.initMap;
-
-  },
   // computed: {
   //   google: gmapApi
   // },
   methods: {
+    loadScript() {
+      let mapsApiScript = document.createElement('script');
+      mapsApiScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHJCRgVNdpdHQigIEebTzT4RDiTwt6jk');
+      document.body.appendChild(mapsApiScript);
+      mapsApiScript.onload = this.initMap;
+    },
     initMap() {
 
       this.map = new window.google.maps.Map(document.getElementById('map'), {
-          center: this.center,
+          center: this.userPosition,
           zoom: this.zoom,
           gestureHandling: 'greedy',
           // zoomControl: false, == default (only show in fullscreen)
@@ -131,16 +147,6 @@ export default {
           fullscreenControl: true
         });
 
-      this.homeMarker = new window.google.maps.Marker({
-        position: this.center,
-        map: this.map,
-        title: 'Dein Standort',
-      });
-
-      this.map.addListener('click', () => {
-        console.log('tesgdsagjdlskjhgdsahgdjsk'); 
-      })
-
       this.map.addListener('zoom_changed', () => {
         this.zoom = this.map.getZoom();
       })
@@ -150,60 +156,17 @@ export default {
         this.center = {lat: this.map.center.lat(), lng: this.map.center.lng()};
       })
 
-      this.centerOnUser().then(() => {
-
-        this.homeMarker.setMap(null);
-
-        this.homeMarker = new window.google.maps.Marker({
-          position: this.center,
-          map: this.map,
-          title: 'Dein Standort',
-        })
-
-        this.map.panTo(this.center);
-        this.zoom = 14;
-        this.map.setZoom(this.zoom);
-
-        // initial loading of markers for user position
-        this.loadAll().then(markets => {
-
-          markets.forEach(market => {
-            this.mapMarkers.push(
-              new window.google.maps.Marker({
-                position: {lat: market.lat, lng: market.lng},
-                map: this.map,
-              })
-            )
-          });
-          
-        })
-        
+      this.homeMarker = new window.google.maps.Marker({
+        position: this.userPosition,
+        map: this.map,
+        title: 'Dein Standort',
       })
-      
-    },
-    centerOnUser() {
-      return new Promise((resolve, reject) => {
-      
-        if (!navigator.geolocation) {
-          console.error('Geolocation is not supported by your browser');
-        } else {
-          console.log('Locating…');
-          navigator.geolocation.getCurrentPosition(position => {
 
-            this.center.lat = position.coords.latitude;
-            this.center.lng = position.coords.longitude;
+      this.map.panTo(this.userPosition);
+      this.zoom = 14;
+      this.map.setZoom(this.zoom);
+      this.center = this.userPosition;
 
-            this.zoom = 15;
-
-            resolve();
-            
-          }, err => {
-            console.error(`Couldn't acces user's position:`, err);
-            reject();
-          });
-        }
-      
-      })
     },
     async loadAll() {
       let rawMarkets;
@@ -241,21 +204,6 @@ export default {
       return markets;
 
     },
-    getAllMarkers() {
-      //TODO get from api
-      this.axios.get("http://localhost:3000/markets").then(response => {
-        // console.log(response.data);
-        response.data.forEach(market => {
-          // console.log(market);
-          this.markers.push({
-            position: {
-              lat: parseFloat(market.lat),
-              lng: parseFloat(market.lng)
-            }
-          });
-        });
-      })
-    }
   }
 };
 </script>

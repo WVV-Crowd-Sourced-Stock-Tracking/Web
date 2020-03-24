@@ -25,11 +25,51 @@ export default {
   components: {
     MarketInListing
   },
+  props: {
+    userPosition: Object,
+  },
   data: () => {
     return {
       markets: [],
+      rawMarkets: [],
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
     };
+  },
+  watch: {
+    userPosition: {
+      handler: function() {
+
+        this.API.loadMarkets(this.userPosition.lat, this.userPosition.lng, 2000).then(rawMarkets => {
+          console.log('rawMarkets:', rawMarkets);
+          this.rawMarkets = rawMarkets;
+        })
+        
+      }
+    },
+    rawMarkets: {
+      handler: function(newRawMarkets) {
+
+        this.markets = [];
+
+        newRawMarkets.forEach(rawMarket => {
+          this.markets.push(
+            new Market(
+              rawMarket.id,
+              rawMarket.name,
+              rawMarket.city,
+              rawMarket.street,
+              rawMarket.lat,
+              rawMarket.lng,
+              rawMarket.distance,
+              rawMarket.open,
+              rawMarket.products,
+              rawMarket.mapsId
+            )
+          );
+        });
+        
+      }
+    }
   },
   methods: {
     async loadAll() {
@@ -67,47 +107,10 @@ export default {
 
       this.markets = markets;
     },
-    async getCurrentPosition() {
-      
-        if (!navigator.geolocation) {
-          console.error('Geolocation is not supported by your browser');
-        } else {
-          console.log('Locating…');
-          let position;
-
-          try {
-            position = await (async () => {
-              return new Promise((resolve, reject) => {
-              
-                navigator.geolocation.getCurrentPosition(position => {
-
-                console.log('user lat:', position.coords.latitude);
-                console.log('user lng:', position.coords.longitude);
-
-                resolve({lat: position.coords.latitude, lng: position.coords.longitude});
-                
-              }, err => {
-                console.error(`Couldn't acces user's position:`, err);
-                reject({lat: 0, lng: 0});
-              });
-              
-              })
-            })();
-          } catch (err) {
-            console.error(err);
-          }
-
-          this.userPosition = position;
-          this.loadAll();
-          
-        }
-      
-    }
   },
   mounted() {
     // this.$store.commit("getCurrentPosition");
     // this.loadAll();
-    this.getCurrentPosition();
   }
 };
 </script>
