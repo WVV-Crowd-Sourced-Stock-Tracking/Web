@@ -1,81 +1,125 @@
 <template>
-  <div class="card">
+  <div>
 
     <vue-headful
       :title="market.name"
       description="What's Left? Crowed Sourced Stock Tracking!"
     />
-    
-    <div class="header">
-      <h2>{{ market.name }}</h2>
-    </div>
 
-    <div class="main">
+    <div v-if="loading.finished && loading.success">
 
-      <div class="zwei-spalten">
-        <div class="address">
-          <h1 class="text-m font-semibold">Addresse:</h1>
-          {{ market.address }}
-        </div>
-        <div>
-          <h1 class="text-m font-semibold">Öffnungszeiten:</h1>
-          <div class="status">
-            <span v-bind:class="market.status.class">{{
-              market.status.text
-            }}</span>
+      <router-link
+        :to="{
+          name: 'Home',
+        }"
+      >
+
+        <div class="w-full h-32">
+          <img class="w-full h-full object-cover object-center" src="/img/arch-bridge-clouds-814499.jpg" alt="Placeholder">
+          <div class="absolute top-0 ml-4 mt-10 overflow-hidden rounded-full w-10 h-10">
+            <div class="absolute w-full h-full bg-black opacity-75"></div>
+            <img
+              class="m-auto opacity-100 w-full h-full"
+              style="filter: invert(1);"
+              src="@/assets/icons/chevron-left.svg"
+              alt="Markt anzeigen"
+            />
           </div>
         </div>
-      </div>
-      <div class="map w-full"> 
 
-      </div>
-      
+      </router-link>
 
-      <table class="table-auto w-full">
-        <thead>
-          <tr>
-            <th class="px-4 py-2">Produkte</th>
-            <th class="px-4 py-2">Verfügbarkeit</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in market.products" :key="item.name">
-            <td class="border px-4 py-2">{{ item.name }}</td>
-            <td class="border px-4 py-2" v-if="editMode">
-                <div class="editButtons">
-                  <div><div class="h-5 w-5 rounded-full bg-green-500"></div></div>
-                  <div><div class="h-5 w-5 rounded-full bg-yellow-500"></div></div>
-                  <div><div class="h-5 w-5 rounded-full bg-red-500"></div></div>
+      <div class="bg-white text-gray-700 p-6">
+
+        <div class="w-full whitespace-no-wrap overflow-hidden">
+          <h2 class="text-3xl font-bold overflow-y-scroll">{{ market.name }}</h2>
+        </div>
+
+        <div class="my-4">
+          <div class="text-m font-semibold">Addresse:</div>
+          <div class="w-full my-2" >{{ market.address }}</div>
+        </div>
+        
+        <div>
+          <div class="text-m font-semibold">Öffnungszeiten:</div>
+          <div class="w-full my-2"> {{market.status.text }} </div>
+        </div>
+
+        <table class="table-auto w-full">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">Produkte</th>
+              <th class="px-4 py-2">Verfügbarkeit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in market.products" :key="item.name">
+              <td class="border px-4 py-2">{{ item.name }}</td>
+              <td class="border px-4 py-2" v-if="editMode">
+                  <div class="editButtons">
+                    <div><div class="h-5 w-5 rounded-full bg-green-500"></div></div>
+                    <div><div class="h-5 w-5 rounded-full bg-yellow-500"></div></div>
+                    <div><div class="h-5 w-5 rounded-full bg-red-500"></div></div>
+                  </div>
+              </td>
+              <td class="border px-4 py-2" v-else>
+                <div class="verfugbarkeit-item">
+                  <span v-if="item.availability === 'high'">vorrätig</span>
+                <span v-else-if="item.availability === 'medium'"
+                  >fast ausverkauft</span
+                >
+                <span v-else>ausverkauft</span>
+
+                <div
+                  class="h-5 w-5 rounded-full bg-green-500"
+                  v-if="item.availability === 'high'"
+                ></div>
+                <div
+                  class="h-5 w-5 rounded-full bg-yellow-500"
+                  v-else-if="item.availability === 'medium'"
+                ></div>
+                <div class="h-5 w-5 rounded-full bg-red-500" v-else></div>
                 </div>
-            </td>
-            <td class="border px-4 py-2" v-else>
-              <div class="verfugbarkeit-item">
-                <span v-if="item.availability === 'high'">vorrätig</span>
-              <span v-else-if="item.availability === 'medium'"
-                >fast ausverkauft</span
-              >
-              <span v-else>ausverkauft</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-              <div
-                class="h-5 w-5 rounded-full bg-green-500"
-                v-if="item.availability === 'high'"
-              ></div>
-              <div
-                class="h-5 w-5 rounded-full bg-yellow-500"
-                v-else-if="item.availability === 'medium'"
-              ></div>
-              <div class="h-5 w-5 rounded-full bg-red-500" v-else></div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <button class="EditButton" v-on:click="toggleEdit">
+          <span v-if="editMode">Bestand senden</span>
+          <span v-else>Bestand aktualisieren</span>
+        </button>
+        
+      </div>
 
-      <button class="EditButton" v-on:click="toggleEdit">
-        <span v-if="editMode">Bestand senden</span>
-        <span v-else>Bestand aktualisieren</span>
-      </button>
     </div>
+
+    <div v-else-if="!loading.finished">
+
+      Marktinformationen werden geladen...
+
+    </div>
+
+    <div v-else>
+
+      <div class="w-full rounded mt-4 p-4 bg-white">
+
+        <h1 class="text-center text-2xl">Sorry, der Markt konnte nicht geladen werden!</h1>
+
+        <router-link
+          :to="{
+            name: 'Home',
+          }"
+        >
+          <div class="inline-block ml-4 mt-10 p-2 shadow bg-gray-100">
+            <h2 class="text-2xl text-blue-500">zurück zur Startseite</h2>
+          </div>
+        </router-link>
+          
+      </div>
+
+    </div>
+    
   </div>
 </template>
 
@@ -89,6 +133,10 @@ export default {
   data() {
     return {
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
+      loading: {
+        finished: false,
+        success: true,
+      },
       market: {
         name: '',
         address: '',
@@ -115,12 +163,13 @@ export default {
 
       let rawMarket;
 
-      console.log('this.$route.params.id:', this.$route.params.id);
+      console.log('this.$route.params.id:', this.$route.params.mapsId);
 
       try {
-        rawMarket = (await this.API.loadMarket(this.$route.params.id)).supermarket;
+        rawMarket = (await this.API.loadMarket({mapsId: this.$route.params.mapsId})).supermarket;
       } catch (err) {
         console.error(err);
+        this.loading = {finished: true, success: false};
       }
 
       console.log('rawMarket:', rawMarket);
@@ -135,12 +184,14 @@ export default {
         rawMarket.distance,
         rawMarket.open,
         rawMarket.products,
-        rawMarket.mapsId
+        rawMarket.mapsId,
+        rawMarket.zip,
       );
 
       console.log('market:', market);
 
       this.market = market;
+      this.loading = {finished: true, success: true};
       
     },
     async loadDistance() {
@@ -210,129 +261,14 @@ export default {
   mounted() {
     // this.$store.commit("getCurrentPosition");
     // if params are missing, this will cause errors because of missing nested objects
-    this.market = this.$route.params;
-    this.loadData();
+    if (this.$route.params.name != undefined) {
+      this.market = this.$route.params;
+      this.loading = {finished: true, success: true};
+    } else {
+      this.loadData();
+    }
     // this.getCurrentPosition();
     // this.loadDistance();
   },
 }
 </script>
-
-<style lang="sass">
-.EditButton 
-  position: relative
-  left: 50%
-  transform: translate(-50%)
-  background: blue
-  padding: 10px
-  border-radius: 10px
-  color: white
-  margin-top: 30px
-
-.editButtons 
-  display: grid
-  grid-template-columns: 1fr 1fr 1fr
-  > div
-    text-align: center
-    margin: 0 10px
-
-.zwei-spalten
-  display: grid
-  grid-template-columns: 1fr 1fr
-.map
-  height: 300px
-  background: black
-
-.verfugbarkeit-item 
-  display: flex
-  align-items: center
-  justify-content: center
-
-  * 
-    padding-right: 10px
-
-.card 
-  display: block
-  position: relative
-  margin-top: 2%
-  width: 100%
-  border-radius: 0.5rem
-  overflow: hidden
-
-.card .header 
-  display: block
-  width: 100%
-  height: auto
-  background-color: #006bab
-  padding-left: 1rem
-  color: white
-
-.card .header h2 
-  display: inline-block
-  position: relative
-  top: 0
-  height: 100%
-  font-size: calc(var(--header-height) / 2)
-  font-weight: bold
-  line-height: 2.5rem
-
-.card .header img 
-  display: inline-block
-  position: absolute
-  right: 0
-  top: 0
-  width: calc(var(--header-height))
-  height: calc(var(--header-height))
-  filter: invert(1)
-
-.card .main 
-  width: 100%
-  padding: 3%
-  background-color: white
-  line-height: 2rem
-
-.card .main .address 
-  display: inline-block
-
-.card .main .distance 
-  display: inline-block
-  position: absolute
-  right: 2rem
-
-.card .main .status span 
-  font-weight: bold
-
-.card .main .status span.opened 
-  color: limegreen
-
-.card .main .status span.closed 
-  color: crimson
-
-.card .main .categories 
-  display: block
-  width: 100%
-  margin-top: 1rem
-
-.card .main .categories ul 
-  display: flex
-  flex-direction: right
-
-.card .main .categories ul li .traffic-light 
-  display: inline-block
-  width: 1rem
-  height: 1rem
-  border-radius: 100%
-
-.card .main .categories ul li .label 
-  margin-left: 0.5rem
-
-.card .main .categories ul li 
-  margin-right: 2rem
-
-.card .main .updated 
-  width: 100%
-  text-align: center
-  margin-top: 0.5rem
-  color: #c8cbcd
-
-</style>

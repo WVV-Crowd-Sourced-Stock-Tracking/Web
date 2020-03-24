@@ -8,7 +8,8 @@
         name: name,
         address: address,
         status: status,
-        products: mainProducts
+        products: mainProducts,
+        zip: zip
       }
     }"
   >
@@ -17,7 +18,7 @@
 
         <h2>{{ name }}</h2>
         <img
-          src="../../public/media/icons/chevron-right.svg"
+          src="@/assets/icons/chevron-right.svg"
           alt="Markt anzeigen"
         />
 
@@ -71,6 +72,7 @@ export default {
       class: String
     },
     mainProducts: Array,
+    zip: Number,
   },
 };
 </script>
@@ -101,7 +103,7 @@ export default {
     display: inline-block;
     position: relative;
     top: 0;
-    width: 60%;
+    width: 100%;
     height: 100%;
     font-size: calc(var(--header-height) / 2);
     font-weight: bold;

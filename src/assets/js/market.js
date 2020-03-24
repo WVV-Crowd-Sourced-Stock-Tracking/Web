@@ -1,6 +1,6 @@
 export default class Market {
 
-  constructor (id, name, city, street, lat, lng, distance, isOpen, products, mapsId) {
+  constructor (id, name, city, street, lat, lng, distance, isOpen, products, mapsId, zip) {
     this.id = id;
     this.name = name;
     this.city = city;
@@ -12,11 +12,12 @@ export default class Market {
     this.products = this.computeAvailability(products);
     this.address = this.computeAddress();
     this.mapsId = mapsId;
+    this.zip = zip;
   }
 
   computeAddress() {
-    return this.street;
-    // return `${this.street}, ${this.city} `;
+    // return `${this.street}, ${this.zip} ${this.city} `;
+    return `${this.street}, ${this.city} `;
   }
 
   computeStatus(isOpen) {

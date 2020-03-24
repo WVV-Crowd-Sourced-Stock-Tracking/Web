@@ -35,7 +35,7 @@ export default class API {
     })
   }
 
-  loadMarket(dbId) {
+  loadMarket(id) {
     return new Promise((resolve, reject) => {
 
       fetch(this.baseUrl + `/market/details`, {
@@ -44,9 +44,7 @@ export default class API {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          id: dbId,
-        })
+        body: JSON.stringify(id)
       })
       .then(response => {
         return response.json();

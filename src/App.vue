@@ -1,6 +1,5 @@
 <template>
-  <div id="app" class="container h-full mx-auto px-4 bg-100">
-    <Header />
+  <div id="app" class="container h-full m-0 p-0 bg-100">
     <router-view 
       :userPosition= "this.userPosition"
     />
@@ -8,11 +7,9 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
 export default {
   name: "App",
   components: {
-    Header
   },
   data() {
     return {
