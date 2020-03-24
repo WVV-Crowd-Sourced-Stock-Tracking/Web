@@ -6,7 +6,10 @@
       description="What's Left? Crowed Sourced Stock Tracking!"
     />
 
-    <div v-if="loading.finished && loading.success">
+    <div
+      v-if="loading.finished && loading.success"
+      class="h-screen"
+      >
 
       <router-link
         :to="{
@@ -29,65 +32,89 @@
 
       </router-link>
 
-      <div class="bg-white text-gray-700 p-6">
+      <div class="bg-white h-full p-6">
 
         <div class="w-full whitespace-no-wrap overflow-hidden">
-          <h2 class="text-3xl font-bold overflow-y-scroll">{{ market.name }}</h2>
+          <h2 class="text-3xl text-gray-700 font-bold overflow-y-scroll tracking-tight">{{ market.name }}</h2>
         </div>
 
         <div class="my-4">
-          <div class="text-m font-semibold">Addresse:</div>
-          <div class="w-full my-2" >{{ market.address }}</div>
+          <div class="text-m text-gray-800 font-semibold tracking-wider">Addresse:</div>
+          <div class="w-full my-1 text-gray-700" >{{ market.address }}</div>
         </div>
-        
+
         <div>
-          <div class="text-m font-semibold">Öffnungszeiten:</div>
-          <div class="w-full my-2"> {{market.status.text }} </div>
+          <div class="text-m text-gray-800 font-semibold tracking-wider">Öffnungszeiten:</div>
+          <div class="w-full my-1 text-gray-700">
+            <span v-if="market.status.class == 'opened'" class="text-green-600">{{market.status.text }}</span>
+            <span v-else class="text-red-600">{{market.status.text }}</span>
+          </div>
         </div>
 
-        <table class="table-auto w-full">
-          <thead>
-            <tr>
-              <th class="px-4 py-2">Produkte</th>
-              <th class="px-4 py-2">Verfügbarkeit</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in market.products" :key="item.name">
-              <td class="border px-4 py-2">{{ item.name }}</td>
-              <td class="border px-4 py-2" v-if="editMode">
-                  <div class="editButtons">
-                    <div><div class="h-5 w-5 rounded-full bg-green-500"></div></div>
-                    <div><div class="h-5 w-5 rounded-full bg-yellow-500"></div></div>
-                    <div><div class="h-5 w-5 rounded-full bg-red-500"></div></div>
+        <form onsubmit="event.preventDefault();">
+          <table class="absolute left-0 mt-4 table-fixed w-full">
+            <thead class="bg-gray-100 shadow text-left text-gray-700 tracking-wide">
+              <tr class="h-16">
+                <th class="w-1/2 pl-6 font-medium">Produkt</th>
+                <th class="w-1/2 pl-6 font-medium">Bestand</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="item in market.products"
+                :key="item.name"
+              >
+                <td class="relative h-16 text-left align-middle border-t pl-6">
+                  <div class="inline-block font-bold text-gray-800">
+                    {{ item.name }}
                   </div>
-              </td>
-              <td class="border px-4 py-2" v-else>
-                <div class="verfugbarkeit-item">
-                  <span v-if="item.availability === 'high'">vorrätig</span>
-                <span v-else-if="item.availability === 'medium'"
-                  >fast ausverkauft</span
-                >
-                <span v-else>ausverkauft</span>
+                </td>
 
-                <div
-                  class="h-5 w-5 rounded-full bg-green-500"
-                  v-if="item.availability === 'high'"
-                ></div>
-                <div
-                  class="h-5 w-5 rounded-full bg-yellow-500"
-                  v-else-if="item.availability === 'medium'"
-                ></div>
-                <div class="h-5 w-5 rounded-full bg-red-500" v-else></div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <td v-if="editMode" class="relative h-full text-center align-middle border-b px-4 py-2" >
 
-        <button class="EditButton" v-on:click="toggleEdit">
-          <span v-if="editMode">Bestand senden</span>
-          <span v-else>Bestand aktualisieren</span>
+                    <div class="flex flex-row justify-center h-full">
+
+                      <div :class="'flex flex-col justify-center h-12 w-12 mr-1 rounded bg-red-'+[item.picked == 'low' ? '400' : '200']">
+                        <input type="radio" v-model="item.picked" :name="'product-' + item.id" value="low" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-red-400">
+                      </div>
+                      <div :class="'flex flex-col justify-center h-12 w-12 mr-1 rounded bg-yellow-'+[item.picked == 'medium' ? '400' : '200']">
+                        <input type="radio" v-model="item.picked" :name="'product-' + item.id" value="medium" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-yellow-400">
+                      </div>
+                      <div :class="'flex flex-col justify-center h-12 w-12 mr-1 rounded bg-green-'+[item.picked == 'high' ? '400' : '200']">
+                        <input type="radio" v-model="item.picked" :name="'product-' + item.id" value="high" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-green-400">
+                      </div>
+
+                    </div>
+
+                </td>
+                <td v-else class="relative h-full border-t text-left pl-6">
+
+                  <div class="inline-block h-4 w-4 rounded-full overflow-hidden align-text-bottom">
+                    <div v-if="item.availability === 'high'" class="w-full h-full bg-green-500"></div>
+                    <div v-else-if="item.availability === 'medium'" class="w-full h-full bg-yellow-500"></div>
+                    <div v-else-if="item.availability === 'low'" class="w-full h-full bg-red-500"></div>
+                    <div v-else class="w-full h-full bg-gray-600"></div>
+                  </div>
+
+                  <div class="inline-block ml-4">
+                    <span v-if="item.availability === 'high'">verfügbar</span>
+                    <span v-else-if="item.availability === 'medium'">fast ausverkauft</span>
+                    <span v-else-if="item.availability === 'low'">ausverkauft</span>
+                    <span v-else>sorry, keine Daten...</span>
+                  </div>
+
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </form>
+
+        <button class="fixed bottom-0 right-0 mr-5 mb-5 w-16 h-16 rounded-full focus:outline-none overflow-hidden" v-on:click="toggleEdit">
+          <div class="flex flex-col justify-center w-full h-full" style="background-color: #006BAB">
+            <img v-if="editMode" src="@/assets/icons/check.svg" style="filter: invert(1)" class="m-auto w-1/2 h-1/2"/>
+            <img v-else src="@/assets/icons/edit.svg" style="filter: invert(1)" class="m-auto w-1/2 h-1/2"/>
+          </div>
         </button>
         
       </div>
@@ -156,8 +183,7 @@ export default {
   },
   methods: {
     toggleEdit: function() {
-      this.editMode = !this.editMode
-      console.log(this.editMode)
+      this.editMode = !this.editMode;
     },
     async loadData() {
 
