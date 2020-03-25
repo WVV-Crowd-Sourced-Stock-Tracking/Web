@@ -107,5 +107,45 @@ export default class API {
     
     })
   }
+
+  updateMarketStock(marketId, products) {
+    return new Promise((resolve, reject) => {
+    
+      let bulkArray = [];
+
+      products.forEach(product => {
+
+        bulkArray.push({
+          market_id: marketId,
+          product_id: product.id,
+          quantity: product.quantity,
+        })
+        
+      });
+      
+      fetch(this.baseUrl + `/market/transmit`, {
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          bulk: bulkArray,
+        })
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then(result => {
+        console.log('result:', result);
+        return resolve(result);
+      })
+      .catch(err => {
+        console.error(err);
+        return reject(`An error occured during the request!`);
+      })
+    
+    })
+  }
   
 }
