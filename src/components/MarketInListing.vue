@@ -8,7 +8,8 @@
         name: name,
         address: address,
         status: status,
-        products: mainProducts
+        products: mainProducts,
+        zip: zip
       }
     }"
   >
@@ -17,7 +18,7 @@
 
         <h2>{{ name }}</h2>
         <img
-          src="../../public/media/icons/chevron-right.svg"
+          src="@/assets/icons/Chevron_Right_White.svg"
           alt="Markt anzeigen"
         />
 
@@ -71,6 +72,7 @@ export default {
       class: String
     },
     mainProducts: Array,
+    zip: Number,
   },
 };
 </script>
@@ -81,7 +83,7 @@ export default {
     position: relative;
     margin-top: 2%;
     width: 100%;
-    height: 11rem;
+    height: 12rem;
     border-radius: 0.5rem;
     overflow: hidden;
   }
@@ -101,7 +103,7 @@ export default {
     display: inline-block;
     position: relative;
     top: 0;
-    width: 60%;
+    width: 100%;
     height: 100%;
     font-size: calc(var(--header-height) / 2);
     font-weight: bold;
@@ -115,7 +117,6 @@ export default {
     top: 0;
     width: calc(var(--header-height));
     height: calc(var(--header-height));
-    filter: invert(1);
   }
   
   .card .main {
@@ -159,6 +160,13 @@ export default {
   .card .main .categories ul {
     display: flex;
     flex-direction: right;
+    flex-wrap: wrap;
+    height: 2rem;
+    overflow: hidden;
+  }
+
+  .card .main .categories ul li {
+    margin-right: 2rem;
   }
   
   .card .main .categories ul li .traffic-light {
@@ -170,10 +178,6 @@ export default {
   
   .card .main .categories ul li .label {
     margin-left: 0.5rem;
-  }
-  
-  .card .main .categories ul li {
-    margin-right: 2rem;
   }
   
   .card .main .updated {
