@@ -79,13 +79,13 @@
 
                     <div class="flex flex-row justify-center h-full">
 
-                      <div :class="'flex flex-col justify-center h-12 w-12 mr-1 rounded bg-red-'+[item.picked == 'low' ? '400' : '200']">
+                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[item.picked == 'low' ? '#E02020' : '#F9D2D2']">
                         <input type="radio" v-model="item.picked" :name="'product-' + item.id" value="low" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-red-400">
                       </div>
-                      <div :class="'flex flex-col justify-center h-12 w-12 mr-1 rounded bg-yellow-'+[item.picked == 'medium' ? '400' : '200']">
+                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[item.picked == 'medium' ? '#F7B500' : '#FDF0CC']">
                         <input type="radio" v-model="item.picked" :name="'product-' + item.id" value="medium" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-yellow-400">
                       </div>
-                      <div :class="'flex flex-col justify-center h-12 w-12 mr-1 rounded bg-green-'+[item.picked == 'high' ? '400' : '200']">
+                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[item.picked == 'high' ? '#6DD400' : '#E2F6CC']">
                         <input type="radio" v-model="item.picked" :name="'product-' + item.id" value="high" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-green-400">
                       </div>
 
@@ -192,7 +192,7 @@ export default {
     },
     async loadData() {
 
-      let rawMarket;
+      let rawMarket, allProducts, allProductsFiltered;
 
       console.log('this.$route.params.id:', this.$route.params.mapsId);
 
@@ -214,7 +214,7 @@ export default {
         rawMarket.lng,
         rawMarket.distance,
         rawMarket.open,
-        rawMarket.products,
+        rawMarket.products.reverse(),
         rawMarket.mapsId,
         rawMarket.zip,
       );
@@ -223,6 +223,27 @@ export default {
 
       this.market = market;
       this.loading = {finished: true, success: true};
+
+      try {
+        allProducts = await this.API.loadAllProducts();
+        // temporary fix until backend is cleaned up
+        allProducts.map(product => {
+          product.name = product.product_name;
+          product.id = product.product_id;
+        })
+
+        allProducts = this.market.products.concat(allProducts);
+        
+      } catch (err) {
+        console.error(err);
+      }
+
+      allProductsFiltered = allProducts.filter((product, index) => {
+        let foundProduct = allProducts.find(x => x.id == product.id);
+        return allProducts.indexOf(foundProduct) === index;
+      });
+
+      this.market.products = allProductsFiltered;
       
     },
     async loadDistance() {
@@ -253,7 +274,7 @@ export default {
       );
 
       this.market.distance = currentMarket.distance;
-      
+
     },
     async getCurrentPosition() {
       
@@ -298,6 +319,7 @@ export default {
     } else {
       this.loadData();
     }
+
     // this.getCurrentPosition();
     // this.loadDistance();
   },

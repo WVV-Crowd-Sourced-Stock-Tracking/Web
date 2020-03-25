@@ -63,26 +63,47 @@ export default class API {
   loadMarketStock(googleId) {
     return new Promise((resolve, reject) => {
 
-        fetch(this.baseUrl + `/market/stock`, {
-          mode: 'cors',
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            google_id: googleId,
-          })
+      fetch(this.baseUrl + `/market/stock`, {
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          google_id: googleId,
         })
-        .then(response => {
-          return response.json();
-        })
-        .then(result => {
-          return resolve(result.product);
-        })
-        .catch(err => {
-          console.error(err);
-          return reject(`An error occured during the request!`);
-        })
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then(result => {
+        return resolve(result.product);
+      })
+      .catch(err => {
+        console.error(err);
+        return reject(`An error occured during the request!`);
+      })
+    
+    })
+  }
+
+  loadAllProducts() {
+    return new Promise((resolve, reject) => {
+    
+      fetch(this.baseUrl + `/product/scrape`, {
+        mode: 'cors',
+        method: 'POST',
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then(result => {
+        return resolve(result.product);
+      })
+      .catch(err => {
+        console.error(err);
+        return reject(`An error occured during the request!`);
+      })
     
     })
   }
