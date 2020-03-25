@@ -17,42 +17,47 @@
         }"
       >
 
-        <div class="w-screen h-32">
-          <img class="w-full h-full object-cover object-center" src="/img/arch-bridge-clouds-814499.jpg" alt="Placeholder">
-          <div class="absolute top-0 ml-4 mt-10 overflow-hidden rounded-full w-10 h-10">
+        <div class="flex flex-both justify-center fixed top-0 left-0 ml-4 mt-10 overflow-hidden rounded-full w-12 h-12 z-10">
             <div class="absolute w-full h-full bg-black opacity-75"></div>
             <img
-              class="m-auto opacity-100 w-full h-full"
+              class="opacity-100 w-3/4 h-3/4"
               style="filter: invert(1);"
               src="@/assets/icons/chevron-left.svg"
               alt="Markt anzeigen"
             />
           </div>
-        </div>
 
       </router-link>
 
-      <div class="bg-white w-screen h-full p-6">
+      <div class="w-screen h-32">
+        <img class="w-full h-full object-cover object-center" src="/img/arch-bridge-clouds-814499.jpg" alt="Placeholder">
+      </div>
 
-        <div class="w-full whitespace-no-wrap overflow-hidden">
-          <h2 class="text-3xl text-gray-700 font-bold overflow-y-scroll tracking-tight">{{ market.name }}</h2>
-        </div>
+      <div class="bg-white w-screen min-h-full h-auto">
 
-        <div class="my-4">
-          <div class="text-m text-gray-800 font-semibold tracking-wider">Addresse:</div>
-          <div class="w-full my-1 text-gray-700" >{{ market.address }}</div>
-        </div>
+        <div class="w-full h-full p-6">
 
-        <div>
-          <div class="text-m text-gray-800 font-semibold tracking-wider">Öffnungszeiten:</div>
-          <div class="w-full my-1 text-gray-700">
-            <span v-if="market.status.class == 'opened'" class="text-green-600">{{market.status.text }}</span>
-            <span v-else class="text-red-600">{{market.status.text }}</span>
+          <div class="w-full whitespace-no-wrap overflow-hidden">
+            <h2 class="text-3xl text-gray-700 font-bold overflow-y-scroll tracking-tight">{{ market.name }}</h2>
           </div>
+
+          <div class="my-4">
+            <div class="text-m text-gray-800 font-semibold tracking-wider">Addresse:</div>
+            <div class="w-full my-1 text-gray-700" >{{ market.address }}</div>
+          </div>
+
+          <div>
+            <div class="text-m text-gray-800 font-semibold tracking-wider">Öffnungszeiten:</div>
+            <div class="w-full my-1 text-gray-700">
+              <span v-if="market.status.class == 'opened'" class="text-green-600">{{market.status.text }}</span>
+              <span v-else class="text-red-600">{{market.status.text }}</span>
+            </div>
+          </div>
+          
         </div>
 
         <form onsubmit="event.preventDefault();">
-          <table class="absolute left-0 mt-4 table-fixed w-full">
+          <table class="relative mt-4 table-fixed w-full">
             <thead class="bg-gray-100 shadow text-left text-gray-700 tracking-wide">
               <tr class="h-16">
                 <th class="w-1/2 pl-6 font-medium">Produkt</th>
@@ -70,7 +75,7 @@
                   </div>
                 </td>
 
-                <td v-if="editMode" class="relative h-full text-center align-middle border-b px-4 py-2" >
+                <td v-if="editMode" class="relative h-full text-center align-middle border-b pl-6">
 
                     <div class="flex flex-row justify-center h-full">
 
