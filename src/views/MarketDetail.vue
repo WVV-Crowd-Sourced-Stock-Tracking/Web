@@ -176,6 +176,8 @@ export default {
         success: true,
       },
       market: {
+        id: '',
+        mapsId: '',
         name: '',
         address: '',
         status: {
@@ -224,13 +226,22 @@ export default {
       return copy;
     }
   },
+  watch: {
+    editMode: {
+      handler: function(isEditMode) {
+        if (isEditMode == false) {
+          this.submitStock();
+        }
+      }
+    }
+  },
   methods: {
     toggleEdit: function() {
       this.editMode = !this.editMode;
     },
     async loadData() {
 
-      let rawMarket, allProducts, allProductsFiltered;
+      let rawMarket;
 
       console.log('this.$route.params.id:', this.$route.params.mapsId);
 
@@ -262,6 +273,13 @@ export default {
       this.market = market;
       this.loading = {finished: true, success: true};
 
+      this.loadAllProducts();
+
+    },
+    async loadAllProducts() {
+      
+      let allProducts, allProductsFiltered;
+      
       try {
         allProducts = await this.API.loadAllProducts();
         // temporary fix until backend is cleaned up
@@ -272,7 +290,7 @@ export default {
         })
 
         allProducts = this.market.products.concat(allProducts);
-        
+
       } catch (err) {
         console.error(err);
       }
@@ -283,6 +301,33 @@ export default {
       });
 
       this.market.products = allProductsFiltered;
+      
+    },
+    async submitStock() {
+
+      let filteredProducts, result;
+
+      // filter products with no data, where the user didn't update the stock
+      filteredProducts = this.market.products.filter(product => product.availability != undefined);
+
+      // set the quantity according to the availability, because only the availability is changed by selecting a radio
+      filteredProducts.map(product => {
+        if (product.availability == 'low') {
+          product.quantity = 0;
+        } else if (product.availability == 'medium') {
+          product.quantity = 50;
+        } else {
+          product.quantity = 100;
+        }
+      })
+
+      try {
+        result = await this.API.updateMarketStock(this.market.id, filteredProducts);
+      } catch (err) {
+        console.error(err);
+      }
+
+      console.log('result:', result);
       
     },
     async loadDistance() {
@@ -358,6 +403,7 @@ export default {
     } else {
       this.loadData();
     }
+    this.loadAllProducts();
 
     // this.getCurrentPosition();
     // this.loadDistance();
