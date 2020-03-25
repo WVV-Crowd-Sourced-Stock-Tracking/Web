@@ -11,7 +11,7 @@
           }"
           class="h-10"
         >
-          <img src="/media/logo-whats_left.png" alt="WhatsLeft Logo" class="w-10 h-10 rounded" />
+          <img src="/media/WhatsleftLogo.svg" alt="WhatsLeft Logo" class="w-10 h-10 rounded" />
         </router-link>
       </div>
     </div>

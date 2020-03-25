@@ -134,7 +134,11 @@
 
     <div v-else-if="!loading.finished">
 
-      Marktinformationen werden geladen...
+      <div class="w-full rounded mt-4 p-4 bg-white">
+
+        <h1 class="text-center text-2xl">Marktinformationen werden geladen...</h1>
+          
+      </div>
 
     </div>
 
