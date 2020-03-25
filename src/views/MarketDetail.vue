@@ -61,7 +61,14 @@
             <thead class="bg-gray-100 shadow text-left text-gray-700 tracking-wide">
               <tr class="h-16">
                 <th class="w-1/2 pl-6 font-medium">Produkt</th>
-                <th class="w-1/2 pl-6 font-medium">Bestand</th>
+                <th class="w-1/2 pl-6 font-medium">
+                  <span v-if="!editMode">Bestand</span>
+                  <div v-if="editMode" class="flex flex-row justify-around text-center">
+                    <span class="inline-block w-12" style="color: #E02020">leer</span>
+                    <span class="inline-block w-12" style="color: #F7B500">wenig</span>
+                    <span class="inline-block w-12" style="color: #6DD400">viel</span>
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>
