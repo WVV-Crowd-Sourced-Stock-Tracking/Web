@@ -20,9 +20,8 @@
         <div class="flex flex-both justify-center fixed top-0 left-0 ml-4 mt-10 overflow-hidden rounded-full w-12 h-12 z-10">
             <div class="absolute w-full h-full bg-black opacity-75"></div>
             <img
-              class="opacity-100 w-3/4 h-3/4"
-              style="filter: invert(1);"
-              src="@/assets/icons/chevron-left.svg"
+              class="w-3/4 h-3/4 z-10"
+              src="@/assets/icons/Chevron_Left_White.svg"
               alt="Markt anzeigen"
             />
           </div>
@@ -63,10 +62,10 @@
                 <th class="w-1/2 pl-6 font-medium">Produkt</th>
                 <th class="w-1/2 pl-6 font-medium">
                   <span v-if="!editMode">Bestand</span>
-                  <div v-if="editMode" class="flex flex-row justify-around text-center">
-                    <span class="inline-block w-12" style="color: #E02020">leer</span>
-                    <span class="inline-block w-12" style="color: #F7B500">wenig</span>
-                    <span class="inline-block w-12" style="color: #6DD400">viel</span>
+                  <div v-if="editMode" class="flex flex-row justify-center text-center">
+                    <span class="inline-block w-12 mx-3" style="color: #E02020">leer</span>
+                    <span class="inline-block w-12 mx-3" style="color: #F7B500">wenig</span>
+                    <span class="inline-block w-12 mx-3" style="color: #6DD400">viel</span>
                   </div>
                 </th>
               </tr>
@@ -124,8 +123,8 @@
 
         <button class="fixed bottom-0 right-0 mr-5 mb-5 w-16 h-16 rounded-full focus:outline-none overflow-hidden" v-on:click="toggleEdit">
           <div class="flex flex-col justify-center w-full h-full" style="background-color: #006BAB">
-            <img v-if="editMode" src="@/assets/icons/check.svg" style="filter: invert(1)" class="m-auto w-1/2 h-1/2"/>
-            <img v-else src="@/assets/icons/edit.svg" style="filter: invert(1)" class="m-auto w-1/2 h-1/2"/>
+            <img v-if="editMode" src="@/assets/icons/Save_White.svg" class="m-auto w-1/2 h-1/2"/>
+            <img v-else src="@/assets/icons/Edit_white.svg" class="m-auto w-1/2 h-1/2"/>
           </div>
         </button>
         

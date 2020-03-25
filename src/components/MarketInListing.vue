@@ -18,7 +18,7 @@
 
         <h2>{{ name }}</h2>
         <img
-          src="@/assets/icons/chevron-right.svg"
+          src="@/assets/icons/Chevron_Right_White.svg"
           alt="Markt anzeigen"
         />
 
@@ -117,7 +117,6 @@ export default {
     top: 0;
     width: calc(var(--header-height));
     height: calc(var(--header-height));
-    filter: invert(1);
   }
   
   .card .main {
