@@ -26,16 +26,22 @@ export default {
     MarketInListing
   },
   props: {
-    userPosition: Object,
+    userPositionProp: Object,
   },
   data: () => {
     return {
       markets: [],
       rawMarkets: [],
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
+      userPosition: {lat: 0, lng: 0},
     };
   },
   watch: {
+    userPositionProp: {
+      handler: function() {
+        this.userPosition = this.userPositionProp;
+      }
+    },
     userPosition: {
       handler: function() {
 
@@ -111,6 +117,11 @@ export default {
   mounted() {
     // this.$store.commit("getCurrentPosition");
     // this.loadAll();
+    // check if userPosition has already been acquired, because in this case the watch handler doesn't fire anymore
+    if (this.userPositionProp.lat != 0 && this.userPositionProp.lng != 0) {
+      this.userPosition = {lat: this.userPositionProp.lat, lng: this.userPositionProp.lng};
+    }
+    
   }
 };
 </script>

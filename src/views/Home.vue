@@ -12,11 +12,11 @@
     </div>
 
     <Map
-      :userPosition="userPosition"
+      :userPositionProp="userPosition"
     ></Map>
 
     <Listings
-      :userPosition="userPosition"
+      :userPositionProp="userPosition"
     ></Listings>
 
   </div>
