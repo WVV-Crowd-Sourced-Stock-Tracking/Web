@@ -22,14 +22,14 @@
             <img
               class="w-3/4 h-3/4 z-10"
               src="@/assets/icons/Chevron_Left_White.svg"
-              alt="Markt anzeigen"
+              alt="Zurück"
             />
           </div>
 
       </router-link>
 
       <div class="w-full h-32">
-        <img class="w-full h-full object-cover object-center" src="/img/arch-bridge-clouds-814499.jpg" alt="Placeholder">
+        <img class="w-full h-full object-cover object-center" src="/media/items-organized-on-shelves-3687999.jpg" alt="Photo by Mehrad Vosoughi from Pexels" title="Photo by Mehrad Vosoughi from Pexels">
       </div>
 
       <div class="bg-white w-screen min-h-full h-auto">
@@ -57,7 +57,7 @@
 
         <form onsubmit="event.preventDefault();">
           <table class="relative mt-4 table-fixed w-full">
-            <thead class="bg-gray-100 shadow text-left text-gray-700 tracking-wide">
+            <thead class="bg-gray-100 opacity-75 shadow-md text-left tracking-wide">
               <tr class="h-16">
                 <th class="w-1/2 pl-6 font-medium">Produkt</th>
                 <th class="w-1/2 pl-6 font-medium">
@@ -81,7 +81,7 @@
                   </div>
                 </td>
 
-                <td v-if="editMode" class="relative h-full text-center align-middle border-b pl-6">
+                <td v-if="editMode" class="relative h-full text-center align-middle border-t pl-6">
 
                     <div class="flex flex-row justify-center h-full">
 
