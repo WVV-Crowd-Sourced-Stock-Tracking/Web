@@ -408,7 +408,8 @@ export default {
       this.loadData();
     }
     this.loadAllProducts();
-
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
     // this.getCurrentPosition();
     // this.loadDistance();
   },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="home">
 
     <vue-headful
       title="What's Left?"
@@ -36,7 +36,7 @@ export default {
 
 <style lang="scss">
 #home {
-  padding-bottom: 25px;
+  padding: 0 30px;
 }
 .traffic-light.high {
   background-color: #6dd400;
