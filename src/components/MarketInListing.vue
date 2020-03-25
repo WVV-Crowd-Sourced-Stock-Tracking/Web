@@ -83,7 +83,7 @@ export default {
     position: relative;
     margin-top: 2%;
     width: 100%;
-    height: 11rem;
+    height: 12rem;
     border-radius: 0.5rem;
     overflow: hidden;
   }
@@ -160,6 +160,13 @@ export default {
   .card .main .categories ul {
     display: flex;
     flex-direction: right;
+    flex-wrap: wrap;
+    height: 2rem;
+    overflow: hidden;
+  }
+
+  .card .main .categories ul li {
+    margin-right: 2rem;
   }
   
   .card .main .categories ul li .traffic-light {
@@ -171,10 +178,6 @@ export default {
   
   .card .main .categories ul li .label {
     margin-left: 0.5rem;
-  }
-  
-  .card .main .categories ul li {
-    margin-right: 2rem;
   }
   
   .card .main .updated {
