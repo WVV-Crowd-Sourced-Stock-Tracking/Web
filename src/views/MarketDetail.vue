@@ -79,14 +79,14 @@
 
                     <div class="flex flex-row justify-center h-full">
 
-                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[product.picked == 'low' ? '#E02020' : '#F9D2D2']">
-                        <input type="radio" v-model="product.picked" :name="'product-' + product.id" value="low" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-red-400">
+                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[product.availability == 'low' ? '#E02020' : '#F9D2D2']">
+                        <input type="radio" v-model="product.availability" :name="'product-' + product.id" value="low" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-red-400">
                       </div>
-                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[product.picked == 'medium' ? '#F7B500' : '#FDF0CC']">
-                        <input type="radio" v-model="product.picked" :name="'product-' + product.id" value="medium" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-yellow-400">
+                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[product.availability == 'medium' ? '#F7B500' : '#FDF0CC']">
+                        <input type="radio" v-model="product.availability" :name="'product-' + product.id" value="medium" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-yellow-400">
                       </div>
-                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[product.picked == 'high' ? '#6DD400' : '#E2F6CC']">
-                        <input type="radio" v-model="product.picked" :name="'product-' + product.id" value="high" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-green-400">
+                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[product.availability == 'high' ? '#6DD400' : '#E2F6CC']">
+                        <input type="radio" v-model="product.availability" :name="'product-' + product.id" value="high" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-green-400">
                       </div>
 
                     </div>
@@ -186,6 +186,38 @@ export default {
       },
     }
   },
+  computed: {
+    // use this function so keep the list sorted based on availability/quantity
+    // this probably shouldn't be a computed property, because it will reorder the elements as soon as the user selects a radio button
+    // make this a function which is called after the market and the products are loaded and also after the user submits the stock info
+    // TO USE THIS FUNCITON: just use 'productsSorted' in the v-for directive that creates the product list
+    productsSorted: function() {
+      let copy = [...this.market.products];
+      copy.sort((a, b) => {
+        if (a.availability == b.availability) {
+          return 0;
+        } else {
+          switch (a.availability) {
+            case 'high':
+              return 1;
+
+            case 'medium':
+              if (b.availability == 'low') {
+                return 1;
+              } else {
+                return -1;
+              }
+
+            case 'low':
+              return -1;
+
+          }
+        }
+      });
+      console.log('copy:', copy);
+      return copy;
+    }
+  },
   methods: {
     toggleEdit: function() {
       this.editMode = !this.editMode;
@@ -230,6 +262,7 @@ export default {
         allProducts.map(product => {
           product.name = product.product_name;
           product.id = product.product_id;
+          product.quantity = NaN; // quantity unknown
         })
 
         allProducts = this.market.products.concat(allProducts);

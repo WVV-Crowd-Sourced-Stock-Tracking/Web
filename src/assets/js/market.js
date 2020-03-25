@@ -40,6 +40,10 @@ export default class Market {
 
     products.map(product => {
       
+      // quantity is a number between 0 and 100, availability is a string
+      
+      product.quantity = product.availability;
+      
       if (product.availability >= 80) {
         product.availability = product.picked = 'high';
       } else if (product.availability < 80 && product.availability >= 30) {
