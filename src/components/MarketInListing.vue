@@ -86,17 +86,18 @@ export default {
     height: 12rem;
     border-radius: 0.5rem;
     overflow: hidden;
+    background: white;
   }
   
   .card .header {
     display: block;
-    position: absolute;
+    /* position: absolute; */
     top: 0;
     width: 100%;
-    height: var(--header-height);
-    background-color: #006bab;
+    /* height: var(--header-height); */
+    /* background-color: #006bab; */
     padding-left: 1rem;
-    color: white;
+    /* color: white; */
   }
   
   .card .header h2 {
@@ -117,6 +118,7 @@ export default {
     top: 0;
     width: calc(var(--header-height));
     height: calc(var(--header-height));
+    filter: invert(100%) sepia(54%) saturate(2882.5%) hue-rotate(351.7deg) brightness(107.5%) contrast(100.3%);
   }
   
   .card .main {
