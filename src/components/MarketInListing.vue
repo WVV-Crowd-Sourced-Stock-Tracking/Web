@@ -81,7 +81,7 @@ export default {
   .card {
     display: block;
     position: relative;
-    margin-top: 2%;
+    margin-top: 1rem;
     width: 100%;
     height: 12rem;
     border-radius: 0.5rem;
@@ -124,7 +124,7 @@ export default {
     top: var(--header-height);
     width: 100%;
     height: calc(100% - var(--header-height));
-    padding: 3%;
+    padding: 1rem;
     background-color: white;
     line-height: 2rem;
   }
