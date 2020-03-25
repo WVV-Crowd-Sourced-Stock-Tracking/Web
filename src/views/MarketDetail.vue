@@ -28,7 +28,7 @@
 
       </router-link>
 
-      <div class="w-screen h-32">
+      <div class="w-full h-32">
         <img class="w-full h-full object-cover object-center" src="/img/arch-bridge-clouds-814499.jpg" alt="Placeholder">
       </div>
 

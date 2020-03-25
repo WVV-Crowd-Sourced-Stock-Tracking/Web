@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="container h-full m-0 p-0 bg-100">
+  <div id="app" class="h-full m-0 p-0 bg-100">
     <router-view 
       :userPosition= "this.userPosition"
     />
