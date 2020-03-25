@@ -41,11 +41,11 @@ export default class Market {
     products.map(product => {
       
       if (product.availability >= 80) {
-        product.availability = 'high';
+        product.availability = product.picked = 'high';
       } else if (product.availability < 80 && product.availability >= 30) {
-        product.availability = 'medium';
+        product.availability = product.picked = 'medium';
       } else {
-        product.availability = 'low';
+        product.availability = product.picked = 'low';
       }
       
     });

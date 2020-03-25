@@ -66,12 +66,12 @@
             </thead>
             <tbody>
               <tr
-                v-for="item in market.products"
-                :key="item.name"
+                v-for="product in market.products"
+                :key="product.name"
               >
                 <td class="relative h-16 text-left align-middle border-t pl-6">
                   <div class="inline-block font-bold text-gray-800">
-                    {{ item.name }}
+                    {{ product.name }}
                   </div>
                 </td>
 
@@ -79,14 +79,14 @@
 
                     <div class="flex flex-row justify-center h-full">
 
-                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[item.picked == 'low' ? '#E02020' : '#F9D2D2']">
-                        <input type="radio" v-model="item.picked" :name="'product-' + item.id" value="low" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-red-400">
+                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[product.picked == 'low' ? '#E02020' : '#F9D2D2']">
+                        <input type="radio" v-model="product.picked" :name="'product-' + product.id" value="low" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-red-400">
                       </div>
-                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[item.picked == 'medium' ? '#F7B500' : '#FDF0CC']">
-                        <input type="radio" v-model="item.picked" :name="'product-' + item.id" value="medium" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-yellow-400">
+                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[product.picked == 'medium' ? '#F7B500' : '#FDF0CC']">
+                        <input type="radio" v-model="product.picked" :name="'product-' + product.id" value="medium" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-yellow-400">
                       </div>
-                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[item.picked == 'high' ? '#6DD400' : '#E2F6CC']">
-                        <input type="radio" v-model="item.picked" :name="'product-' + item.id" value="high" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-green-400">
+                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[product.picked == 'high' ? '#6DD400' : '#E2F6CC']">
+                        <input type="radio" v-model="product.picked" :name="'product-' + product.id" value="high" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-green-400">
                       </div>
 
                     </div>
@@ -95,16 +95,16 @@
                 <td v-else class="relative h-full border-t text-left pl-6">
 
                   <div class="inline-block h-4 w-4 rounded-full overflow-hidden align-text-bottom">
-                    <div v-if="item.availability === 'high'" class="w-full h-full bg-green-500"></div>
-                    <div v-else-if="item.availability === 'medium'" class="w-full h-full bg-yellow-500"></div>
-                    <div v-else-if="item.availability === 'low'" class="w-full h-full bg-red-500"></div>
+                    <div v-if="product.availability === 'high'" class="w-full h-full bg-green-500"></div>
+                    <div v-else-if="product.availability === 'medium'" class="w-full h-full bg-yellow-500"></div>
+                    <div v-else-if="product.availability === 'low'" class="w-full h-full bg-red-500"></div>
                     <div v-else class="w-full h-full bg-gray-600"></div>
                   </div>
 
                   <div class="inline-block ml-4">
-                    <span v-if="item.availability === 'high'">verfügbar</span>
-                    <span v-else-if="item.availability === 'medium'">fast ausverkauft</span>
-                    <span v-else-if="item.availability === 'low'">ausverkauft</span>
+                    <span v-if="product.availability === 'high'">verfügbar</span>
+                    <span v-else-if="product.availability === 'medium'">fast ausverkauft</span>
+                    <span v-else-if="product.availability === 'low'">ausverkauft</span>
                     <span v-else>sorry, keine Daten...</span>
                   </div>
 
