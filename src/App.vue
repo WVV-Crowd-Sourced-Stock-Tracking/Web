@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="h-full m-0 p-0 bg-100">
+  <div id="app">
     <router-view 
       :userPosition="userPosition"
     />
@@ -92,41 +92,17 @@ export default {
 </script>
 
 <style>
+
 :root {
   --header-height: 2.5rem;
 }
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-html,
+
 body {
-  font-size: 1em;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  font-family: Arial, Helvetica, sans-serif;
   background-color: #e5e5e5;
-}
-#app {
-  background-color: #e5e5e5;
-  height: auto;
-  padding-bottom: 50px;
 }
 
 #home {
-  padding-bottom: 25px;
-}
-.traffic-light.high {
-  background-color: #6dd400;
-}
-.traffic-light.medium {
-  background-color: #f7b500;
-}
-.traffic-light.low {
-  background-color: #e02020;
+  padding-bottom: 5rem;
 }
 
 /*
