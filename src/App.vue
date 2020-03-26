@@ -27,33 +27,31 @@ export default {
   },
   methods: {
     getCurrentPosition() {
-      return new Promise((resolve, reject) => {
       
-        if (!navigator.geolocation) {
-          
-          console.error('Geolocation is not supported by your browser');
-          this.getZip('browser');
+      if (!navigator.geolocation) {
+        
+        console.error('Geolocation is not supported by your browser');
+        this.getZip('browser');
 
-        } else {
-          console.log('Locating…');
+      } else {
+        console.log('Locating…');
 
-          navigator.geolocation.watchPosition(position => {
+        navigator.geolocation.watchPosition(position => {
 
-            console.log(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
-            // alert(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
+          console.log(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
+          // alert(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
 
-            resolve({lat: position.coords.latitude, lng: position.coords.longitude});
-          
-          }, err => {
+          this.userPosition = {lat: position.coords.latitude, lng: position.coords.longitude};
+        
+        }, err => {
 
-            console.error(`Couldn't acces user's position:`, err.message);
-            this.getZip('user');
-            reject({lat: 0, lng: 0});
+          console.error(`Couldn't acces user's position:`, err.message);
+          this.getZip('user');
+          this.userPosition = {lat: 0, lng: 0};
 
-          });
-              
-        }
-      })  
+        });
+            
+      }
     },
     getZip(reason) {
 
@@ -69,14 +67,7 @@ export default {
   },
   mounted() {
     // this.$store.commit("getCurrentPosition");
-    this.getCurrentPosition()
-    .then(position => {
-      console.log('position:', position);
-      this.userPosition = position;
-    })
-    .catch(err => {
-      console.error(err);
-    })
+    this.getCurrentPosition();
 
   }
 

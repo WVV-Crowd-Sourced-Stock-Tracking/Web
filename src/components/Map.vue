@@ -6,8 +6,8 @@
       <div id="map" class="w-full h-40">
         <!-- Content inside of the div#map will be overwritten once the map is loaded -->
 
-        <div class="w-full h-full text-xl text-center pt-12">
-          Warte auf GPS-Daten...
+        <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
+          Karte wird geladen...
         </div>
         
       </div>
@@ -37,20 +37,20 @@ export default {
       homeMarker: {},
       mapMarkers: [],
       radius: 2000,
+      mapInitiated: false,
       zoomedToUserPosition: false,
     };
   },
   watch: {
     userPositionProp: function() {
-      console.log('jhlglgklg');
       this.userPosition = this.userPositionProp;
     },
     userPosition: {
       handler: function(newPosition) {
 
-        if (!this.zoomedToUserPosition) {
+        if (!this.zoomedToUserPosition && this.mapInitiated) {
           
-          if (this.homeMarker != undefined) {
+          if (this.homeMarker.setMap != undefined) {
             this.homeMarker.setMap(null);
           }
           
@@ -63,6 +63,8 @@ export default {
           this.center = newPosition;
 
           this.panToPosition();
+
+          this.zoomedToUserPosition = true;
           
         }
 
@@ -120,7 +122,7 @@ export default {
         this.loadAll()
         .then(markets => {
 
-          console.log('markegasdgadsts:', markets);
+          console.log('markets:', markets);
 
           this.mapMarkers.forEach(marker => {
             marker.setMap(null);
@@ -184,7 +186,8 @@ export default {
         title: 'Dein Standort',
       })
 
-      this.panToPosition();
+      // this.panToPosition();
+      this.mapInitiated = true;
 
     },
     async loadAll() {
