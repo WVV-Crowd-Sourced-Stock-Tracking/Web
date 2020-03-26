@@ -40,7 +40,9 @@ export default {
   watch: {
     userPositionProp: {
       handler: function() {
-        this.userPosition = this.userPositionProp;
+        if (this.userPosition.lat != this.userPositionProp.lat || this.userPosition.lng != this.userPositionProp.lng) {
+          this.userPosition = this.userPositionProp;
+        }
       }
     },
     userPosition: {
