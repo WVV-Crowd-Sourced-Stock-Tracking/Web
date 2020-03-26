@@ -26,27 +26,15 @@ export default {
   components: {
     MarketInListing
   },
-  props: {
-    // userPositionProp: Object,
-  },
   data: function() {
     return {
       loaded: false,
       markets: [],
       rawMarkets: [],
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      // userPosition: this.userPositionProp,
-      // center: {},
     };
   },
   watch: {
-    // userPositionProp: {
-    //   handler: function() {
-    //     if (this.userPosition.lat != this.userPositionProp.lat || this.userPosition.lng != this.userPositionProp.lng) {
-    //       this.userPosition = this.userPositionProp;
-    //     }
-    //   }
-    // },
     center: {
       handler: function() {
         
@@ -101,10 +89,7 @@ export default {
     }
   },
   mounted() {
-    // check if userPosition has already been acquired, because in this case the watch handler doesn't fire anymore
-    // if (this.userPositionProp.lat != 0 && this.userPositionProp.lng != 0) {
-    //   this.userPosition = {lat: this.userPositionProp.lat, lng: this.userPositionProp.lng};
-    // }
+    
     if (!this.loaded) {
       this.loadRawMarkets();
     }

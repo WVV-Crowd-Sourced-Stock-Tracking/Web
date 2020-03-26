@@ -27,8 +27,6 @@ export default {
     userPosition: {
       handler: function(newUserPosition) {
 
-        console.log('this.initiatedCenter:', this.initiatedCenter);
-
         if (!this.initiatedCenter) {
 
           this.$store.dispatch('updateCenter', newUserPosition);
@@ -87,9 +85,7 @@ export default {
     },
   },
   mounted() {
-    // this.$store.commit("getCurrentPosition");
     this.getCurrentPosition();
-
   }
 
 };

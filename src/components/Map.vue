@@ -3,22 +3,23 @@
     <div class="bg-white">
       <div class="font-bold text-xl px-4 py-2 shadow-lg">Karte</div>
       
-      <div id="map" class="w-full h-40">
+      <div class="w-full h-40">
         <!-- Content inside of the div#map will be overwritten once the map is loaded -->
+
+        <div v-show="mapInitiated" id="map" class="w-full h-full"></div>
 
         <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
           Karte wird geladen...
         </div>
 
       </div>
-        
+
     </div>
   </div>
 </template>
 
 <script>
 //TODO exchange loadingMessage for LoadingIndicator component combined with v-if
-// import { gmapApi } from "vue2-google-maps";
 import Market from "../assets/js/market";
 import API from "../assets/js/api";
 
@@ -43,6 +44,8 @@ export default {
   watch: {
     map: {
       handler: function() {
+
+        this.updatedMarkersOnMap();
         // pan and zoom to current center after map is loaded
         this.panToCenter();
       
@@ -65,8 +68,6 @@ export default {
             map: this.map,
             title: 'Dein Standort',
           })
-
-          // this.center = newPosition;
 
           // this.panToCenter();
 
@@ -123,12 +124,8 @@ export default {
       }
     },
     center: {
-      handler: function(newCenter) {
-
-        console.log('newCenter:', newCenter);
-        
+      handler: function() {
         this.updatedMarkersOnMap();
-        
       }
     }
   },
@@ -166,7 +163,13 @@ export default {
           fullscreenControl: true
       });
 
-      this.mapInitiated = true;
+      this.map.addListener('projection_changed', () => {
+        this.mapInitiated = true;
+      })
+
+      this.map.addListener('tilesloaded', () => {
+        // visible map tiles have been *fully* loaded
+      })
 
       this.map.addListener('zoom_changed', () => {
         this.zoom = this.map.getZoom();
@@ -175,7 +178,6 @@ export default {
       // reload markets in the vicinity when the user drags the map
       this.map.addListener('dragend', () => {
         this.$store.dispatch('updateCenter', {lat: this.map.center.lat(), lng: this.map.center.lng()});
-        // this.center = ;
       })
 
       this.homeMarker = new window.google.maps.Marker({
@@ -183,8 +185,6 @@ export default {
         map: this.map,
         title: 'Dein Standort',
       })
-
-      this.updatedMarkersOnMap();
 
     },
     updatedMarkersOnMap() {
@@ -208,7 +208,7 @@ export default {
             })
           )
         });
-        
+
       })
       .catch(err => {
         console.error(err);
@@ -258,7 +258,6 @@ export default {
       this.map.panTo(this.center);
       this.zoom = 14;
       this.map.setZoom(this.zoom);
-      // this.center = this.userPosition;
       
     }
   },
