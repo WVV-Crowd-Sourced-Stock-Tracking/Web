@@ -29,12 +29,13 @@ export default {
   props: {
     userPositionProp: Object,
   },
-  data: () => {
+  data: function() {
     return {
       markets: [],
       rawMarkets: [],
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      userPosition: {lat: 0, lng: 0},
+      userPosition: this.userPositionProp,
+      center: {},
     };
   },
   watch: {
@@ -45,10 +46,10 @@ export default {
         }
       }
     },
-    userPosition: {
-      handler: function() {
+    center: {
+      handler: function(newCenter) {
 
-        this.API.loadMarkets(this.userPosition.lat, this.userPosition.lng, 2000).then(rawMarkets => {
+        this.API.loadMarkets(newCenter.lat, newCenter.lng, 2000).then(rawMarkets => {
           console.log('rawMarkets:', rawMarkets);
           this.rawMarkets = rawMarkets;
         })
@@ -125,6 +126,9 @@ export default {
     if (this.userPositionProp.lat != 0 && this.userPositionProp.lng != 0) {
       this.userPosition = {lat: this.userPositionProp.lat, lng: this.userPositionProp.lng};
     }
+
+    // update center to invoke handler function
+    this.center = this.userPositionProp;
     
   }
 };
