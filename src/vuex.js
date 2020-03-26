@@ -5,10 +5,11 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     center: {
-      lat: 0,
-      lng: 0,
+      lat: NaN,
+      lng: NaN,
     },
     radius: 2000,
+    mapsScriptLoaded: false,
   },
   mutations: {
     SET_CENTER_POSITION(state, newCenter) {
@@ -16,6 +17,9 @@ export const store = new Vuex.Store({
     },
     SET_RADIUS(state, newRadius) {
       state.radius = newRadius;
+    },
+    SET_MAPS_SCRIPT_LOADED(state, loaded) {
+      state.mapsScriptLoaded = loaded;
     }
   },
   actions: {
@@ -24,6 +28,9 @@ export const store = new Vuex.Store({
     },
     updateRadius(context, newRadius) {
       context.commit('SET_RADIUS', newRadius);
+    },
+    mapsScriptLoaded(context) {
+      context.commit('SET_MAPS_SCRIPT_LOADED', true)
     }
   },
   getters: {
@@ -32,6 +39,9 @@ export const store = new Vuex.Store({
     },
     radius: state => {
       return state.radius;
+    },
+    mapsScriptLoaded: state => {
+      return state.mapsScriptLoaded;
     }
   }
 

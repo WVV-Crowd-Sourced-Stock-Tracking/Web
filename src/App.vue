@@ -18,7 +18,6 @@ export default {
         lat: 52.5204579,
         lng: 13.3885896
       },
-      initiatedCenter: false,
     }
   },
   watch: {
@@ -28,18 +27,23 @@ export default {
     userPosition: {
       handler: function(newUserPosition) {
 
+        console.log('this.initiatedCenter:', this.initiatedCenter);
+
         if (!this.initiatedCenter) {
 
-          console.log('Initiated center to user position');
-
           this.$store.dispatch('updateCenter', newUserPosition);
-          this.initiatedCenter = true;
+          console.log('Initiated center to user position');
           
         } else {
-          // console.log('center has already been initiated...')
+          console.log('center has already been initiated...')
         }
 
       }
+    }
+  },
+  computed: {
+    initiatedCenter: function() {
+      return (!isNaN(this.$store.getters.center.lat) && !isNaN(this.$store.getters.center.lng));
     }
   },
   methods: {

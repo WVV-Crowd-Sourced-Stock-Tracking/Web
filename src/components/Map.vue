@@ -9,9 +9,9 @@
         <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
           Karte wird geladen...
         </div>
-        
-      </div>
 
+      </div>
+        
     </div>
   </div>
 </template>
@@ -28,6 +28,8 @@ export default {
   },
   data() {
     return {
+      loaded: false,
+      mapInitiated: false,
       userPosition: this.userPositionProp,
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
       // center: this.userPositionProp,
@@ -35,11 +37,17 @@ export default {
       map: {},
       homeMarker: {},
       mapMarkers: [],
-      mapInitiated: false,
       zoomedToUserPosition: false,
     };
   },
   watch: {
+    map: {
+      handler: function() {
+        // pan and zoom to current center after map is loaded
+        this.panToCenter();
+      
+      }
+    },
     userPositionProp: function() {
       this.userPosition = this.userPositionProp;
     },
@@ -60,7 +68,7 @@ export default {
 
           // this.center = newPosition;
 
-          // this.panToPosition();
+          // this.panToCenter();
 
           this.zoomedToUserPosition = true;
           
@@ -119,30 +127,7 @@ export default {
 
         console.log('newCenter:', newCenter);
         
-        this.loadAll()
-        .then(markets => {
-
-          console.log('markets:', markets);
-
-          this.mapMarkers.forEach(marker => {
-            marker.setMap(null);
-          })
-
-          this.mapMarkers = [];
-
-          markets.forEach(market => {
-            this.mapMarkers.push(
-              new window.google.maps.Marker({
-                position: {lat: market.lat, lng: market.lng},
-                map: this.map,
-              })
-            )
-          });
-          
-        })
-        .catch(err => {
-          console.error(err);
-        })
+        this.updatedMarkersOnMap();
         
       }
     }
@@ -153,6 +138,9 @@ export default {
     },
     radius: function() {
       return this.$store.getters.radius;
+    },
+    loadedScript: function() {
+      return this.$store.getters.mapsScriptLoaded;
     }
   },
   methods: {
@@ -164,8 +152,10 @@ export default {
     },
     initMap() {
 
+      this.$store.dispatch('mapsScriptLoaded');
+
       this.map = new window.google.maps.Map(document.getElementById('map'), {
-          center: this.userPosition,
+          center: this.center,
           zoom: this.zoom,
           gestureHandling: 'greedy',
           // zoomControl: false, == default (only show in fullscreen)
@@ -174,7 +164,9 @@ export default {
           streetViewControl: false,
           rotateControl: false,
           fullscreenControl: true
-        });
+      });
+
+      this.mapInitiated = true;
 
       this.map.addListener('zoom_changed', () => {
         this.zoom = this.map.getZoom();
@@ -192,17 +184,42 @@ export default {
         title: 'Dein Standort',
       })
 
-      this.mapInitiated = true;
+      this.updatedMarkersOnMap();
 
-      this.panToPosition();
+    },
+    updatedMarkersOnMap() {
+      
+      this.loadAll()
+      .then(markets => {
 
+        console.log('markets:', markets);
+
+        this.mapMarkers.forEach(marker => {
+          marker.setMap(null);
+        })
+
+        this.mapMarkers = [];
+
+        markets.forEach(market => {
+          this.mapMarkers.push(
+            new window.google.maps.Marker({
+              position: {lat: market.lat, lng: market.lng},
+              map: this.map,
+            })
+          )
+        });
+        
+      })
+      .catch(err => {
+        console.error(err);
+      })
+      
     },
     async loadAll() {
       return new Promise((resolve, reject) => {
       
         let markets = [];
 
-        console.log('this.radius:', this.radius);
         this.API.loadMarkets(this.center.lat, this.center.lng, this.radius)
         .then(rawMarkets => {
 
@@ -236,9 +253,9 @@ export default {
 
       })
     },
-    panToPosition() {
+    panToCenter() {
 
-      this.map.panTo(this.userPosition);
+      this.map.panTo(this.center);
       this.zoom = 14;
       this.map.setZoom(this.zoom);
       // this.center = this.userPosition;
@@ -251,7 +268,11 @@ export default {
         this.userPosition = {lat: this.userPositionProp.lat, lng: this.userPositionProp.lng};
       }
 
-      this.loadScript();
+      if (!this.loadedScript) {
+        this.loadScript();
+      } else {
+        this.initMap();
+      }
       
     }
 };

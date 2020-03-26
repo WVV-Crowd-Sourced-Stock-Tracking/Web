@@ -9,8 +9,6 @@ export default class API {
   loadMarkets(lat, lng, radius) {
     return new Promise((resolve, reject) => {
 
-      console.log('JSON.stringify({ gps_width: lat, gps_length: lng, radius: radius, }):', JSON.stringify({ gps_width: lat, gps_length: lng, radius: radius, }));
-      
         fetch(this.baseUrl + `/market/scrape`, {
           mode: 'cors',
           method: 'POST',
