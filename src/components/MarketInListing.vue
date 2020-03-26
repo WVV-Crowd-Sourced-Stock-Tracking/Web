@@ -78,6 +78,17 @@ export default {
 </script>
 
 <style scoped>
+
+  .traffic-light.high {
+    background-color: #6dd400;
+  }
+  .traffic-light.medium {
+    background-color: #f7b500;
+  }
+  .traffic-light.low {
+    background-color: #e02020;
+  }
+
   .card {
     display: block;
     position: relative;

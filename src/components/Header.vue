@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="flex flex-row w-full items-center bg-white shadow-md rounded"
+    class="flex flex-row w-full items-center bg-white shadow-md"
   >
     <div class="w-1/2 flex items-center flex-shrink-0 p-1">
       <!-- <span class="font-semibold text-xl tracking-tight">Logo</span> -->
