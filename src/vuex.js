@@ -3,26 +3,36 @@ import Vuex from "vuex";
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
-    state: {
-      userPosition: {lat: 0, lng: 0}
+  state: {
+    center: {
+      lat: 0,
+      lng: 0,
     },
-    mutations: {
-
-        getCurrentPosition(state) {
-            if (!navigator.geolocation) {
-            console.error('Geolocation is not supported by your browser');
-            } else {
-                console.log('Locating…');
-                navigator.geolocation.getCurrentPosition(position => {
-                    state.userPosition = {lat: position.coords.latitude, lng: position.coords.longitude};
-                })
-            }
-        }
+    radius: 2000,
+  },
+  mutations: {
+    SET_CENTER_POSITION(state, newCenter) {
+      state.center = newCenter;
     },
-    getters: {
-        userPosition: state => {
-            return state.userPosition;
-        }
+    SET_RADIUS(state, newRadius) {
+      state.radius = newRadius;
     }
+  },
+  actions: {
+    updateCenter(context, newCenter) {
+      context.commit('SET_CENTER_POSITION', newCenter);
+    },
+    updateRadius(context, newRadius) {
+      context.commit('SET_RADIUS', newRadius);
+    }
+  },
+  getters: {
+    center: state => {
+      return state.center;
+    },
+    radius: state => {
+      return state.radius;
+    }
+  }
 
 })

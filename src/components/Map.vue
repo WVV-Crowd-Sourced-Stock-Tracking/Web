@@ -30,12 +30,11 @@ export default {
     return {
       userPosition: this.userPositionProp,
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      center: this.userPositionProp,
+      // center: this.userPositionProp,
       zoom: 4,
       map: {},
       homeMarker: {},
       mapMarkers: [],
-      radius: 2000,
       mapInitiated: false,
       zoomedToUserPosition: false,
     };
@@ -59,9 +58,9 @@ export default {
             title: 'Dein Standort',
           })
 
-          this.center = newPosition;
+          // this.center = newPosition;
 
-          this.panToPosition();
+          // this.panToPosition();
 
           this.zoomedToUserPosition = true;
           
@@ -72,45 +71,47 @@ export default {
     zoom: {
       handler: function(newZoomLevel) {
 
+        let newRadius;
+
         switch (newZoomLevel) {
           case 11:
-            this.radius = 14000;
+            newRadius = 14000;
             break;
           case 12:
-            this.radius = 7000;
+            newRadius = 7000;
             break;
           case 13:
-            this.radius = 3500;
+            newRadius = 3500;
             break;
           case 14:
-            this.radius = 1400;
+            newRadius = 1400;
             break;
           case 15:
-            this.radius = 700;
+            newRadius = 700;
             break;
           case 16:
-            this.radius = 350;
+            newRadius = 350;
             break;
           case 17:
-            this.radius = 140;
+            newRadius = 140;
             break;
           case 18:
-            this.radius = 70;
+            newRadius = 70;
             break;
           case 19:
-            this.radius = 35;
+            newRadius = 35;
             break;
           case 20:
-            this.radius = 14;
+            newRadius = 14;
             break;
         
           default:
-            this.radius = 15000;
+            newRadius = 15000;
             break;
         }
 
-        console.log('this.radius:', this.radius);
-        
+        this.$store.dispatch('updateRadius', newRadius);
+
       }
     },
     center: {
@@ -146,9 +147,14 @@ export default {
       }
     }
   },
-  // computed: {
-  //   google: gmapApi
-  // },
+  computed: {
+    center: function() {
+      return this.$store.getters.center;
+    },
+    radius: function() {
+      return this.$store.getters.radius;
+    }
+  },
   methods: {
     loadScript() {
       let mapsApiScript = document.createElement('script');
@@ -176,7 +182,8 @@ export default {
 
       // reload markets in the vicinity when the user drags the map
       this.map.addListener('dragend', () => {
-        this.center = {lat: this.map.center.lat(), lng: this.map.center.lng()};
+        this.$store.dispatch('updateCenter', {lat: this.map.center.lat(), lng: this.map.center.lng()});
+        // this.center = ;
       })
 
       this.homeMarker = new window.google.maps.Marker({
@@ -185,8 +192,9 @@ export default {
         title: 'Dein Standort',
       })
 
-      // this.panToPosition();
       this.mapInitiated = true;
+
+      this.panToPosition();
 
     },
     async loadAll() {
@@ -194,9 +202,8 @@ export default {
       
         let markets = [];
 
-        console.log('this.center:', this.center);
-
-        this.API.loadMarkets(this.center.lat, this.center.lng, 2000)
+        console.log('this.radius:', this.radius);
+        this.API.loadMarkets(this.center.lat, this.center.lng, this.radius)
         .then(rawMarkets => {
 
           console.log('rawMarkets:', rawMarkets);
@@ -234,7 +241,7 @@ export default {
       this.map.panTo(this.userPosition);
       this.zoom = 14;
       this.map.setZoom(this.zoom);
-      this.center = this.userPosition;
+      // this.center = this.userPosition;
       
     }
   },

@@ -18,11 +18,28 @@ export default {
         lat: 52.5204579,
         lng: 13.3885896
       },
+      initiatedCenter: false,
     }
   },
   watch: {
     '$route' (to) {
       document.title = to.meta.title || 'Your Website'
+    },
+    userPosition: {
+      handler: function(newUserPosition) {
+
+        if (!this.initiatedCenter) {
+
+          console.log('Initiated center to user position');
+
+          this.$store.dispatch('updateCenter', newUserPosition);
+          this.initiatedCenter = true;
+          
+        } else {
+          // console.log('center has already been initiated...')
+        }
+
+      }
     }
   },
   methods: {
