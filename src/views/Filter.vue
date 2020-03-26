@@ -13,11 +13,14 @@
         </label>
       </div>
     </div>
-    <button
+    <router-link
+      :to="{
+          name: 'Home',
+        }"
       class="bg-blue-500 hover:bg-blue-400 w-full text-white py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
     >
       Supermärkte anzeigen
-    </button>
+    </router-link>
     <div class="w-full flex content-center flex-wrap">
       <a
         @click="this.uncheckAll()"

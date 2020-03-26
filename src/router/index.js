@@ -27,10 +27,10 @@ const routes = [
   },
   {
     path: "/filter",
-    name: "ProductFilter",
+    name: "Filter",
     component: Filter,
     props: true
-  }
+  },
   // 404, leave this as last route!!!
   {
     path: '/*',
