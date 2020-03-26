@@ -26,90 +26,74 @@ export default {
   components: {
     MarketInListing
   },
-  data: () => {
+  data: function() {
     return {
+      loaded: false,
       markets: [],
+      rawMarkets: [],
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
     };
   },
-  methods: {
-    async loadAll() {
-      let rawMarkets;
-      let markets = [];
+  watch: {
+    center: {
+      handler: function() {
+        
+        console.log('center updated');
+        this.loaded = true;
 
-      rawMarkets = await this.API.loadMarkets(this.userPosition.lat, this.userPosition.lng, 2000);
-      console.log('rawMarkets:', rawMarkets);
-      // rawMarkets = (
-      //   await this.axios.get(`http://${window.location.hostname}:3000/markets`)
-      // ).data;
-
-      rawMarkets.forEach(rawMarket => {
-        markets.push(
-          new Market(
-            rawMarket.id,
-            rawMarket.name,
-            rawMarket.city,
-            rawMarket.street,
-            rawMarket.lat,
-            rawMarket.lng,
-            rawMarket.distance,
-            rawMarket.open,
-            rawMarket.products,
-            rawMarket.mapsId,
-            rawMarket.zip,
-          )
-        );
-      });
-
-      if (rawMarkets.length != markets.length) {
-        throw new Error(`Conversion from raw to parsed markets failed!`);
+        this.loadRawMarkets();
+        
       }
-
-      console.log('markets:', markets);
-
-      this.markets = markets;
     },
-    async getCurrentPosition() {
-      
-        if (!navigator.geolocation) {
-          console.error('Geolocation is not supported by your browser');
-        } else {
-          console.log('Locating…');
-          let position;
+    rawMarkets: {
+      handler: function(newRawMarkets) {
 
-          try {
-            position = await (async () => {
-              return new Promise((resolve, reject) => {
-              
-                navigator.geolocation.getCurrentPosition(position => {
+        this.markets = [];
 
-                console.log('user lat:', position.coords.latitude);
-                console.log('user lng:', position.coords.longitude);
+        newRawMarkets.forEach(rawMarket => {
+          this.markets.push(
+            new Market(
+              rawMarket.id,
+              rawMarket.name,
+              rawMarket.city,
+              rawMarket.street,
+              rawMarket.lat,
+              rawMarket.lng,
+              rawMarket.distance,
+              rawMarket.open,
+              rawMarket.products,
+              rawMarket.mapsId
+            )
+          );
+        });
+        
+      }
+    }
+  },
+  computed: {
+    center: function() {
+      return this.$store.getters.center;
+    },
+    radius: function() {
+      return this.$store.getters.radius;
+    }
+  },
+  methods: {
+    loadRawMarkets() {
 
-                resolve({lat: position.coords.latitude, lng: position.coords.longitude});
-                
-              }, err => {
-                console.error(`Couldn't acces user's position:`, err);
-                reject({lat: 0, lng: 0});
-              });
-              
-              })
-            })();
-          } catch (err) {
-            console.error(err);
-          }
-
-          this.userPosition = position;
-          this.loadAll();
-          
-        }
+      this.API.loadMarkets(this.center.lat, this.center.lng, this.radius).then(rawMarkets => {
+          console.log('rawMarkets:', rawMarkets);
+          this.rawMarkets = rawMarkets;
+        })
       
     }
   },
   mounted() {
-    // this.$store.commit("getCurrentPosition");
-    // this.loadAll();
-    this.getCurrentPosition();
+    
+    if (!this.loaded) {
+      this.loadRawMarkets();
+    }
+    
   }
 };
 </script>
