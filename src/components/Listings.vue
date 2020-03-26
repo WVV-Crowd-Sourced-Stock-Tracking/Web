@@ -17,9 +17,9 @@
 
 <script>
 // import Market from "./Market.vue";
-import MarketInListing from "./MarketInListing.vue";
-import Market from "../assets/js/market";
-import API from "../assets/js/api";
+import MarketInListing from "@/components/MarketInListing.vue";
+import Market from "@/assets/js/market";
+import API from "@/assets/js/api";
 
 export default {
   name: "Listing",

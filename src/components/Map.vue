@@ -24,8 +24,8 @@
 
 <script>
 //TODO exchange loadingMessage for LoadingIndicator component combined with v-if
-import Market from "../assets/js/market";
-import API from "../assets/js/api";
+import Market from "@/assets/js/market";
+import API from "@/assets/js/api";
 
 export default {
   props: {
