@@ -30,7 +30,6 @@ export default {
     return {
       userPosition: this.userPositionProp,
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      // Berlin as Center :D
       center: this.userPositionProp,
       zoom: 4,
       map: {},

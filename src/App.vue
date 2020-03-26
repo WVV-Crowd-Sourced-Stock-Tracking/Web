@@ -63,6 +63,17 @@ export default {
         // user didn't provide zip
       }
       
+    },
+    getZip(reason) {
+
+      let promptReasonString = reason == 'browser' ? `Sorry, dein Browser unterstützt keine Standortabfragen.` : `Kein Live-Standort, alles klar.`;
+      let zip = prompt(`${promptReasonString} Dann bräuchten wir deine Postleitzahl, um dir trotzdem relevante Infos anzuzeigen:`);
+      if (zip != null && zip != '') {
+        // user provided zip
+      } else {
+        // user didn't provide zip
+      }
+      
     }
   },
   mounted() {
