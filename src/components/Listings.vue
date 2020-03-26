@@ -4,11 +4,13 @@
       :key="index"
       v-for="(market, index) in markets"
       :id="market.id"
+      :mapsId="market.mapsId"
       :name="market.name"
       :address="market.address"
       :distance="market.distance"
       :status="market.status"
       :mainProducts="market.products"
+      :zip="market.zip"
     ></MarketInListing>
   </div>
 </template>
@@ -24,52 +26,74 @@ export default {
   components: {
     MarketInListing
   },
-  data: () => {
+  data: function() {
     return {
+      loaded: false,
       markets: [],
+      rawMarkets: [],
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
     };
   },
-  methods: {
-    async loadAll() {
-      let rawMarkets;
-      let markets = [];
+  watch: {
+    center: {
+      handler: function() {
+        
+        console.log('center updated');
+        this.loaded = true;
 
-      rawMarkets = await this.API.loadMarkets(this.$store.state.userPosition.lat, this.$store.state.userPosition.lng, 2000);
-      console.log('rawMarkets:', rawMarkets);
-      // rawMarkets = (
-      //   await this.axios.get(`http://${window.location.hostname}:3000/markets`)
-      // ).data;
-
-      rawMarkets.forEach(rawMarket => {
-        markets.push(
-          new Market(
-            rawMarket.id,
-            rawMarket.name,
-            rawMarket.city,
-            rawMarket.street,
-            rawMarket.lat,
-            rawMarket.lng,
-            rawMarket.distance,
-            rawMarket.open,
-            rawMarket.products
-          )
-        );
-      });
-
-      if (rawMarkets.length != markets.length) {
-        throw new Error(`Conversion from raw to parsed markets failed!`);
+        this.loadRawMarkets();
+        
       }
-
-      this.markets = markets;
     },
+    rawMarkets: {
+      handler: function(newRawMarkets) {
 
-    addItem() {}
+        this.markets = [];
+
+        newRawMarkets.forEach(rawMarket => {
+          this.markets.push(
+            new Market(
+              rawMarket.id,
+              rawMarket.name,
+              rawMarket.city,
+              rawMarket.street,
+              rawMarket.lat,
+              rawMarket.lng,
+              rawMarket.distance,
+              rawMarket.open,
+              rawMarket.products,
+              rawMarket.mapsId
+            )
+          );
+        });
+        
+      }
+    }
+  },
+  computed: {
+    center: function() {
+      return this.$store.getters.center;
+    },
+    radius: function() {
+      return this.$store.getters.radius;
+    }
+  },
+  methods: {
+    loadRawMarkets() {
+
+      this.API.loadMarkets(this.center.lat, this.center.lng, this.radius).then(rawMarkets => {
+          console.log('rawMarkets:', rawMarkets);
+          this.rawMarkets = rawMarkets;
+        })
+      
+    }
   },
   mounted() {
-    console.log('test:');
-    this.$store.commit("getCurrentPosition");
-    this.loadAll();
+    
+    if (!this.loaded) {
+      this.loadRawMarkets();
+    }
+    
   }
 };
 </script>

@@ -1,61 +1,93 @@
 <template>
-  <div id="app" class="container h-full mx-auto px-4 bg-100">
-    <Header />
+  <div id="app" class="h-full m-0 p-0 bg-100">
     <router-view 
-      :userPosition= "this.userPosition"
+      :userPosition="userPosition"
     />
   </div>
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
 export default {
   name: "App",
   components: {
-    Header
   },
   data() {
     return {
-      userPosition: this.getCurrentPosition(),
+      // Berlin
+      userPosition: {
+        lat: 52.5204579,
+        lng: 13.3885896
+      },
+    }
+  },
+  watch: {
+    '$route' (to) {
+      document.title = to.meta.title || 'Your Website'
+    },
+    userPosition: {
+      handler: function(newUserPosition) {
+
+        if (!this.initiatedCenter) {
+
+          this.$store.dispatch('updateCenter', newUserPosition);
+          console.log('Initiated center to user position');
+          
+        } else {
+          console.log('center has already been initiated...')
+        }
+
+      }
+    }
+  },
+  computed: {
+    initiatedCenter: function() {
+      return (!isNaN(this.$store.getters.center.lat) && !isNaN(this.$store.getters.center.lng));
     }
   },
   methods: {
-    async getCurrentPosition() {
+    getCurrentPosition() {
       
-        if (!navigator.geolocation) {
-          console.error('Geolocation is not supported by your browser');
-        } else {
-          console.log('Locating…');
-          let position;
+      if (!navigator.geolocation) {
+        
+        console.error('Geolocation is not supported by your browser');
+        this.getZip('browser');
 
-          try {
-            position = await (async () => {
-              return new Promise((resolve, reject) => {
-              
-                navigator.geolocation.getCurrentPosition(position => {
+      } else {
+        console.log('Locating…');
 
-                console.log('user lat:', position.coords.latitude);
-                console.log('user lng:', position.coords.longitude);
+        navigator.geolocation.watchPosition(position => {
 
-                resolve({lat: position.coords.latitude, lng: position.coords.longitude});
-                
-              }, err => {
-                console.error(`Couldn't acces user's position:`, err);
-                reject({lat: 0, lng: 0});
-              });
-              
-              })
-            })
-          } catch (err) {
-            console.error(err);
-          }
+          console.log(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
+          // alert(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
 
-          return position;
-          
-        }
+          this.userPosition = {lat: position.coords.latitude, lng: position.coords.longitude};
+        
+        }, err => {
+
+          console.error(`Couldn't acces user's position:`, err.message);
+          this.getZip('user');
+          this.userPosition = {lat: 0, lng: 0};
+
+        });
+            
+      }
+    },
+    getZip(reason) {
+
+      let promptReasonString = reason == 'browser' ? `Sorry, dein Browser unterstützt keine Standortabfragen.` : `Kein Live-Standort, alles klar.`;
+      let zip = prompt(`${promptReasonString} Dann bräuchten wir deine Postleitzahl, um dir trotzdem relevante Infos anzuzeigen:`);
+      if (zip != null && zip != '') {
+        // user provided zip
+      } else {
+        // user didn't provide zip
+      }
       
-    }
+    },
   },
+  mounted() {
+    this.getCurrentPosition();
+  }
+
 };
 </script>
 

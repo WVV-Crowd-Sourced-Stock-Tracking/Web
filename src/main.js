@@ -5,9 +5,12 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 import * as VueGoogleMaps from "vue2-google-maps";
 import router from "./router";
-import {store} from "./vuex"
+import {store} from "./vuex";
+import vueHeadful from 'vue-headful';
 
 Vue.use(VueAxios, axios);
+
+Vue.component('vue-headful', vueHeadful);
 
 // Google Maps
 Vue.use(VueGoogleMaps, {

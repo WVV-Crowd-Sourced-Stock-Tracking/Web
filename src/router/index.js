@@ -11,13 +11,19 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
+    // props: true,
+    meta: {
+      title: 'Home',
+    }
   },
   {
-    path: "/market/:id",
+    path: "/store/:mapsId",
     name: "MarketDetail",
     component: MarketDetail,
-    props: true
+    meta: {
+      title: 'Store',
+    }
   },
   {
     path: "/filter",

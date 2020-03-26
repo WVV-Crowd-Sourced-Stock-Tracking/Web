@@ -3,27 +3,46 @@ import Vuex from "vuex";
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
-    state: {
-      count: 0,
-      userPosition: {lat: "", lng: ""}
+  state: {
+    center: {
+      lat: NaN,
+      lng: NaN,
     },
-    mutations: {
-        increment (state) {
-            state.count++
-        },
-        getCurrentPosition(state) {
-            if (!navigator.geolocation) {
-            console.error('Geolocation is not supported by your browser');
-            } else {
-                console.log('Locating…');
-                navigator.geolocation.getCurrentPosition(position => {
-
-                    console.log('user lat:', position.coords.latitude);
-                    console.log('user lng:', position.coords.longitude);
-
-                    state.userPosition = {lat: position.coords.latitude, lng: position.coords.longitude};
-                })
-            }
-        }
+    radius: 2000,
+    mapsScriptLoaded: false,
+  },
+  mutations: {
+    SET_CENTER_POSITION(state, newCenter) {
+      state.center = newCenter;
+    },
+    SET_RADIUS(state, newRadius) {
+      state.radius = newRadius;
+    },
+    SET_MAPS_SCRIPT_LOADED(state, loaded) {
+      state.mapsScriptLoaded = loaded;
     }
+  },
+  actions: {
+    updateCenter(context, newCenter) {
+      context.commit('SET_CENTER_POSITION', newCenter);
+    },
+    updateRadius(context, newRadius) {
+      context.commit('SET_RADIUS', newRadius);
+    },
+    mapsScriptLoaded(context) {
+      context.commit('SET_MAPS_SCRIPT_LOADED', true)
+    }
+  },
+  getters: {
+    center: state => {
+      return state.center;
+    },
+    radius: state => {
+      return state.radius;
+    },
+    mapsScriptLoaded: state => {
+      return state.mapsScriptLoaded;
+    }
+  }
+
 })
