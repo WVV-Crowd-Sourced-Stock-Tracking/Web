@@ -1,6 +1,5 @@
 <template>
   <div class="w-full rounded overflow-hidden shadow-lg">
-    
     <div class="bg-white">
       <div class="font-bold text-xl px-4 py-2 shadow-lg">Karte</div>
       
@@ -14,7 +13,6 @@
       </div>
 
     </div>
-
   </div>
 </template>
 
@@ -32,15 +30,22 @@ export default {
     return {
       userPosition: {lat: 0, lng: 0},
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      map: {},
-      homeMarker: {},
-      mapMarkers: [],
+      mapStyle: {
+        zoomControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false,
+        disableDefaultUi: false
+      },
       // Berlin as Center :D
       center: {
         lat: 52.5204579,
         lng: 13.3885896
       },
       zoom: 4,
+      markers: []
     };
   },
   watch: {
@@ -181,7 +186,6 @@ export default {
 
       console.log('this.center:', this.center);
 
-      console.log('1000 * 10/this.zoom:', 1000 * 10/this.zoom);
       rawMarkets = await this.API.loadMarkets(this.center.lat, this.center.lng, 2000);
       console.log('rawMarkets:', rawMarkets);
       // rawMarkets = (
@@ -208,8 +212,15 @@ export default {
         throw new Error(`Conversion from raw to parsed markets failed!`);
       }
 
-      return markets;
-
+      markets.forEach(market => {
+        this.markers.push({
+          position: {
+            lat: market.lat,
+            lng: market.lng
+          }
+        });
+      });
+      
     },
   },
   mounted() {

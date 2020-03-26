@@ -10,6 +10,7 @@
       :distance="market.distance"
       :status="market.status"
       :mainProducts="market.products"
+      :zip="market.zip"
     ></MarketInListing>
   </div>
 </template>
@@ -100,7 +101,8 @@ export default {
             rawMarket.distance,
             rawMarket.open,
             rawMarket.products,
-            rawMarket.mapsId
+            rawMarket.mapsId,
+            rawMarket.zip,
           )
         );
       });

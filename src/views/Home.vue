@@ -1,10 +1,12 @@
 <template>
-  <div>
+  <div id="home">
 
     <vue-headful
       title="What's Left?"
       description="What's Left? Crowed Sourced Stock Tracking!"
     />
+
+    <Header />
 
     <div class="intro m-4">
       <h1 class="text-xl font-semibold">Shops</h1>
@@ -23,12 +25,13 @@
 </template>
 
 <script>
+import Header from "@/components/Header.vue";
 import Listings from "@/components/Listings.vue";
 import Map from "@/components/Map.vue";
 // import ProductFilter from "./components/Filter.vue";
 export default {
   components: {
-    // ProductFilter,
+    Header,
     Listings,
     Map
   },
@@ -40,7 +43,7 @@ export default {
 
 <style lang="scss">
 #home {
-  padding-bottom: 25px;
+  padding: 0 30px;
 }
 .traffic-light.high {
   background-color: #6dd400;

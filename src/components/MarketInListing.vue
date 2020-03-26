@@ -8,7 +8,8 @@
         name: name,
         address: address,
         status: status,
-        products: mainProducts
+        products: mainProducts,
+        zip: zip
       }
     }"
   >
@@ -17,7 +18,7 @@
 
         <h2>{{ name }}</h2>
         <img
-          src="../../public/media/icons/chevron-right.svg"
+          src="@/assets/icons/Chevron_Right_White.svg"
           alt="Markt anzeigen"
         />
 
@@ -71,6 +72,7 @@ export default {
       class: String
     },
     mainProducts: Array,
+    zip: Number,
   },
 };
 </script>
@@ -79,29 +81,30 @@ export default {
   .card {
     display: block;
     position: relative;
-    margin-top: 2%;
+    margin-top: 1rem;
     width: 100%;
-    height: 11rem;
+    height: 12rem;
     border-radius: 0.5rem;
     overflow: hidden;
+    background: white;
   }
   
   .card .header {
     display: block;
-    position: absolute;
+    /* position: absolute; */
     top: 0;
     width: 100%;
-    height: var(--header-height);
-    background-color: #006bab;
+    /* height: var(--header-height); */
+    /* background-color: #006bab; */
     padding-left: 1rem;
-    color: white;
+    /* color: white; */
   }
   
   .card .header h2 {
     display: inline-block;
     position: relative;
     top: 0;
-    width: 60%;
+    width: 100%;
     height: 100%;
     font-size: calc(var(--header-height) / 2);
     font-weight: bold;
@@ -115,7 +118,7 @@ export default {
     top: 0;
     width: calc(var(--header-height));
     height: calc(var(--header-height));
-    filter: invert(1);
+    filter: invert(100%) sepia(54%) saturate(2882.5%) hue-rotate(351.7deg) brightness(107.5%) contrast(100.3%);
   }
   
   .card .main {
@@ -123,7 +126,7 @@ export default {
     top: var(--header-height);
     width: 100%;
     height: calc(100% - var(--header-height));
-    padding: 3%;
+    padding: 1rem;
     background-color: white;
     line-height: 2rem;
   }
@@ -159,6 +162,13 @@ export default {
   .card .main .categories ul {
     display: flex;
     flex-direction: right;
+    flex-wrap: wrap;
+    height: 2rem;
+    overflow: hidden;
+  }
+
+  .card .main .categories ul li {
+    margin-right: 2rem;
   }
   
   .card .main .categories ul li .traffic-light {
@@ -170,10 +180,6 @@ export default {
   
   .card .main .categories ul li .label {
     margin-left: 0.5rem;
-  }
-  
-  .card .main .categories ul li {
-    margin-right: 2rem;
   }
   
   .card .main .updated {

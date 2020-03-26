@@ -1,6 +1,5 @@
 <template>
-  <div id="app" class="container h-full mx-auto px-4 bg-100">
-    <Header />
+  <div id="app" class="h-full m-0 p-0 bg-100">
     <router-view 
       :userPosition="userPosition"
     />
@@ -8,11 +7,9 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
 export default {
   name: "App",
   components: {
-    Header
   },
   data() {
     return {
@@ -33,25 +30,41 @@ export default {
       return new Promise((resolve, reject) => {
       
         if (!navigator.geolocation) {
+          
           console.error('Geolocation is not supported by your browser');
+          this.getZip('browser');
+
         } else {
           console.log('Locating…');
 
-          navigator.geolocation.getCurrentPosition(position => {
+          navigator.geolocation.watchPosition(position => {
 
-            console.log('user lat:', position.coords.latitude);
-            console.log('user lng:', position.coords.longitude);
+            // console.log(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
+            alert(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
 
             resolve({lat: position.coords.latitude, lng: position.coords.longitude});
-            
-          }, err => {
-            console.error(`Couldn't acces user's position:`, err);
-            reject(`Couldn't acces user's position!`);
-          });
           
+          }, err => {
+
+            console.error(`Couldn't acces user's position:`, err.message);
+            this.getZip('user');
+            reject({lat: 0, lng: 0});
+
+          });
+              
         }
+      })  
+    },
+    getZip(reason) {
+
+      let promptReasonString = reason == 'browser' ? `Sorry, dein Browser unterstützt keine Standortabfragen.` : `Kein Live-Standort, alles klar.`;
+      let zip = prompt(`${promptReasonString} Dann bräuchten wir deine Postleitzahl, um dir trotzdem relevante Infos anzuzeigen:`);
+      if (zip != null && zip != '') {
+        // user provided zip
+      } else {
+        // user didn't provide zip
+      }
       
-      })
     }
   },
   mounted() {
@@ -66,6 +79,7 @@ export default {
     })
 
   }
+
 };
 </script>
 
