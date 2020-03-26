@@ -25,7 +25,10 @@ export default {
     async getCurrentPosition() {
       
         if (!navigator.geolocation) {
+          
           console.error('Geolocation is not supported by your browser');
+          this.getZip('browser');
+
         } else {
           console.log('Locating…');
           let position;
@@ -33,21 +36,26 @@ export default {
           try {
             position = await (async () => {
               return new Promise((resolve, reject) => {
+
+                console.log('test');
               
-                navigator.geolocation.getCurrentPosition(position => {
+                navigator.geolocation.watchPosition(position => {
 
-                console.log('user lat:', position.coords.latitude);
-                console.log('user lng:', position.coords.longitude);
+                  // console.log(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
+                  alert(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
 
-                resolve({lat: position.coords.latitude, lng: position.coords.longitude});
+                  resolve({lat: position.coords.latitude, lng: position.coords.longitude});
                 
-              }, err => {
-                console.error(`Couldn't acces user's position:`, err);
-                reject({lat: 0, lng: 0});
-              });
+                }, err => {
+
+                  console.error(`Couldn't acces user's position:`, err.message);
+                  this.getZip('user');
+                  reject({lat: 0, lng: 0});
+
+                });
               
               })
-            })
+            })();
           } catch (err) {
             console.error(err);
           }
@@ -56,11 +64,23 @@ export default {
           
         }
       
+    },
+    getZip(reason) {
+
+      let promptReasonString = reason == 'browser' ? `Sorry, dein Browser unterstützt keine Standortabfragen.` : `Kein Live-Standort, alles klar.`;
+      let zip = prompt(`${promptReasonString} Dann bräuchten wir deine Postleitzahl, um dir trotzdem relevante Infos anzuzeigen:`);
+      if (zip != null && zip != '') {
+        // user provided zip
+      } else {
+        // user didn't provide zip
+      }
+      
     }
   },
   mounted() {
-    this.$store.commit("getCurrentPosition");
+    // this.$store.commit("getCurrentPosition");
   }
+
 };
 </script>
 
