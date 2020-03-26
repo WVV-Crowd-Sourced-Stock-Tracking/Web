@@ -208,6 +208,7 @@ export default {
           this.mapMarkers.push(
             new window.google.maps.Marker({
               position: {lat: market.lat, lng: market.lng},
+              icon: "/media/Pin.png",
               map: this.map,
             })
           )
