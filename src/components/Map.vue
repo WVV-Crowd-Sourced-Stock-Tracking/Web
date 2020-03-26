@@ -28,24 +28,16 @@ export default {
   },
   data() {
     return {
-      userPosition: {lat: 0, lng: 0},
+      userPosition: this.userPositionProp,
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      mapStyle: {
-        zoomControl: false,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        rotateControl: false,
-        fullscreenControl: false,
-        disableDefaultUi: false
-      },
       // Berlin as Center :D
-      center: {
-        lat: 52.5204579,
-        lng: 13.3885896
-      },
+      center: this.userPositionProp,
       zoom: 4,
-      markers: []
+      map: {},
+      homeMarker: {},
+      mapMarkers: [],
+      radius: 2000,
+      zoomedToUserPosition: false,
     };
   },
   watch: {
@@ -54,11 +46,25 @@ export default {
       this.userPosition = this.userPositionProp;
     },
     userPosition: {
-      handler: function() {
+      handler: function(newPosition) {
 
-        console.log('test');
-        
-        this.loadScript();
+        if (!this.zoomedToUserPosition) {
+          
+          if (this.homeMarker != undefined) {
+            this.homeMarker.setMap(null);
+          }
+          
+          this.homeMarker = new window.google.maps.Marker({
+            position: newPosition,
+            map: this.map,
+            title: 'Dein Standort',
+          })
+
+          this.center = newPosition;
+
+          this.panToPosition();
+          
+        }
 
       }
     },
@@ -111,7 +117,8 @@ export default {
 
         console.log('newCenter:', newCenter);
         
-        this.loadAll().then(markets => {
+        this.loadAll()
+        .then(markets => {
 
           console.log('markegasdgadsts:', markets);
 
@@ -130,6 +137,9 @@ export default {
             )
           });
           
+        })
+        .catch(err => {
+          console.error(err);
         })
         
       }
@@ -174,60 +184,66 @@ export default {
         title: 'Dein Standort',
       })
 
+      this.panToPosition();
+
+    },
+    async loadAll() {
+      return new Promise((resolve, reject) => {
+      
+        let markets = [];
+
+        console.log('this.center:', this.center);
+
+        this.API.loadMarkets(this.center.lat, this.center.lng, 2000)
+        .then(rawMarkets => {
+
+          console.log('rawMarkets:', rawMarkets);
+          // rawMarkets = (
+          //   await this.axios.get(`http://${window.location.hostname}:3000/markets`)
+          // ).data;
+
+          rawMarkets.forEach(rawMarket => {
+            markets.push(
+              new Market(
+                rawMarket.id,
+                rawMarket.name,
+                rawMarket.city,
+                rawMarket.street,
+                rawMarket.lat,
+                rawMarket.lng,
+                rawMarket.distance,
+                rawMarket.open,
+                rawMarket.products
+              )
+            );
+          });
+
+          resolve(markets);
+          
+        })
+        .catch(err => {
+          reject(err);
+        })
+
+      })
+    },
+    panToPosition() {
+
       this.map.panTo(this.userPosition);
       this.zoom = 14;
       this.map.setZoom(this.zoom);
       this.center = this.userPosition;
-
-    },
-    async loadAll() {
-      let rawMarkets;
-      let markets = [];
-
-      console.log('this.center:', this.center);
-
-      rawMarkets = await this.API.loadMarkets(this.center.lat, this.center.lng, 2000);
-      console.log('rawMarkets:', rawMarkets);
-      // rawMarkets = (
-      //   await this.axios.get(`http://${window.location.hostname}:3000/markets`)
-      // ).data;
-
-      rawMarkets.forEach(rawMarket => {
-        markets.push(
-          new Market(
-            rawMarket.id,
-            rawMarket.name,
-            rawMarket.city,
-            rawMarket.street,
-            rawMarket.lat,
-            rawMarket.lng,
-            rawMarket.distance,
-            rawMarket.open,
-            rawMarket.products
-          )
-        );
-      });
-
-      if (rawMarkets.length != markets.length) {
-        throw new Error(`Conversion from raw to parsed markets failed!`);
-      }
-
-      markets.forEach(market => {
-        this.markers.push({
-          position: {
-            lat: market.lat,
-            lng: market.lng
-          }
-        });
-      });
       
-    },
+    }
   },
   mounted() {
       // check if userPosition has already been acquired, because in this case the watch handler doesn't fire anymore
       if (this.userPositionProp.lat != 0 && this.userPositionProp.lng != 0) {
         this.userPosition = {lat: this.userPositionProp.lat, lng: this.userPositionProp.lng};
       }
+
+      this.loadScript();
+      
     }
 };
 </script>

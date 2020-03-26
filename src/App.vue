@@ -39,8 +39,8 @@ export default {
 
           navigator.geolocation.watchPosition(position => {
 
-            // console.log(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
-            alert(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
+            console.log(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
+            // alert(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
 
             resolve({lat: position.coords.latitude, lng: position.coords.longitude});
           
