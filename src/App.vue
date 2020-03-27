@@ -55,20 +55,33 @@ export default {
       } else {
         console.log('Locating…');
 
-        navigator.geolocation.watchPosition(position => {
+        this.$getLocation()
+        .then(coords => {
+          console.log('coords:', coords);
+          this.userPosition = {lat: coords.lat, lng: coords.lng};
+        })
+        .catch(err => {
 
-          console.log(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
-          // alert(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
-
-          this.userPosition = {lat: position.coords.latitude, lng: position.coords.longitude};
-        
-        }, err => {
-
-          console.error(`Couldn't acces user's position:`, err.message);
-          this.getZip('user');
+          console.error(`Couldn't acces user's position:`, err);
           this.userPosition = {lat: 0, lng: 0};
+          this.getZip('user');
+          
+        })
 
-        });
+        // navigator.geolocation.watchPosition(position => {
+
+        //   console.log(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
+        //   // alert(`Current Position: lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`);
+
+        //   this.userPosition = {lat: position.coords.latitude, lng: position.coords.longitude};
+        
+        // }, err => {
+
+        //   console.error(`Couldn't acces user's position:`, err.message);
+        //   this.getZip('user');
+        //   this.userPosition = {lat: 0, lng: 0};
+
+        // });
             
       }
     },

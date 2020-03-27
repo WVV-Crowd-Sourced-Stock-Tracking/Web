@@ -33,7 +33,7 @@ export default {
   },
   data() {
     return {
-      loaded: false,
+      // loaded: false,
       mapInitiated: false,
       userPosition: this.userPositionProp,
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
@@ -129,13 +129,35 @@ export default {
     },
     center: {
       handler: function() {
-        this.updatedMarkersOnMap();
+        if (this.mapInitiated) {
+          this.updatedMarkersOnMap();
+        }
+      }
+    },
+    loadedScript: {
+      handler: function() {
+        this.initMapIfReady();
+      }
+    },
+    isValidCenter: {
+      handler: function() {
+        this.initMapIfReady();
+      }
+    },
+    mapInitiated: {
+      handler: function(initiated) {
+        if (initiated) {
+          this.updatedMarkersOnMap();
+        }
       }
     }
   },
   computed: {
     center: function() {
       return this.$store.getters.center;
+    },
+    isValidCenter: function() {
+      return (!isNaN(this.center.lat) && !isNaN(this.center.lng));
     },
     radius: function() {
       return this.$store.getters.radius;
@@ -149,11 +171,22 @@ export default {
       let mapsApiScript = document.createElement('script');
       mapsApiScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHJCRgVNdpdHQigIEebTzT4RDiTwt6jk');
       document.body.appendChild(mapsApiScript);
-      mapsApiScript.onload = this.initMap;
+      mapsApiScript.onload = () => {
+
+        console.log('maps script loaded!');
+
+        this.$store.dispatch('mapsScriptLoaded');
+        
+      };
+    },
+    initMapIfReady() {
+
+      if (this.loadedScript && this.isValidCenter) {
+        this.initMap();
+      }
+      
     },
     initMap() {
-
-      this.$store.dispatch('mapsScriptLoaded');
 
       this.map = new window.google.maps.Map(document.getElementById('map'), {
           center: this.center,
@@ -164,7 +197,7 @@ export default {
           scaleControl: true,
           streetViewControl: false,
           rotateControl: false,
-          fullscreenControl: true
+          fullscreenControl: true,
       });
 
       this.map.addListener('projection_changed', () => {
