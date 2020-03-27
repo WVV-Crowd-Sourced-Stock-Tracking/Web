@@ -7,6 +7,7 @@ import * as VueGoogleMaps from "vue2-google-maps";
 import router from "./router";
 import {store} from "./vuex";
 import vueHeadful from 'vue-headful';
+import VueGeolocation from 'vue-browser-geolocation';
 
 Vue.use(VueAxios, axios);
 
@@ -19,6 +20,8 @@ Vue.use(VueGoogleMaps, {
     libraries: "places" // This is required if you use the Autocomplete plugin
   }
 });
+
+Vue.use(VueGeolocation);
 
 Vue.config.productionTip = false;
 
