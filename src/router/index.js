@@ -11,6 +11,7 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+    // props: true,
     meta: {
       title: 'Home',
     }
@@ -22,7 +23,6 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: MarketDetail,
-    props: true,
     meta: {
       title: 'Store',
     }
