@@ -2,16 +2,17 @@
   <div>
     <div class="my-5 bg-white p-6 rounded shadow">
       <h1 class="text-xl font-semibold my-5">Produkte</h1>
-      <div v-for="item in this.products" :key="item.id">
+      <div v-for="item in products" :key="item.id">
         <label class="custom-label flex">
           <div
             class="bg-white shadow w-6 h-6 p-1 flex justify-center items-center mr-2"
           >
-            <input :id="item.id" v-model="isCheckedAll" type="checkbox" c />
+            <input :id="item.product_id" v-model="filter" type="checkbox" :value="item.product_id" />
           </div>
-          <span class="select-none"> {{ item }}</span>
+          <span class="select-none"> {{ item.product_name }} {{item.product_id}}</span>
         </label>
       </div>
+      <div>{{filter}}</div>
     </div>
     <router-link
       :to="{
@@ -23,7 +24,7 @@
     </router-link>
     <div class="w-full flex content-center flex-wrap">
       <a
-        @click="this.uncheckAll()"
+        @click="checkAll()"
         class="w-full m-10 text-center underline"
         href="#"
         >Filter löschen</a
@@ -33,21 +34,25 @@
 </template>
 
 <script>
+import API from "../assets/js/api";
+
 export default {
   name: "ProductFilter",
   data() {
     return {
+      API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
       products: [],
-      isCheckedAll: true
+      filter: [],
+      isCheckedAll: false
     };
   },
   mounted() {
-    this.loadFood();
+    this.loadAllProducts();
   },
   methods: {
     async loadFood() {
       let markets = (
-        await this.axios.get(`http://${window.location.hostname}:3000/markets`)
+        await this.axios.get(`https://wvvcrowdmarket.herokuapp.com/ws/rest/product/scrape`)
       ).data;
       markets.forEach(market => {
         market.products.forEach(product => {
@@ -55,8 +60,24 @@ export default {
         });
       });
     },
-    uncheckAll() {
-      this.isCheckedAll = false;
+    checkAll: function(){
+      this.filter = [];
+    },
+    async loadAllProducts() {  
+      let allProducts, allProductsFiltered;
+      
+      try {
+        allProducts = await this.API.loadAllProducts();
+        // temporary fix until backend is cleaned up
+        allProducts.map(product => {
+          product.quantity = NaN; // quantity unknown
+        })
+
+      } catch (err) {
+        console.error(err);
+      }
+
+      this.products = allProducts;
     }
   }
 };
