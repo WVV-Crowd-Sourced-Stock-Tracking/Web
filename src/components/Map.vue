@@ -198,6 +198,17 @@ export default {
           streetViewControl: false,
           rotateControl: false,
           fullscreenControl: true,
+          styles: [
+            {
+              featureType: 'poi.business',
+              stylers: [{visibility: 'off'}],
+            },
+            {
+              featureType: 'transit',
+              elementType: 'labels.icon',
+              stylers: [{visibility: 'off'}],
+            }
+          ]
       });
 
       this.map.addListener('projection_changed', () => {

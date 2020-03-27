@@ -32,7 +32,7 @@
         <img class="w-full h-full object-cover object-center" src="/media/items-organized-on-shelves-3687999.jpg" alt="Photo by Mehrad Vosoughi from Pexels" title="Photo by Mehrad Vosoughi from Pexels">
       </div>
 
-      <div class="bg-white w-screen min-h-full h-auto pb-16">
+      <div class="bg-white w-full min-h-full h-auto pb-16">
 
         <div class="w-full h-full p-6">
 
