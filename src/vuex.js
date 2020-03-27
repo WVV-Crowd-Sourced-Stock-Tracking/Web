@@ -10,6 +10,7 @@ export const store = new Vuex.Store({
     },
     radius: 2000,
     mapsScriptLoaded: false,
+    filter: [],
   },
   mutations: {
     SET_CENTER_POSITION(state, newCenter) {

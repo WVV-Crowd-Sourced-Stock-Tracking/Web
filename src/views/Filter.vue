@@ -7,12 +7,12 @@
           <div
             class="bg-white shadow w-6 h-6 p-1 flex justify-center items-center mr-2"
           >
-            <input :id="item.product_id" v-model="filter" type="checkbox" :value="item.product_id" />
+            <input :id="item.product_id" v-model="$store.state.filter" type="checkbox" :value="item.product_id" />
           </div>
           <span class="select-none"> {{ item.product_name }} {{item.product_id}}</span>
         </label>
       </div>
-      <div>{{filter}}</div>
+      <div>{{$store.state.filter}}</div>
     </div>
     <router-link
       :to="{
@@ -42,7 +42,6 @@ export default {
     return {
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
       products: [],
-      filter: [],
       isCheckedAll: false
     };
   },
@@ -61,7 +60,7 @@ export default {
       });
     },
     checkAll: function(){
-      this.filter = [];
+      this.$store.state.filter = [];
     },
     async loadAllProducts() {  
       let allProducts, allProductsFiltered;
