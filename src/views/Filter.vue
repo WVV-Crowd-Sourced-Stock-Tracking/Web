@@ -49,16 +49,6 @@ export default {
     this.loadAllProducts();
   },
   methods: {
-    async loadFood() {
-      let markets = (
-        await this.axios.get(`https://wvvcrowdmarket.herokuapp.com/ws/rest/product/scrape`)
-      ).data;
-      markets.forEach(market => {
-        market.products.forEach(product => {
-          this.products.push(product.name);
-        });
-      });
-    },
     checkAll: function(){
       this.$store.state.filter = [];
     },
