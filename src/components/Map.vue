@@ -249,13 +249,21 @@ export default {
         this.mapMarkers = [];
 
         markets.forEach(market => {
-          this.mapMarkers.push(
-            new window.google.maps.Marker({
-              position: {lat: market.lat, lng: market.lng},
-              icon: "/media/Pin.svg",
-              map: this.map,
-            })
-          )
+
+          let marker = new window.google.maps.Marker({
+            position: {lat: market.lat, lng: market.lng},
+            icon: "/media/Pin.svg",
+            map: this.map,
+            clickable: true,
+            draggable: false,
+          })
+
+          marker.addListener('click', () => {
+            // navigate to the store's detail page
+            this.$router.push(`store/${market.mapsId}`);
+          })
+          
+          this.mapMarkers.push(marker);
         });
 
       })
@@ -288,7 +296,9 @@ export default {
                 rawMarket.lng,
                 rawMarket.distance,
                 rawMarket.open,
-                rawMarket.products
+                rawMarket.products,
+                rawMarket.mapsId,
+                rawMarket.zip,
               )
             );
           });

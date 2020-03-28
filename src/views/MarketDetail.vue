@@ -2,7 +2,7 @@
   <div>
 
     <vue-headful
-      :title="market.name"
+      :title="market.name + ' - WhatsLeft'"
       description="What's Left? Crowed Sourced Stock Tracking!"
     />
 
