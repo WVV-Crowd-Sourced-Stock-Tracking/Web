@@ -226,6 +226,7 @@ export default {
 
       this.map.addListener('tilesloaded', () => {
         // visible map tiles have been *fully* loaded
+        alert('tiles loaded');
       })
 
       this.map.addListener('zoom_changed', () => {
@@ -340,13 +341,21 @@ export default {
         this.initMap();
       }
 
-      setTimeout(() => {
-        this.map.panBy(50, 50);
-      }, 5000);
+      // setTimeout(() => {
+      //   this.map.setZoom(13);
+      // }, 5000);
 
-      setTimeout(() => {
-        alert('panned');
-      }, 8000);
+      // setTimeout(() => {
+      //   alert('zoomed');
+      // }, 7000);
+
+      // setTimeout(() => {
+      //   this.map.panBy(50, 50);
+      // }, 10000);
+
+      // setTimeout(() => {
+      //   alert('panned');
+      // }, 12000);
       
     }
 };
