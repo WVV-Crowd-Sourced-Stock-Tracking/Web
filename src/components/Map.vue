@@ -192,8 +192,8 @@ export default {
     initMapIfReady() {
 
       if (this.loadedScript && this.isValidCenter && !this.mapInitStarted) {
-        setTimeout(this.initMap, 3000);
-        // this.initMap();
+        // setTimeout(this.initMap, 3000);
+        this.initMap();
       }
       
     },
