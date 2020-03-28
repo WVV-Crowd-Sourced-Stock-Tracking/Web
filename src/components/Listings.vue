@@ -45,6 +45,14 @@ export default {
         
       }
     },
+    radius: {
+      handler: function() {
+        
+        console.log('radius updated');
+        this.loadRawMarkets();
+        
+      }
+    },
     rawMarkets: {
       handler: function(newRawMarkets) {
 
