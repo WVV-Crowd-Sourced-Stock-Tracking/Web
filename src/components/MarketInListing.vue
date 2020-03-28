@@ -186,7 +186,7 @@ export default {
   }
 
   .card .main .categories ul li {
-    margin-right: 2rem;
+    margin-right: 1rem;
   }
   
   .card .main .categories ul li .traffic-light {
