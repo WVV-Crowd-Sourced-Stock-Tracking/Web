@@ -341,11 +341,11 @@ export default {
       }
 
       setTimeout(() => {
-        this.map.setZoom(13);
+        this.map.panBy(50, 50);
       }, 5000);
 
       setTimeout(() => {
-        alert('zoomed out');
+        alert('panned');
       }, 8000);
       
     }
