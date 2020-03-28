@@ -35,6 +35,7 @@ export default {
     return {
       // loaded: false,
       mapInitiated: false,
+      mapInitStarted: false,
       userPosition: this.userPositionProp,
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
       // center: this.userPositionProp,
@@ -190,12 +191,15 @@ export default {
     },
     initMapIfReady() {
 
-      if (this.loadedScript && this.isValidCenter) {
-        this.initMap();
+      if (this.loadedScript && this.isValidCenter && !this.mapInitStarted) {
+        setTimeout(this.initMap, 3000);
+        // this.initMap();
       }
       
     },
     initMap() {
+
+      this.mapInitStarted = true;
 
       this.map = new window.google.maps.Map(document.getElementById('map'), {
           center: this.center,
