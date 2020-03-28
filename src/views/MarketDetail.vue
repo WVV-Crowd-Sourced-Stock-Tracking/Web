@@ -85,15 +85,15 @@
 
                     <div class="flex flex-row justify-around w-full h-full">
 
-                      <div class="flex flex-col justify-center h-12 w-full mr-1 rounded" :style="'background-color:'+[product.availability == 'low' ? '#E02020' : '#F9D2D2']">
-                        <input type="radio" v-model="product.availability" :name="'product-' + product.id" value="low" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-red-400">
-                      </div>
-                      <div class="flex flex-col justify-center h-12 w-full mr-1 rounded" :style="'background-color:'+[product.availability == 'medium' ? '#F7B500' : '#FDF0CC']">
-                        <input type="radio" v-model="product.availability" :name="'product-' + product.id" value="medium" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-yellow-400">
-                      </div>
-                      <div class="flex flex-col justify-center h-12 w-full mr-1 rounded" :style="'background-color:'+[product.availability == 'high' ? '#6DD400' : '#E2F6CC']">
-                        <input type="radio" v-model="product.availability" :name="'product-' + product.id" value="high" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-green-400">
-                      </div>
+                      <label :for="'product-' + product.id + '-low'" class="flex flex-col justify-center h-12 w-full mr-1 rounded" :style="'background-color:'+[product.availability == 'low' ? '#E02020' : '#F9D2D2']">
+                        <input type="radio" v-model="product.availability" :id="'product-' + product.id + '-low'" :name="'product-' + product.id" value="low" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-red-400">
+                      </label>
+                      <label :for="'product-' + product.id + '-medium'" class="flex flex-col justify-center h-12 w-full mr-1 rounded" :style="'background-color:'+[product.availability == 'medium' ? '#F7B500' : '#FDF0CC']">
+                        <input type="radio" v-model="product.availability" :id="'product-' + product.id + '-medium'" :name="'product-' + product.id" value="medium" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-yellow-400">
+                      </label>
+                      <label :for="'product-' + product.id + '-high'" class="flex flex-col justify-center h-12 w-full mr-1 rounded" :style="'background-color:'+[product.availability == 'high' ? '#6DD400' : '#E2F6CC']">
+                        <input type="radio" v-model="product.availability" :id="'product-' + product.id + '-high'" :name="'product-' + product.id" value="high" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-green-400">
+                      </label>
 
                     </div>
 
