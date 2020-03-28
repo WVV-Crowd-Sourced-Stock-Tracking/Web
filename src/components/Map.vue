@@ -6,7 +6,7 @@
       <div class="w-full h-40">
         <!-- Content inside of the div#map will be overwritten once the map is loaded -->
 
-        <div v-show="mapInitiated" id="map" class="w-full h-full">
+        <!-- <div v-show="mapInitiated" id="map" class="w-full h-full">
           <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
             Sorry, die Karte konnte nicht geladen werden. Bitte lade die Seite neu :)
           </div>
@@ -14,7 +14,18 @@
 
         <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
           Karte wird geladen...
+        </div> -->
+
+        <div id="map" class="w-full h-full">
+          <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
+            <!-- Sorry, die Karte konnte nicht geladen werden. Bitte lade die Seite neu :) -->
+            Karte wird geladen...
+          </div>
         </div>
+
+        <!-- <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
+          Karte wird geladen...
+        </div> -->
 
       </div>
 
@@ -35,10 +46,10 @@ export default {
     return {
       // loaded: false,
       mapInitiated: false,
+      mapInitStarted: false,
       userPosition: this.userPositionProp,
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
       // center: this.userPositionProp,
-      zoom: 4,
       map: {},
       homeMarker: {},
       mapMarkers: [],
@@ -134,6 +145,13 @@ export default {
         }
       }
     },
+    radius: {
+      handler: function() {
+        if (this.mapInitiated) {
+          this.updatedMarkersOnMap();
+        }
+      }
+    },
     loadedScript: {
       handler: function() {
         this.initMapIfReady();
@@ -162,6 +180,9 @@ export default {
     radius: function() {
       return this.$store.getters.radius;
     },
+    zoom: function() {
+      return this.$store.getters.zoom;
+    },
     loadedScript: function() {
       return this.$store.getters.mapsScriptLoaded;
     }
@@ -174,19 +195,20 @@ export default {
       mapsApiScript.onload = () => {
 
         console.log('maps script loaded!');
-
         this.$store.dispatch('mapsScriptLoaded');
         
       };
     },
     initMapIfReady() {
 
-      if (this.loadedScript && this.isValidCenter) {
+      if (this.loadedScript && this.isValidCenter && !this.mapInitStarted) {
         this.initMap();
       }
       
     },
     initMap() {
+
+      this.mapInitStarted = true;
 
       this.map = new window.google.maps.Map(document.getElementById('map'), {
           center: this.center,
@@ -220,7 +242,7 @@ export default {
       })
 
       this.map.addListener('zoom_changed', () => {
-        this.zoom = this.map.getZoom();
+        this.$store.dispatch('updateZoom', this.map.getZoom());
       })
 
       // reload markets in the vicinity when the user drags the map
@@ -249,13 +271,21 @@ export default {
         this.mapMarkers = [];
 
         markets.forEach(market => {
-          this.mapMarkers.push(
-            new window.google.maps.Marker({
-              position: {lat: market.lat, lng: market.lng},
-              icon: "/media/Pin.png",
-              map: this.map,
-            })
-          )
+
+          let marker = new window.google.maps.Marker({
+            position: {lat: market.lat, lng: market.lng},
+            icon: "/media/Pin.svg",
+            map: this.map,
+            clickable: true,
+            draggable: false,
+          })
+
+          marker.addListener('click', () => {
+            // navigate to the stores detail page
+            this.$router.push(`store/${market.mapsId}`);
+          })
+          
+          this.mapMarkers.push(marker);
         });
 
       })
@@ -288,7 +318,9 @@ export default {
                 rawMarket.lng,
                 rawMarket.distance,
                 rawMarket.open,
-                rawMarket.products
+                rawMarket.products,
+                rawMarket.mapsId,
+                rawMarket.zip,
               )
             );
           });
@@ -305,7 +337,6 @@ export default {
     panToCenter() {
 
       this.map.panTo(this.center);
-      this.zoom = 14;
       this.map.setZoom(this.zoom);
       
     }
@@ -321,7 +352,7 @@ export default {
       } else {
         this.initMap();
       }
-      
+
     }
 };
 </script>

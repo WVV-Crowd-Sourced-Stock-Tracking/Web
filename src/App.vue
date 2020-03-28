@@ -87,13 +87,19 @@ export default {
     },
     getZip(reason) {
 
-      let promptReasonString = reason == 'browser' ? `Sorry, dein Browser unterstützt keine Standortabfragen.` : `Kein Live-Standort, alles klar.`;
-      let zip = prompt(`${promptReasonString} Dann bräuchten wir deine Postleitzahl, um dir trotzdem relevante Infos anzuzeigen:`);
-      if (zip != null && zip != '') {
-        // user provided zip
-      } else {
-        // user didn't provide zip
-      }
+      console.log('reason:', reason);
+      // let promptReasonString = reason == 'browser' ? `Sorry, dein Browser unterstützt keine Standortabfragen.` : `Kein Live-Standort, alles klar.`;
+      // default to berlin
+      this.userPosition = {
+        lat: 52.5204579,
+        lng: 13.3885896
+      };
+      // let zip = prompt(`${promptReasonString} Dann bräuchten wir deine Postleitzahl, um dir trotzdem relevante Infos anzuzeigen:`);
+      // if (zip != null && zip != '') {
+      //   // user provided zip
+      // } else {
+      //   // user didn't provide zip
+      // }
       
     },
   },
