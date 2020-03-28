@@ -60,12 +60,12 @@
             <thead class="bg-gray-100 opacity-75 shadow-md text-left tracking-wide">
               <tr class="h-16">
                 <th class="w-1/2 pl-6 font-medium">Produkt</th>
-                <th class="w-1/2 pl-6 font-medium">
+                <th class="w-1/2 font-medium">
                   <span v-if="!editMode">Bestand</span>
-                  <div v-if="editMode" class="flex flex-row justify-center text-center">
-                    <span class="inline-block w-12 mx-3" style="color: #E02020">leer</span>
-                    <span class="inline-block w-12 mx-3" style="color: #F7B500">wenig</span>
-                    <span class="inline-block w-12 mx-3" style="color: #6DD400">viel</span>
+                  <div v-if="editMode" class="flex flex-row justify-around text-center pr-6">
+                    <span class="inline-block w-12" style="color: #E02020">leer</span>
+                    <span class="inline-block w-12" style="color: #F7B500">wenig</span>
+                    <span class="inline-block w-12" style="color: #6DD400">viel</span>
                   </div>
                 </th>
               </tr>
@@ -75,30 +75,30 @@
                 v-for="product in market.products"
                 :key="product.name"
               >
-                <td class="relative h-16 text-left align-middle border-t pl-6">
-                  <div class="inline-block font-bold text-gray-800">
+                <td class="relative h-16 text-left border-t pl-6 pr-2 overflow-hidden break-words">
+                  <div class="inline-block w-full font-bold text-gray-800">
                     {{ product.name }}
                   </div>
                 </td>
 
-                <td v-if="editMode" class="relative h-full text-center align-middle border-t pl-6">
+                <td v-if="editMode" class="relative w-full h-full text-center border-t pr-6">
 
-                    <div class="flex flex-row justify-center h-full">
+                    <div class="flex flex-row justify-around w-full h-full">
 
-                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[product.availability == 'low' ? '#E02020' : '#F9D2D2']">
+                      <div class="flex flex-col justify-center h-12 w-full mr-1 rounded" :style="'background-color:'+[product.availability == 'low' ? '#E02020' : '#F9D2D2']">
                         <input type="radio" v-model="product.availability" :name="'product-' + product.id" value="low" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-red-400">
                       </div>
-                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[product.availability == 'medium' ? '#F7B500' : '#FDF0CC']">
+                      <div class="flex flex-col justify-center h-12 w-full mr-1 rounded" :style="'background-color:'+[product.availability == 'medium' ? '#F7B500' : '#FDF0CC']">
                         <input type="radio" v-model="product.availability" :name="'product-' + product.id" value="medium" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-yellow-400">
                       </div>
-                      <div class="flex flex-col justify-center h-12 w-16 mr-1 rounded" :style="'background-color:'+[product.availability == 'high' ? '#6DD400' : '#E2F6CC']">
+                      <div class="flex flex-col justify-center h-12 w-full mr-1 rounded" :style="'background-color:'+[product.availability == 'high' ? '#6DD400' : '#E2F6CC']">
                         <input type="radio" v-model="product.availability" :name="'product-' + product.id" value="high" class="form-radio m-auto focus:border-none focus:shadow-none focus:outline-none text-green-400">
                       </div>
 
                     </div>
 
                 </td>
-                <td v-else class="relative h-full border-t text-left pl-6">
+                <td v-else class="relative h-full border-t text-left pr-6">
 
                   <div class="inline-block h-4 w-4 rounded-full overflow-hidden align-text-bottom">
                     <div v-if="product.availability === 'high'" class="w-full h-full bg-green-500"></div>
@@ -107,11 +107,11 @@
                     <div v-else class="w-full h-full bg-gray-600"></div>
                   </div>
 
-                  <div class="inline-block ml-4">
-                    <span v-if="product.availability === 'high'">verfügbar</span>
-                    <span v-else-if="product.availability === 'medium'">fast ausverkauft</span>
-                    <span v-else-if="product.availability === 'low'">ausverkauft</span>
-                    <span v-else>sorry, keine Daten...</span>
+                  <div class="inline-block w-1/2 whitespace-pre-wrap ml-4">
+                    <span v-if="product.availability === 'high'">viel</span>
+                    <span v-else-if="product.availability === 'medium'">wenig</span>
+                    <span v-else-if="product.availability === 'low'">leer</span>
+                    <span v-else>unbekannt</span>
                   </div>
 
                 </td>
