@@ -339,6 +339,14 @@ export default {
       } else {
         this.initMap();
       }
+
+      setTimeout(() => {
+        this.map.setZoom(13);
+      }, 5000);
+
+      setTimeout(() => {
+        alert('zoomed out');
+      }, 8000);
       
     }
 };
