@@ -87,7 +87,7 @@ export default {
     },
     getZip(reason) {
 
-      let promptReasonString = reason == 'browser' ? `Sorry, dein Browser unterstützt keine Standortabfragen.` : `Kein Live-Standort, alles klar.`;
+      // let promptReasonString = reason == 'browser' ? `Sorry, dein Browser unterstützt keine Standortabfragen.` : `Kein Live-Standort, alles klar.`;
       // default to berlin
       this.userPosition = {
         lat: 52.5204579,
