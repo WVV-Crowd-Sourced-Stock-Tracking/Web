@@ -2,7 +2,7 @@
   <div id="home" class="text-gray-800">
 
     <vue-headful
-      title="What's Left?"
+      title="Home - WhatsLeft"
       description="What's Left? Crowed Sourced Stock Tracking!"
     />
 
@@ -33,7 +33,7 @@
   import Header from "@/components/Header.vue";
   import Listings from "@/components/Listings.vue";
   import Map from "@/components/Map.vue";
-  
+
   export default {
     components: {
       Header,

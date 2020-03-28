@@ -38,7 +38,6 @@ export default {
       userPosition: this.userPositionProp,
       API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
       // center: this.userPositionProp,
-      zoom: 4,
       map: {},
       homeMarker: {},
       mapMarkers: [],
@@ -134,6 +133,13 @@ export default {
         }
       }
     },
+    radius: {
+      handler: function() {
+        if (this.mapInitiated) {
+          this.updatedMarkersOnMap();
+        }
+      }
+    },
     loadedScript: {
       handler: function() {
         this.initMapIfReady();
@@ -161,6 +167,9 @@ export default {
     },
     radius: function() {
       return this.$store.getters.radius;
+    },
+    zoom: function() {
+      return this.$store.getters.zoom;
     },
     loadedScript: function() {
       return this.$store.getters.mapsScriptLoaded;
@@ -220,7 +229,7 @@ export default {
       })
 
       this.map.addListener('zoom_changed', () => {
-        this.zoom = this.map.getZoom();
+        this.$store.dispatch('updateZoom', this.map.getZoom());
       })
 
       // reload markets in the vicinity when the user drags the map
@@ -249,13 +258,21 @@ export default {
         this.mapMarkers = [];
 
         markets.forEach(market => {
-          this.mapMarkers.push(
-            new window.google.maps.Marker({
-              position: {lat: market.lat, lng: market.lng},
-              icon: "/media/Pin.svg",
-              map: this.map,
-            })
-          )
+
+          let marker = new window.google.maps.Marker({
+            position: {lat: market.lat, lng: market.lng},
+            icon: "/media/Pin.svg",
+            map: this.map,
+            clickable: true,
+            draggable: false,
+          })
+
+          marker.addListener('click', () => {
+            // navigate to the store's detail page
+            this.$router.push(`store/${market.mapsId}`);
+          })
+          
+          this.mapMarkers.push(marker);
         });
 
       })
@@ -288,7 +305,9 @@ export default {
                 rawMarket.lng,
                 rawMarket.distance,
                 rawMarket.open,
-                rawMarket.products
+                rawMarket.products,
+                rawMarket.mapsId,
+                rawMarket.zip,
               )
             );
           });
@@ -305,7 +324,6 @@ export default {
     panToCenter() {
 
       this.map.panTo(this.center);
-      this.zoom = 14;
       this.map.setZoom(this.zoom);
       
     }

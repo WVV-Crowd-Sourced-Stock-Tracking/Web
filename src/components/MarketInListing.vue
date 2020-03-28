@@ -18,7 +18,7 @@
 
         <h2>{{ name }}</h2>
         <img
-          src="@/assets/icons/Chevron_Right_White.svg"
+          src="@/assets/icons/Chevron_Right_Blue.svg"
           alt="Markt anzeigen"
         />
 
@@ -38,12 +38,18 @@
         </div>
 
         <div class="categories">
-          <ul>
+
+          <ul v-show="mainProducts.length > 0">
             <li :key="index" v-for="(category, index) in mainProducts">
               <div v-bind:class="'traffic-light ' + category.availability"></div>
               <span class="label">{{ category.name }}</span>
             </li>
           </ul>
+
+          <div v-show="mainProducts.length == 0">
+            Keine Produktinformationen
+          </div>
+
         </div>
         <!-- 
         <div class="updated">
@@ -115,7 +121,7 @@ export default {
     display: inline-block;
     position: relative;
     top: 0;
-    width: 100%;
+    width: 90%;
     height: 100%;
     font-size: calc(var(--header-height) / 2);
     font-weight: bold;
@@ -129,7 +135,6 @@ export default {
     top: 0;
     width: calc(var(--header-height));
     height: calc(var(--header-height));
-    filter: invert(100%) sepia(54%) saturate(2882.5%) hue-rotate(351.7deg) brightness(107.5%) contrast(100.3%);
   }
   
   .card .main {
@@ -144,12 +149,14 @@ export default {
   
   .card .main .address {
     display: inline-block;
+    line-height: 1.5rem;
+    width: 85%;
   }
   
   .card .main .distance {
     display: inline-block;
     position: absolute;
-    right: 2rem;
+    right: 1rem;
   }
   
   .card .main .status span {
@@ -167,7 +174,7 @@ export default {
   .card .main .categories {
     display: block;
     width: 100%;
-    margin-top: 1rem;
+    margin-top: .5rem;
   }
   
   .card .main .categories ul {
