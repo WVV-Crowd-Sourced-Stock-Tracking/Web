@@ -6,7 +6,7 @@
       <div class="w-full h-40">
         <!-- Content inside of the div#map will be overwritten once the map is loaded -->
 
-        <div v-show="mapInitiated" id="map" class="w-full h-full">
+        <!-- <div v-show="mapInitiated" id="map" class="w-full h-full">
           <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
             Sorry, die Karte konnte nicht geladen werden. Bitte lade die Seite neu :)
           </div>
@@ -14,7 +14,18 @@
 
         <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
           Karte wird geladen...
+        </div> -->
+
+        <div id="map" class="w-full h-full">
+          <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
+            <!-- Sorry, die Karte konnte nicht geladen werden. Bitte lade die Seite neu :) -->
+            Karte wird geladen...
+          </div>
         </div>
+
+        <!-- <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
+          Karte wird geladen...
+        </div> -->
 
       </div>
 
@@ -184,7 +195,6 @@ export default {
       mapsApiScript.onload = () => {
 
         console.log('maps script loaded!');
-
         this.$store.dispatch('mapsScriptLoaded');
         
       };
@@ -192,7 +202,6 @@ export default {
     initMapIfReady() {
 
       if (this.loadedScript && this.isValidCenter && !this.mapInitStarted) {
-        // setTimeout(this.initMap, 3000);
         this.initMap();
       }
       
@@ -230,7 +239,6 @@ export default {
 
       this.map.addListener('tilesloaded', () => {
         // visible map tiles have been *fully* loaded
-        alert('tiles loaded');
       })
 
       this.map.addListener('zoom_changed', () => {
@@ -273,7 +281,7 @@ export default {
           })
 
           marker.addListener('click', () => {
-            // navigate to the store's detail page
+            // navigate to the stores detail page
             this.$router.push(`store/${market.mapsId}`);
           })
           
@@ -345,22 +353,6 @@ export default {
         this.initMap();
       }
 
-      // setTimeout(() => {
-      //   this.map.setZoom(13);
-      // }, 5000);
-
-      // setTimeout(() => {
-      //   alert('zoomed');
-      // }, 7000);
-
-      // setTimeout(() => {
-      //   this.map.panBy(50, 50);
-      // }, 10000);
-
-      // setTimeout(() => {
-      //   alert('panned');
-      // }, 12000);
-      
     }
 };
 </script>
