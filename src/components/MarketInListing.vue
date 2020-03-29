@@ -13,51 +13,54 @@
       }
     }"
   >
-    <div class="card">
-      <div class="header">
+    <div class="flex flex-row justify-between w-full h-48 bg-white my-2 p-4 shadow-lg rounded text-gray-700 leading-relaxed">
 
-        <h2>{{ name }}</h2>
-        <img
-          src="@/assets/icons/Chevron_Right_Blue.svg"
-          alt="Markt anzeigen"
-        />
+      <div class="w-11/12 pr-4">
+
+        <h2 class="text-xl mb-2 h-10 overflow-hidden">{{ name }}</h2>
+
+          <div class="flex flex-row justify-between">
+
+            <div class="w-3/4">
+              {{ address }}
+            </div>
+
+            <div class="w-1/4 text-right"> {{ distance }} m </div>
+
+          </div>
+
+          <div :class="[status.class=='opened' ? 'text-green-700' : 'text-red-700']">{{ status.text }}</div>
+
+          <div>
+
+            <ul v-if="mainProducts.length > 0" class="flex flex-row flex-wrap h-6 mt-2 overflow-hidden">
+              <li :key="index" v-for="(product, index) in mainProducts" class="flex flex-row mx-3">
+                <div v-if="product.availability == 'high'" class="w-4 h-4 rounded-full bg-green-500"></div>
+                <div v-else-if="product.availability == 'medium'" class="w-4 h-4 rounded-full bg-yellow-500"></div>
+                <div v-else class="w-4 h-4 rounded-full bg-red-500"></div>
+                <div class="ml-2">{{ product.name }}</div>
+              </li>
+            </ul>
+
+            <div v-else>
+              <i>Keine Produktinformationen</i>
+            </div>
+
+          </div>
 
       </div>
 
-      <div class="main">
-        <div class="address">
-          {{ address }}
-        </div>
-
-        <span class="distance"> {{ distance }} m </span>
-
-        <div class="status">
-          <span v-bind:class="status.class">{{ status.text }}</span>
-          <!-- statusAction ist entweder 'Schließt' oder 'Öffnet', ne nachdem ob der Markt gerade offen ist.
-          statusTime ist die Uhrzeit, zu der der Markt schließt/öffnet -->
-        </div>
-
-        <div class="categories">
-
-          <ul v-show="mainProducts.length > 0">
-            <li :key="index" v-for="(category, index) in mainProducts">
-              <div v-bind:class="'traffic-light ' + category.availability"></div>
-              <span class="label">{{ category.name }}</span>
-            </li>
-          </ul>
-
-          <div v-show="mainProducts.length == 0">
-            <i>Keine Produktinformationen</i>
-          </div>
-
-        </div>
+        <img
+          src="@/assets/icons/Chevron_Right_Blue.svg"
+          alt="Markt anzeigen"
+          class="w-1/12"
+        />
         <!-- 
         <div class="updated">
 
           zuletzt aktualisiert am {{updated.date}} um {{updated.time}}
           
         </div> -->
-      </div>
     </div>
 
   </router-link>
@@ -85,7 +88,7 @@ export default {
 
 <style scoped>
 
-  .traffic-light.high {
+  /* .traffic-light.high {
     background-color: #6dd400;
   }
   .traffic-light.medium {
@@ -108,13 +111,9 @@ export default {
   
   .card .header {
     display: block;
-    /* position: absolute; */
     top: 0;
     width: 100%;
-    /* height: var(--header-height); */
-    /* background-color: #006bab; */
     padding-left: 1rem;
-    /* color: white; */
   }
   
   .card .header h2 {
@@ -205,5 +204,5 @@ export default {
     text-align: center;
     margin-top: 0.5rem;
     color: #c8cbcd;
-  }
+  } */
   </style>
