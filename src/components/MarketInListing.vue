@@ -35,9 +35,10 @@
 
             <ul v-if="mainProducts.length > 0" class="flex flex-row flex-wrap h-6 mt-2 overflow-hidden">
               <li :key="index" v-for="(product, index) in mainProducts" class="mr-4">
-                <div v-if="product.availability == 'high'" class="inline-block w-4 h-4 rounded-full bg-green-500 align-baseline"></div>
-                <div v-else-if="product.availability == 'medium'" class="inline-block w-4 h-4 rounded-full bg-yellow-500 align-baseline"></div>
-                <div v-else class="inline-block w-5 h-5 rounded-full bg-red-500 align-baseline"></div>
+                <div v-if="product.availability == 'high'" class="inline-block w-4 h-4 rounded-full align-baseline" style="background-color:#6DD400;"></div>
+                <div v-else-if="product.availability == 'medium'" class="inline-block w-4 h-4 rounded-full align-baseline" style="background-color:#F7B500;"></div>
+                <div v-else-if="product.availability == 'low'" class="inline-block w-5 h-5 rounded-full align-baseline" style="background-color:#E02020;"></div>
+                <div v-else class="inline-block w-5 h-5 rounded-full bg-gray-600 align-baseline" ></div>
                 <div class="inline-block ml-1 text-lg">{{ product.name }}</div>
               </li>
             </ul>
