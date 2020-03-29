@@ -35,8 +35,8 @@
 
 <script>
 //TODO exchange loadingMessage for LoadingIndicator component combined with v-if
-import Market from "@/assets/js/market";
-import API from "@/assets/js/api";
+// import Market from "@/assets/js/market";
+// import API from "@/assets/js/api";
 
 export default {
   props: {
@@ -48,7 +48,7 @@ export default {
       mapInitiated: false,
       mapInitStarted: false,
       userPosition: this.userPositionProp,
-      API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
+      // API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
       // center: this.userPositionProp,
       map: {},
       homeMarker: {},
@@ -138,20 +138,20 @@ export default {
 
       }
     },
-    center: {
-      handler: function() {
-        if (this.mapInitiated) {
-          this.updatedMarkersOnMap();
-        }
-      }
-    },
-    radius: {
-      handler: function() {
-        if (this.mapInitiated) {
-          this.updatedMarkersOnMap();
-        }
-      }
-    },
+    // center: {
+    //   handler: function() {
+    //     if (this.mapInitiated) {
+    //       this.updatedMarkersOnMap();
+    //     }
+    //   }
+    // },
+    // radius: {
+    //   handler: function() {
+    //     if (this.mapInitiated) {
+    //       this.updatedMarkersOnMap();
+    //     }
+    //   }
+    // },
     loadedScript: {
       handler: function() {
         this.initMapIfReady();
@@ -162,9 +162,16 @@ export default {
         this.initMapIfReady();
       }
     },
-    mapInitiated: {
-      handler: function(initiated) {
-        if (initiated) {
+    // mapInitiated: {
+    //   handler: function(initiated) {
+    //     if (initiated) {
+    //       this.updatedMarkersOnMap();
+    //     }
+    //   }
+    // }
+    markets: {
+      handler: function() {
+        if (this.mapInitiated) {
           this.updatedMarkersOnMap();
         }
       }
@@ -177,14 +184,17 @@ export default {
     isValidCenter: function() {
       return (!isNaN(this.center.lat) && !isNaN(this.center.lng));
     },
-    radius: function() {
-      return this.$store.getters.radius;
-    },
+    // radius: function() {
+    //   return this.$store.getters.radius;
+    // },
     zoom: function() {
       return this.$store.getters.zoom;
     },
     loadedScript: function() {
       return this.$store.getters.mapsScriptLoaded;
+    },
+    markets: function() {
+      return this.$store.getters.markets;
     }
   },
   methods: {
@@ -259,18 +269,13 @@ export default {
     },
     updatedMarkersOnMap() {
       
-      this.loadAll()
-      .then(markets => {
-
-        console.log('markets:', markets);
-
-        this.mapMarkers.forEach(marker => {
+      this.mapMarkers.forEach(marker => {
           marker.setMap(null);
         })
 
         this.mapMarkers = [];
 
-        markets.forEach(market => {
+        this.markets.forEach(market => {
 
           let marker = new window.google.maps.Marker({
             position: {lat: market.lat, lng: market.lng},
@@ -287,53 +292,48 @@ export default {
           
           this.mapMarkers.push(marker);
         });
-
-      })
-      .catch(err => {
-        console.error(err);
-      })
       
     },
-    async loadAll() {
-      return new Promise((resolve, reject) => {
+    // async loadAll() {
+    //   return new Promise((resolve, reject) => {
       
-        let markets = [];
+    //     let markets = [];
 
-        this.API.loadMarkets(this.center.lat, this.center.lng, this.radius)
-        .then(rawMarkets => {
+    //     this.API.loadMarkets(this.center.lat, this.center.lng, this.radius)
+    //     .then(rawMarkets => {
 
-          console.log('rawMarkets:', rawMarkets);
-          // rawMarkets = (
-          //   await this.axios.get(`http://${window.location.hostname}:3000/markets`)
-          // ).data;
+    //       console.log('rawMarkets:', rawMarkets);
+    //       // rawMarkets = (
+    //       //   await this.axios.get(`http://${window.location.hostname}:3000/markets`)
+    //       // ).data;
 
-          rawMarkets.forEach(rawMarket => {
-            markets.push(
-              new Market(
-                rawMarket.id,
-                rawMarket.name,
-                rawMarket.city,
-                rawMarket.street,
-                rawMarket.lat,
-                rawMarket.lng,
-                rawMarket.distance,
-                rawMarket.open,
-                rawMarket.products,
-                rawMarket.mapsId,
-                rawMarket.zip,
-              )
-            );
-          });
+    //       rawMarkets.forEach(rawMarket => {
+    //         markets.push(
+    //           new Market(
+    //             rawMarket.id,
+    //             rawMarket.name,
+    //             rawMarket.city,
+    //             rawMarket.street,
+    //             rawMarket.lat,
+    //             rawMarket.lng,
+    //             rawMarket.distance,
+    //             rawMarket.open,
+    //             rawMarket.products,
+    //             rawMarket.mapsId,
+    //             rawMarket.zip,
+    //           )
+    //         );
+    //       });
 
-          resolve(markets);
+    //       resolve(markets);
           
-        })
-        .catch(err => {
-          reject(err);
-        })
+    //     })
+    //     .catch(err => {
+    //       reject(err);
+    //     })
 
-      })
-    },
+    //   })
+    // },
     panToCenter() {
 
       this.map.panTo(this.center);

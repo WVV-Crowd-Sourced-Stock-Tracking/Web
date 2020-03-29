@@ -18,8 +18,8 @@
 <script>
 // import Market from "./Market.vue";
 import MarketInListing from "@/components/MarketInListing.vue";
-import Market from "@/assets/js/market";
-import API from "@/assets/js/api";
+// import Market from "@/assets/js/market";
+// import API from "@/assets/js/api";
 
 export default {
   name: "Listing",
@@ -28,80 +28,83 @@ export default {
   },
   data: function() {
     return {
-      loaded: false,
-      markets: [],
-      rawMarkets: [],
-      API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
+      // loaded: false,
+      // markets: [],
+      // rawMarkets: [],
+      // API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
     };
   },
-  watch: {
-    center: {
-      handler: function() {
+  // watch: {
+  //   center: {
+  //     handler: function() {
         
-        console.log('center updated');
-        this.loaded = true;
+  //       console.log('center updated');
+  //       this.loaded = true;
 
-        this.loadRawMarkets();
+  //       this.loadRawMarkets();
         
-      }
-    },
-    radius: {
-      handler: function() {
+  //     }
+  //   },
+  //   radius: {
+  //     handler: function() {
         
-        console.log('radius updated');
-        this.loadRawMarkets();
+  //       console.log('radius updated');
+  //       this.loadRawMarkets();
         
-      }
-    },
-    rawMarkets: {
-      handler: function(newRawMarkets) {
+  //     }
+  //   },
+  //   rawMarkets: {
+  //     handler: function(newRawMarkets) {
 
-        this.markets = [];
+  //       this.markets = [];
 
-        newRawMarkets.forEach(rawMarket => {
-          this.markets.push(
-            new Market(
-              rawMarket.id,
-              rawMarket.name,
-              rawMarket.city,
-              rawMarket.street,
-              rawMarket.lat,
-              rawMarket.lng,
-              rawMarket.distance,
-              rawMarket.open,
-              rawMarket.products,
-              rawMarket.mapsId
-            )
-          );
-        });
+  //       newRawMarkets.forEach(rawMarket => {
+  //         this.markets.push(
+  //           new Market(
+  //             rawMarket.id,
+  //             rawMarket.name,
+  //             rawMarket.city,
+  //             rawMarket.street,
+  //             rawMarket.lat,
+  //             rawMarket.lng,
+  //             rawMarket.distance,
+  //             rawMarket.open,
+  //             rawMarket.products,
+  //             rawMarket.mapsId
+  //           )
+  //         );
+  //       });
         
-      }
-    }
-  },
+  //     }
+  //   }
+  // },
   computed: {
-    center: function() {
-      return this.$store.getters.center;
-    },
-    radius: function() {
-      return this.$store.getters.radius;
+    // center: function() {
+    //   return this.$store.getters.center;
+    // },
+    // radius: function() {
+    //   return this.$store.getters.radius;
+    // },
+    markets: function() {
+      return this.$store.getters.markets;
     }
   },
-  methods: {
-    loadRawMarkets() {
+  // methods: {
+  //   loadRawMarkets() {
 
-      this.API.loadMarkets(this.center.lat, this.center.lng, this.radius).then(rawMarkets => {
-          console.log('rawMarkets:', rawMarkets);
-          this.rawMarkets = rawMarkets;
-        })
+  //     this.API.loadMarkets(this.center.lat, this.center.lng, this.radius).then(rawMarkets => {
+  //         console.log('rawMarkets:', rawMarkets);
+  //         this.rawMarkets = rawMarkets;
+  //       })
       
-    }
-  },
-  mounted() {
+  //   }
+  // // },
+  // mounted() {
     
-    if (!this.loaded) {
-      this.loadRawMarkets();
-    }
+  //   if (!this.loaded) {
+  //     this.loadRawMarkets();
+  //   }
     
-  }
+  // }
 };
 </script>
