@@ -13,19 +13,19 @@
       }
     }"
   >
-    <div class="flex flex-row justify-between w-full h-40 bg-white my-3 p-4 shadow-lg rounded text-gray-700 leading-relaxed">
+    <div class="flex flex-row justify-between w-full h-40 bg-white my-3 p-4 shadow-md rounded-md text-gray-700 leading-relaxed border-solid border-l-4 border-blue-600">
 
       <div class="w-11/12 pr-4">
 
-        <h2 class="text-xl h-10 overflow-hidden">{{ name }}</h2>
+        <h2 class="text-xl h-10 overflow-hidden text-gray-800">{{ name }}</h2>
 
-          <div class="flex flex-row justify-between">
+          <div class="flex flex-row justify-between mb-1">
 
-            <div class="w-5/6 whitespace-no-wrap overflow-scroll">
+            <div class="w-full whitespace-no-wrap overflow-scroll">
               {{ address }}
             </div>
 
-            <div class="w-1/6 text-right"> {{ distance }} m </div>
+            <div class="w-20 text-right"> {{ distance }} m </div>
 
           </div>
 
@@ -34,7 +34,7 @@
           <div>
 
             <ul v-if="mainProducts.length > 0" class="flex flex-row flex-wrap h-6 mt-2 overflow-hidden">
-              <li :key="index" v-for="(product, index) in mainProducts" class="mx-2">
+              <li :key="index" v-for="(product, index) in mainProducts" class="mr-4">
                 <div v-if="product.availability == 'high'" class="inline-block w-4 h-4 rounded-full bg-green-500 align-baseline"></div>
                 <div v-else-if="product.availability == 'medium'" class="inline-block w-4 h-4 rounded-full bg-yellow-500 align-baseline"></div>
                 <div v-else class="inline-block w-5 h-5 rounded-full bg-red-500 align-baseline"></div>
@@ -42,8 +42,8 @@
               </li>
             </ul>
 
-            <div v-else>
-              <i>Keine Produktinformationen</i>
+            <div v-else class="mt-2 italic">
+              Keine Produktinformationen
             </div>
 
           </div>
