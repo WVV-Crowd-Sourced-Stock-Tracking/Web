@@ -23,6 +23,9 @@ export const store = new Vuex.Store({
     markets: [],
   },
   mutations: {
+    SET_USER_POSITION(state, newUserPosition) {
+      state.userPosition = newUserPosition;
+    },
     SET_CENTER_POSITION(state, newCenter) {
       state.center = newCenter;
     },
@@ -40,6 +43,9 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    updateUserPosition(context, newUserPosition) {
+      context.commit('SET_USER_POSITION', newUserPosition);
+    },
     updateCenter(context, newCenter) {
       context.commit('SET_CENTER_POSITION', newCenter);
       context.dispatch('reloadMarkets');
@@ -95,6 +101,9 @@ export const store = new Vuex.Store({
     }
   },
   getters: {
+    userPosition: state => {
+      return state.userPosition;
+    },
     center: state => {
       return state.center;
     },

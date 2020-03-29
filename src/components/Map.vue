@@ -35,21 +35,12 @@
 
 <script>
 //TODO exchange loadingMessage for LoadingIndicator component combined with v-if
-// import Market from "@/assets/js/market";
-// import API from "@/assets/js/api";
 
 export default {
-  props: {
-    userPositionProp: Object,
-  },
   data() {
     return {
-      // loaded: false,
       mapInitiated: false,
       mapInitStarted: false,
-      userPosition: this.userPositionProp,
-      // API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      // center: this.userPositionProp,
       map: {},
       homeMarker: {},
       mapMarkers: [],
@@ -65,9 +56,6 @@ export default {
         this.panToCenter();
       
       }
-    },
-    userPositionProp: function() {
-      this.userPosition = this.userPositionProp;
     },
     userPosition: {
       handler: function(newPosition) {
@@ -138,20 +126,6 @@ export default {
 
       }
     },
-    // center: {
-    //   handler: function() {
-    //     if (this.mapInitiated) {
-    //       this.updatedMarkersOnMap();
-    //     }
-    //   }
-    // },
-    // radius: {
-    //   handler: function() {
-    //     if (this.mapInitiated) {
-    //       this.updatedMarkersOnMap();
-    //     }
-    //   }
-    // },
     loadedScript: {
       handler: function() {
         this.initMapIfReady();
@@ -162,13 +136,6 @@ export default {
         this.initMapIfReady();
       }
     },
-    // mapInitiated: {
-    //   handler: function(initiated) {
-    //     if (initiated) {
-    //       this.updatedMarkersOnMap();
-    //     }
-    //   }
-    // }
     markets: {
       handler: function() {
         if (this.mapInitiated) {
@@ -184,9 +151,6 @@ export default {
     isValidCenter: function() {
       return (!isNaN(this.center.lat) && !isNaN(this.center.lng));
     },
-    // radius: function() {
-    //   return this.$store.getters.radius;
-    // },
     zoom: function() {
       return this.$store.getters.zoom;
     },
@@ -195,6 +159,9 @@ export default {
     },
     markets: function() {
       return this.$store.getters.markets;
+    },
+    userPosition: function() {
+      return this.$store.getters.userPosition;
     }
   },
   methods: {
@@ -294,46 +261,6 @@ export default {
         });
       
     },
-    // async loadAll() {
-    //   return new Promise((resolve, reject) => {
-      
-    //     let markets = [];
-
-    //     this.API.loadMarkets(this.center.lat, this.center.lng, this.radius)
-    //     .then(rawMarkets => {
-
-    //       console.log('rawMarkets:', rawMarkets);
-    //       // rawMarkets = (
-    //       //   await this.axios.get(`http://${window.location.hostname}:3000/markets`)
-    //       // ).data;
-
-    //       rawMarkets.forEach(rawMarket => {
-    //         markets.push(
-    //           new Market(
-    //             rawMarket.id,
-    //             rawMarket.name,
-    //             rawMarket.city,
-    //             rawMarket.street,
-    //             rawMarket.lat,
-    //             rawMarket.lng,
-    //             rawMarket.distance,
-    //             rawMarket.open,
-    //             rawMarket.products,
-    //             rawMarket.mapsId,
-    //             rawMarket.zip,
-    //           )
-    //         );
-    //       });
-
-    //       resolve(markets);
-          
-    //     })
-    //     .catch(err => {
-    //       reject(err);
-    //     })
-
-    //   })
-    // },
     panToCenter() {
 
       this.map.panTo(this.center);
@@ -342,10 +269,6 @@ export default {
     }
   },
   mounted() {
-      // check if userPosition has already been acquired, because in this case the watch handler doesn't fire anymore
-      if (this.userPositionProp.lat != 0 && this.userPositionProp.lng != 0) {
-        this.userPosition = {lat: this.userPositionProp.lat, lng: this.userPositionProp.lng};
-      }
 
       if (!this.loadedScript) {
         this.loadScript();
