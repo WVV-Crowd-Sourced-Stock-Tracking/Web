@@ -45,6 +45,12 @@ export default {
       homeMarker: {},
       mapMarkers: [],
       zoomedToUserPosition: false,
+      refreshTimerId: NaN,
+      queuedCenter: {
+        lat: NaN,
+        lng: NaN,
+      },
+      queuedRadius: NaN,
     };
   },
   watch: {
@@ -122,7 +128,8 @@ export default {
             break;
         }
 
-        this.$store.dispatch('updateRadius', newRadius);
+        this.queuedRadius = newRadius;
+        this.commitUpdates();
 
       }
     },
@@ -165,6 +172,42 @@ export default {
     }
   },
   methods: {
+    commitUpdates() {
+
+      if (!isNaN(this.refreshTimerId)) {
+
+        clearTimeout(this.refreshTimerId);
+        this.refreshTimerId = setTimeout(() => {
+
+          console.log('long timeout');
+
+          if (!isNaN(this.queuedCenter.lat) && !isNaN(this.queuedCenter.lng)) {
+            this.$store.dispatch('updateCenter', this.queuedCenter);
+          }
+
+          if (!isNaN(this.queuedRadius)) {
+            this.$store.dispatch('updateRadius', this.queuedRadius);
+          }
+
+        }, 1000);
+
+      } else {
+        this.refreshTimerId = setTimeout(() => {
+
+          console.log('short timeout');
+
+          if (!isNaN(this.queuedCenter.lat) && !isNaN(this.queuedCenter.lng)) {
+            this.$store.dispatch('updateCenter', this.queuedCenter);
+          }
+
+          if (!isNaN(this.queuedRadius)) {
+            this.$store.dispatch('updateRadius', this.queuedRadius);
+          }
+          
+        }, 1);
+      }
+      
+    },
     loadScript() {
       let mapsApiScript = document.createElement('script');
       mapsApiScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHJCRgVNdpdHQigIEebTzT4RDiTwt6jk');
@@ -224,7 +267,8 @@ export default {
 
       // reload markets in the vicinity when the user drags the map
       this.map.addListener('dragend', () => {
-        this.$store.dispatch('updateCenter', {lat: this.map.center.lat(), lng: this.map.center.lng()});
+        this.queuedCenter = {lat: this.map.center.lat(), lng: this.map.center.lng()};
+        this.commitUpdates();
       })
 
       this.homeMarker = new window.google.maps.Marker({
@@ -235,30 +279,32 @@ export default {
 
     },
     updatedMarkersOnMap() {
-      
+
+      console.log('called');
+
       this.mapMarkers.forEach(marker => {
-          marker.setMap(null);
+        marker.setMap(null);
+      })
+
+      this.mapMarkers = [];
+
+      this.markets.forEach(market => {
+
+        let marker = new window.google.maps.Marker({
+          position: {lat: market.lat, lng: market.lng},
+          icon: "/media/Pin.svg",
+          map: this.map,
+          clickable: true,
+          draggable: false,
         })
 
-        this.mapMarkers = [];
-
-        this.markets.forEach(market => {
-
-          let marker = new window.google.maps.Marker({
-            position: {lat: market.lat, lng: market.lng},
-            icon: "/media/Pin.svg",
-            map: this.map,
-            clickable: true,
-            draggable: false,
-          })
-
-          marker.addListener('click', () => {
-            // navigate to the stores detail page
-            this.$router.push(`store/${market.mapsId}`);
-          })
-          
-          this.mapMarkers.push(marker);
-        });
+        marker.addListener('click', () => {
+          // navigate to the stores detail page
+          this.$router.push(`store/${market.mapsId}`);
+        })
+        
+        this.mapMarkers.push(marker);
+      });
       
     },
     panToCenter() {
