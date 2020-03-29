@@ -35,25 +35,22 @@
 
 <script>
 //TODO exchange loadingMessage for LoadingIndicator component combined with v-if
-import Market from "@/assets/js/market";
-import API from "@/assets/js/api";
 
 export default {
-  props: {
-    userPositionProp: Object,
-  },
   data() {
     return {
-      // loaded: false,
       mapInitiated: false,
       mapInitStarted: false,
-      userPosition: this.userPositionProp,
-      API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
-      // center: this.userPositionProp,
       map: {},
       homeMarker: {},
       mapMarkers: [],
       zoomedToUserPosition: false,
+      refreshTimerId: NaN,
+      queuedCenter: {
+        lat: NaN,
+        lng: NaN,
+      },
+      queuedRadius: NaN,
     };
   },
   watch: {
@@ -65,9 +62,6 @@ export default {
         this.panToCenter();
       
       }
-    },
-    userPositionProp: function() {
-      this.userPosition = this.userPositionProp;
     },
     userPosition: {
       handler: function(newPosition) {
@@ -134,22 +128,9 @@ export default {
             break;
         }
 
-        this.$store.dispatch('updateRadius', newRadius);
+        this.queuedRadius = newRadius;
+        this.commitUpdates();
 
-      }
-    },
-    center: {
-      handler: function() {
-        if (this.mapInitiated) {
-          this.updatedMarkersOnMap();
-        }
-      }
-    },
-    radius: {
-      handler: function() {
-        if (this.mapInitiated) {
-          this.updatedMarkersOnMap();
-        }
       }
     },
     loadedScript: {
@@ -162,9 +143,9 @@ export default {
         this.initMapIfReady();
       }
     },
-    mapInitiated: {
-      handler: function(initiated) {
-        if (initiated) {
+    markets: {
+      handler: function() {
+        if (this.mapInitiated) {
           this.updatedMarkersOnMap();
         }
       }
@@ -177,17 +158,56 @@ export default {
     isValidCenter: function() {
       return (!isNaN(this.center.lat) && !isNaN(this.center.lng));
     },
-    radius: function() {
-      return this.$store.getters.radius;
-    },
     zoom: function() {
       return this.$store.getters.zoom;
     },
     loadedScript: function() {
       return this.$store.getters.mapsScriptLoaded;
+    },
+    markets: function() {
+      return this.$store.getters.markets;
+    },
+    userPosition: function() {
+      return this.$store.getters.userPosition;
     }
   },
   methods: {
+    commitUpdates() {
+
+      if (!isNaN(this.refreshTimerId)) {
+
+        clearTimeout(this.refreshTimerId);
+        this.refreshTimerId = setTimeout(() => {
+
+          console.log('long timeout');
+
+          if (!isNaN(this.queuedCenter.lat) && !isNaN(this.queuedCenter.lng)) {
+            this.$store.dispatch('updateCenter', this.queuedCenter);
+          }
+
+          if (!isNaN(this.queuedRadius)) {
+            this.$store.dispatch('updateRadius', this.queuedRadius);
+          }
+
+        }, 1000);
+
+      } else {
+        this.refreshTimerId = setTimeout(() => {
+
+          console.log('short timeout');
+
+          if (!isNaN(this.queuedCenter.lat) && !isNaN(this.queuedCenter.lng)) {
+            this.$store.dispatch('updateCenter', this.queuedCenter);
+          }
+
+          if (!isNaN(this.queuedRadius)) {
+            this.$store.dispatch('updateRadius', this.queuedRadius);
+          }
+          
+        }, 1);
+      }
+      
+    },
     loadScript() {
       let mapsApiScript = document.createElement('script');
       mapsApiScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHJCRgVNdpdHQigIEebTzT4RDiTwt6jk');
@@ -247,7 +267,8 @@ export default {
 
       // reload markets in the vicinity when the user drags the map
       this.map.addListener('dragend', () => {
-        this.$store.dispatch('updateCenter', {lat: this.map.center.lat(), lng: this.map.center.lng()});
+        this.queuedCenter = {lat: this.map.center.lat(), lng: this.map.center.lng()};
+        this.commitUpdates();
       })
 
       this.homeMarker = new window.google.maps.Marker({
@@ -258,81 +279,33 @@ export default {
 
     },
     updatedMarkersOnMap() {
-      
-      this.loadAll()
-      .then(markets => {
 
-        console.log('markets:', markets);
+      console.log('called');
 
-        this.mapMarkers.forEach(marker => {
-          marker.setMap(null);
+      this.mapMarkers.forEach(marker => {
+        marker.setMap(null);
+      })
+
+      this.mapMarkers = [];
+
+      this.markets.forEach(market => {
+
+        let marker = new window.google.maps.Marker({
+          position: {lat: market.lat, lng: market.lng},
+          icon: "/media/Pin.svg",
+          map: this.map,
+          clickable: true,
+          draggable: false,
         })
 
-        this.mapMarkers = [];
-
-        markets.forEach(market => {
-
-          let marker = new window.google.maps.Marker({
-            position: {lat: market.lat, lng: market.lng},
-            icon: "/media/Pin.svg",
-            map: this.map,
-            clickable: true,
-            draggable: false,
-          })
-
-          marker.addListener('click', () => {
-            // navigate to the stores detail page
-            this.$router.push(`store/${market.mapsId}`);
-          })
-          
-          this.mapMarkers.push(marker);
-        });
-
-      })
-      .catch(err => {
-        console.error(err);
-      })
-      
-    },
-    async loadAll() {
-      return new Promise((resolve, reject) => {
-      
-        let markets = [];
-
-        this.API.loadMarkets(this.center.lat, this.center.lng, this.radius)
-        .then(rawMarkets => {
-
-          console.log('rawMarkets:', rawMarkets);
-          // rawMarkets = (
-          //   await this.axios.get(`http://${window.location.hostname}:3000/markets`)
-          // ).data;
-
-          rawMarkets.forEach(rawMarket => {
-            markets.push(
-              new Market(
-                rawMarket.id,
-                rawMarket.name,
-                rawMarket.city,
-                rawMarket.street,
-                rawMarket.lat,
-                rawMarket.lng,
-                rawMarket.distance,
-                rawMarket.open,
-                rawMarket.products,
-                rawMarket.mapsId,
-                rawMarket.zip,
-              )
-            );
-          });
-
-          resolve(markets);
-          
+        marker.addListener('click', () => {
+          // navigate to the stores detail page
+          this.$router.push(`store/${market.mapsId}`);
         })
-        .catch(err => {
-          reject(err);
-        })
-
-      })
+        
+        this.mapMarkers.push(marker);
+      });
+      
     },
     panToCenter() {
 
@@ -342,10 +315,6 @@ export default {
     }
   },
   mounted() {
-      // check if userPosition has already been acquired, because in this case the watch handler doesn't fire anymore
-      if (this.userPositionProp.lat != 0 && this.userPositionProp.lng != 0) {
-        this.userPosition = {lat: this.userPositionProp.lat, lng: this.userPositionProp.lng};
-      }
 
       if (!this.loadedScript) {
         this.loadScript();

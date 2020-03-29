@@ -30,10 +30,12 @@ export default {
         if (!this.initiatedCenter) {
 
           this.$store.dispatch('updateCenter', newUserPosition);
+          this.$store.dispatch('updateUserPosition', newUserPosition);
           console.log('Initiated center to user position');
           
         } else {
-          console.log('center has already been initiated...')
+          console.log('center has already been initiated...');
+          this.$store.dispatch('updateUserPosition', newUserPosition);
         }
 
       }
@@ -55,7 +57,7 @@ export default {
       } else {
         console.log('Locating…');
 
-        this.$getLocation()
+        this.$watchLocation()
         .then(coords => {
           console.log('coords:', coords);
           this.userPosition = {lat: coords.lat, lng: coords.lng};
