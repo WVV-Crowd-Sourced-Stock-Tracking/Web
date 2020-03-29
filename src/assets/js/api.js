@@ -16,8 +16,8 @@ export default class API {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            gps_width: lat,
-            gps_length: lng,
+            latitude: lat,
+            longitude: lng,
             radius: radius,
           })
         })

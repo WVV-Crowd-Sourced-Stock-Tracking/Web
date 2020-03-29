@@ -5,7 +5,7 @@ Vue.use(Vuex)
 import API from '@/assets/js/api';
 import Market from '@/assets/js/market';
 
-const api = new API('https://wvvcrowdmarket.herokuapp.com/ws/rest');
+const api = new API('https://wvv2.herokuapp.com/ws/rest');
 
 export const store = new Vuex.Store({
   state: {
@@ -65,6 +65,8 @@ export const store = new Vuex.Store({
       let rawMarkets;
       let markets = [];
 
+      console.log('teeeeeeest');
+
       try {
         rawMarkets = await api.loadMarkets(context.getters.center.lat, context.getters.center.lng, context.getters.radius);
       } catch (err) {
@@ -80,19 +82,22 @@ export const store = new Vuex.Store({
 
       }
 
+      console.log('rawMarkets:', rawMarkets);
+
       rawMarkets.forEach(rawMarket => {
         markets.push(new Market(
-          rawMarket.id,
-          rawMarket.name,
+          rawMarket.market_id,
+          rawMarket.market_name,
           rawMarket.city,
           rawMarket.street,
-          rawMarket.lat,
-          rawMarket.lng,
+          rawMarket.latitude,
+          rawMarket.longitude,
           rawMarket.distance,
-          rawMarket.open,
           rawMarket.products,
-          rawMarket.mapsId,
-          rawMarket.zip
+          rawMarket.maps_id,
+          rawMarket.zip,
+          rawMarket.icon_url,
+          rawMarket.periods
         ))
       })
 
