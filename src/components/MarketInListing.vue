@@ -47,7 +47,7 @@
           </ul>
 
           <div v-show="mainProducts.length == 0">
-            Keine Produktinformationen
+            <i>Keine Produktinformationen</i>
           </div>
 
         </div>
