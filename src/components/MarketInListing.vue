@@ -21,7 +21,7 @@
 
           <div class="flex flex-row justify-between mb-1">
 
-            <div class="w-full whitespace-no-wrap overflow-scroll">
+            <div class="w-full whitespace-no-wrap overflow-hidden">
               {{ address }}
             </div>
 
