@@ -54,7 +54,7 @@
         <img
           src="@/assets/icons/Chevron_Right_Blue.svg"
           alt="Markt anzeigen"
-          class="w-1/12 text-center"
+          class="w-1/12"
         />
         <!-- 
         <div class="updated">
