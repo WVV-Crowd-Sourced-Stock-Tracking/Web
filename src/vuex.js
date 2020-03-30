@@ -9,8 +9,9 @@ export const store = new Vuex.Store({
       lng: NaN,
     },
     radius: 2000,
-    zoom: 14,
+    zoom: 13,
     mapsScriptLoaded: false,
+    locationPermissionStatus: 'pending',
   },
   mutations: {
     SET_CENTER_POSITION(state, newCenter) {
@@ -25,6 +26,9 @@ export const store = new Vuex.Store({
     SET_MAPS_SCRIPT_LOADED(state, loaded) {
       state.mapsScriptLoaded = loaded;
     },
+    SET_LOCATION_PERMISSION_STATUS(state, newStatus) {
+      state.locationPermissionStatus = newStatus;
+    }
   },
   actions: {
     updateCenter(context, newCenter) {
@@ -38,6 +42,9 @@ export const store = new Vuex.Store({
     },
     mapsScriptLoaded(context) {
       context.commit('SET_MAPS_SCRIPT_LOADED', true)
+    },
+    updateLocationPermissionStatus(context, newStatus) {
+      context.commit('SET_LOCATION_PERMISSION_STATUS', newStatus);
     }
   },
   getters: {
@@ -52,6 +59,9 @@ export const store = new Vuex.Store({
     },
     mapsScriptLoaded: state => {
       return state.mapsScriptLoaded;
+    },
+    locationPermissionStatus: state => {
+      return state.locationPermissionStatus;
     }
   }
 
