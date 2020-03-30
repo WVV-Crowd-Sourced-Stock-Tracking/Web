@@ -34,15 +34,6 @@
           <div>
 
             <ul v-if="mainProducts.length > 0" class="flex flex-row flex-wrap h-6 mt-2 overflow-hidden">
-              <li :key="index" v-for="(product, index) in mainProducts" class="mr-5">
-                <div v-if="product.availability == 'high'" class="inline-block w-4 h-4 rounded-full align-baseline" style="background-color:#6DD400;"></div>
-                <div v-else-if="product.availability == 'medium'" class="inline-block w-4 h-4 rounded-full align-baseline" style="background-color:#F7B500;"></div>
-                <div v-else-if="product.availability == 'low'" class="inline-block w-4 h-4 rounded-full align-baseline" style="background-color:#E02020;"></div>
-                <div v-else class="inline-block w-4 h-4 rounded-full bg-gray-600 align-baseline" ></div>
-                <div class="inline-block ml-2 text-lg">{{ product.name }}</div>
-              </li>
-            </ul>
-            <!-- <ul v-if="mainProducts.length > 0" class="flex flex-row flex-wrap h-6 mt-2 overflow-hidden">
               <li :key="index" v-for="(product, index) in mainProducts" class="mr-4">
                 <div v-if="product.availability == 'high'" class="inline-block w-3 h-3 rounded-full align-center" style="background-color:#6DD400;"></div>
                 <div v-else-if="product.availability == 'medium'" class="inline-block w-3 h-3 rounded-full align-center" style="background-color:#F7B500;"></div>
@@ -50,7 +41,7 @@
                 <div v-else class="inline-block w-3 h-3 rounded-full bg-gray-600 align-center" ></div>
                 <div class="inline-block ml-1 text-lg">{{ product.name }}</div>
               </li>
-            </ul> -->
+            </ul>
 
             <div v-else class="mt-2 italic">
               Keine Produktinformationen
