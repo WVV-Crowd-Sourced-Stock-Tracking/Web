@@ -29,7 +29,7 @@
       </router-link>
 
       <div class="w-full h-32">
-        <img class="w-full h-full object-cover object-center" src="/media/items-organized-on-shelves-3687999.jpg" alt="Photo by Mehrad Vosoughi from Pexels" title="Photo by Mehrad Vosoughi from Pexels">
+        <img class="w-full h-full object-cover object-center" src="/media/items-organized-on-shelves_compressed.jpeg" alt="Photo by Mehrad Vosoughi from Pexels" title="Photo by Mehrad Vosoughi from Pexels">
       </div>
 
       <div class="bg-white w-full min-h-full h-auto pb-16">

@@ -1,17 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de" prefix="og: http://ogp.me/ns#">
   <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta name="author" content="WhatsLeft">
+    <meta name="description" content="What's Left? Stay Safe! Help Others!">
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="WhatsLeft" />
+    <meta property="og:title" content="WhatsLeft - Crowd-Sourced Supermarket Stock Tracking!" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://whatsleft.wirvsvirus.net/" />
+    <meta property="og:image" content="https://whatsleft.wirvsvirus.net/media/Banner1.png" />
+    <meta property="og:description" content="What's Left? Stay Safe! Help Others!" />
+    <meta property="og:locale" content="de_DE" />
+
+    <!-- third-generation iPad with high-resolution Retina display: -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="media/WhatsleftLogo_144x144_PNG.png">
+    <!-- iPhone with high-resolution Retina display: -->
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="media/WhatsleftLogo_114x114_PNG.png">
+    <!-- first- and second-generation iPad: -->
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="media/WhatsleftLogo_72x72_PNG.png">
+    <!-- non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+    <link rel="apple-touch-icon-precomposed" href="media/WhatsleftLogo_36x36_PNG.png">
+    <!-- basic favicon -->
+    <link rel="shortcut icon" href="media/WhatsleftLogo_192x192_PNG.png">
+    <link rel="icon" href="media/favicon.ico" type="image/x-icon">
+
+    <title>WhatsLeft - Crowd-Sourced Supermarket Stock Tracking!</title>
+
   </head>
   <body>
+    
     <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong>Es tut uns Leid, aber ohne JavaScript funktioniert WhatsLeft leider nicht 😕</strong>
     </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
+
+    <div id="app">
+      <!-- built files will be auto injected -->
+    </div>
+
   </body>
 </html>
