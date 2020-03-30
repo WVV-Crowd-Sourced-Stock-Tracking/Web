@@ -10,6 +10,11 @@
       v-on:closed="$emit('closed', $event);"
       v-else-if="type == 'thankyou'"
     />
+
+    <ErrorPrompt
+      v-on:closed="$emit('closed', $event);"
+      v-else-if="type == 'error'"
+    />
     
   </div>
 </template>
@@ -18,12 +23,14 @@
 
 import LocationPrompt from '@/components/prompts/LocationPrompt.vue';
 import ThankYouPrompt from '@/components/prompts/ThankYouPrompt.vue';
+import ErrorPrompt from '@/components/prompts/ErrorPrompt.vue';
 
 export default {
   name: 'Prompt',
   components: {
     LocationPrompt,
     ThankYouPrompt,
+    ErrorPrompt
   },
   props: {
     type: String,
