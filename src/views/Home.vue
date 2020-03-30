@@ -6,6 +6,10 @@
       description="What's Left? Crowed Sourced Stock Tracking!"
     />
 
+    <Prompt
+      type="location"
+    />
+
     <Header />
 
     <div class="intro m-4">
@@ -33,12 +37,14 @@
   import Header from "@/components/Header.vue";
   import Listings from "@/components/Listings.vue";
   import Map from "@/components/Map.vue";
+  import Prompt from "@/components/Prompt.vue";
 
   export default {
     components: {
       Header,
       Listings,
-      Map
+      Map,
+      Prompt
     },
     props: {
       userPosition: Object,
