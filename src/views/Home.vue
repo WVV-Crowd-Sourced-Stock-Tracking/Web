@@ -7,15 +7,10 @@
     />
 
     <Prompt
-      v-on:closed="promptHandler($event);"
-      type="location"
-    />
-<!-- 
-    <Prompt
       v-if="showLocationPrompt"
       v-on:closed="promptHandler($event);"
       type="location"
-    /> -->
+    />
 
     <Header />
 
