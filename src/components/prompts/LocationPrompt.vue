@@ -11,6 +11,14 @@
       Um Supermärkte in deiner Nähe anzeigen zu können benötigt <span class="font-bold">WhatsLeft</span> deinen Standort
     </div>
 
+    <div :class="'mt-2 font-bold transition-all duration-500 overflow-hidden ' + [help ? 'h-20' : 'h-0']">
+      Bitte stelle sicher, dass du den GPS-Standort deines Gerätes aktiviert hast!
+    </div>
+
+    <button @click="help ? hideHelp() : showHelp();" class="underline text-md focus:outline-none">
+      {{help ? 'Hilfe schließen' : 'Da klappt was nicht?'}}
+    </button>
+
     <button @click="$emit('closed', true);" class="block w-full h-16 text-xl font-bold text-gray-100 rounded tracking-wide my-6" style="background-color: #006BAB;">
       Standort freigeben
     </button>
@@ -25,5 +33,18 @@
 <script>
 export default {
   name: 'LocationPrompt',
+  data() {
+    return {
+      help: false,
+    }
+  },
+  methods: {
+    showHelp() {
+      this.help = true;
+    },
+    hideHelp() {
+      this.help = false;
+    }
+  }
 }
 </script>
