@@ -1,6 +1,15 @@
 <template>
   <div id="app">
-    <router-view />
+    <transition
+      enter-active-class="transition duration-500"
+      leave-active-class="transition duration-500"
+      enter-class="transform translate-x-40"
+      enter-to-class="transform translate-x-0"
+      leave-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
