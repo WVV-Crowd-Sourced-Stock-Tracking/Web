@@ -1,5 +1,5 @@
 <template>
-  <div id="home" class="text-gray-800">
+  <div id="home" class="absolute top-0 left-0 w-screen text-gray-800">
 
     <vue-headful
       title="Home - WhatsLeft"
