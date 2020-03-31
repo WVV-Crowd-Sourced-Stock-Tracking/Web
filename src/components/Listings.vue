@@ -1,5 +1,6 @@
 <template>
   <div class="listing">
+
     <MarketInListing
       :key="index"
       v-for="(market, index) in markets"
@@ -11,7 +12,8 @@
       :status="market.status"
       :mainProducts="market.products"
       :zip="market.zip"
-    ></MarketInListing>
+    />
+
   </div>
 </template>
 

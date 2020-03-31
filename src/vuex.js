@@ -65,8 +65,6 @@ export const store = new Vuex.Store({
       let rawMarkets;
       let markets = [];
 
-      console.log('teeeeeeest');
-
       try {
         rawMarkets = await api.loadMarkets(context.getters.center.lat, context.getters.center.lng, context.getters.radius);
       } catch (err) {
@@ -100,6 +98,8 @@ export const store = new Vuex.Store({
           rawMarket.periods
         ))
       })
+
+      console.log('markets:', markets);
 
       context.commit('SET_MARKETS', markets);
       

@@ -70,6 +70,8 @@ export default class Market {
 
   parsePeriods(periods) {
 
+    //TODO if a store isn't open on a day, it won't return info for that day. Handle this.
+
     let parsedPeriods = [];
 
     periods.forEach(day => {
