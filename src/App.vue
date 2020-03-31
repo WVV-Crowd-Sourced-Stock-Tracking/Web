@@ -10,13 +10,21 @@ export default {
   methods: {
     getLocationPermissionStatus() {
 
-      navigator.permissions.query({ name: 'geolocation' }).then(permissionStatus => {
+      if ('permissions' in navigator) {
 
-        this.$store.dispatch('updateLocationPermissionStatus', permissionStatus.state);
-        console.log('dispatched!');
+        navigator.permissions.query({ name: 'geolocation' }).then(permissionStatus => {
+  
+          this.$store.dispatch('updateLocationPermissionStatus', permissionStatus.state);
+          
+        })
         
-      })
-      
+      } else {
+
+        console.log('permission api not available, prompting the user...');
+        this.$store.dispatch('updateLocationPermissionStatus', 'prompt');
+        
+      }
+
     }
   },
   watch: {
