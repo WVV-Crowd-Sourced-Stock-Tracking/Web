@@ -77,7 +77,7 @@
               >
                 <td class="relative h-16 text-left border-t pl-6 pr-2 overflow-hidden break-words">
                   <div class="inline-block w-full font-bold text-gray-800">
-                    {{ product.name }}
+                    {{product.emoji}} {{ product.name }}
                   </div>
                 </td>
 
@@ -174,7 +174,7 @@ export default {
   name: 'MarketDetail',
   data() {
     return {
-      API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
+      API: new API('https://wvv2.herokuapp.com/ws/rest'),
       loading: {
         finished: false,
         success: true,
@@ -250,7 +250,7 @@ export default {
       console.log('this.$route.params.id:', this.$route.params.mapsId);
 
       try {
-        rawMarket = (await this.API.loadMarket({mapsId: this.$route.params.mapsId})).supermarket;
+        rawMarket = (await this.API.loadMarket({maps_id: this.$route.params.mapsId})).supermarket;
       } catch (err) {
         console.error(err);
         this.loading = {finished: true, success: false};
@@ -259,17 +259,18 @@ export default {
       console.log('rawMarket:', rawMarket);
 
       let market = new Market(
-        rawMarket.id,
-        rawMarket.name,
+        rawMarket.market_id,
+        rawMarket.market_name,
         rawMarket.city,
         rawMarket.street,
-        rawMarket.lat,
-        rawMarket.lng,
+        rawMarket.latitude,
+        rawMarket.longitude,
         rawMarket.distance,
-        rawMarket.open,
         rawMarket.products.reverse(),
-        rawMarket.mapsId,
+        rawMarket.maps_id,
         rawMarket.zip,
+        rawMarket.icon_url,
+        rawMarket.periods
       );
 
       console.log('market:', market);
@@ -288,8 +289,8 @@ export default {
         allProducts = await this.API.loadAllProducts();
         // temporary fix until backend is cleaned up
         allProducts.map(product => {
-          product.name = product.product_name;
-          product.id = product.product_id;
+          product.name = product.product_name || product.name;
+          product.id = product.product_id || product.id;
           product.quantity = NaN; // quantity unknown
         })
 
@@ -346,19 +347,21 @@ export default {
         console.error(err);
       }
 
-      [rawCurrentMarket] = rawMarkets.filter(market => market.id == this.$route.params.id);
+      [rawCurrentMarket] = rawMarkets.filter(market => market.market_id == this.$route.params.id);
 
       currentMarket = new Market(
-        rawCurrentMarket.id,
-        rawCurrentMarket.name,
+        rawCurrentMarket.market_id,
+        rawCurrentMarket.market_name,
         rawCurrentMarket.city,
         rawCurrentMarket.street,
-        rawCurrentMarket.lat,
-        rawCurrentMarket.lng,
+        rawCurrentMarket.latitude,
+        rawCurrentMarket.longitude,
         rawCurrentMarket.distance,
-        rawCurrentMarket.open,
         rawCurrentMarket.products,
-        rawCurrentMarket.mapsId
+        rawCurrentMarket.maps_id,
+        rawCurrentMarket.zip,
+        rawCurrentMarket.icon_url,
+        rawCurrentMarket.periods
       );
 
       this.market.distance = currentMarket.distance;
