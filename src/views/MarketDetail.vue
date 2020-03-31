@@ -48,8 +48,8 @@
           <div>
             <div class="text-m text-gray-800 font-semibold tracking-wider">Öffnungszeiten:</div>
             <div class="w-full my-1 text-gray-700">
-              <span v-if="market.status.class == 'opened'" class="text-green-600">{{market.status.text }}</span>
-              <span v-else class="text-red-600">{{market.status.text }}</span>
+              <span v-if="market.status.class == 'opened'" class="text-green-600">{{market.status.text}} ({{market.status.next.text}} um {{market.status.next.time}})</span>
+              <span v-else class="text-red-600">{{market.status.text}} ({{market.status.next.text}} um {{market.status.next.time}})</span>
             </div>
           </div>
           

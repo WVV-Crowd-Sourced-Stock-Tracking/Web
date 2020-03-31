@@ -23,17 +23,65 @@ export default class Market {
 
   get status() {
 
+    let now = new Date();
+    let opens = new Date();
+    let closes = new Date();
+    let dayInfo = this.periods[now.getDay()];
     let status = {};
+    
+    opens.setHours(dayInfo.opens.substr(0, 2));
+    opens.setMinutes(dayInfo.opens.substr(3, 2));
 
-    status.text = `Geöffnet`;
-    status.class = `opened`;
+    closes.setHours(dayInfo.closes.substr(0, 2));
+    closes.setMinutes(dayInfo.closes.substr(3, 2));
+    
+    if (opens.getTime() <= now.getTime() && now.getTime() < closes.getTime()) {
+
+      status.text = `Geöffnet`;
+      status.class = `opened`;
+
+      status.next = {
+        text: `Schließt`,
+        time: dayInfo.closes
+      }
+
+    } else {
+
+      status.text = `Geschlossen`;
+      status.class = `closed`;
+
+      if (opens.getTime() < now.getTime()) {
+        status.next = {
+          text: `Öffnet`,
+          time: now.getDay() == 6 ? this.periods[0].opens : this.periods[now.getDay()+1].opens
+        }
+      } else {
+        status.next = {
+          text: `Öffnet`,
+          time: dayInfo.opens
+        }
+      }
+      
+    }
+    
 
     return status;
   }
 
   parsePeriods(periods) {
 
-    return periods;
+    let parsedPeriods = [];
+
+    periods.forEach(day => {
+
+      parsedPeriods[day.open_day_id] = {
+        opens: day.open_time,
+        closes: day.close_time
+      }
+      
+    })
+    
+    return parsedPeriods;
     
   }
   
