@@ -1,7 +1,7 @@
 <template>
   <div class="w-full rounded-md overflow-hidden shadow-lg bg-white">
 
-    <div class="font-bold text-xl px-4 py-2 shadow-md border-l-4 border-solid" style="border-color: #006BAB;">Karte</div>
+    <div class="font-bold text-xl px-4 py-2 shadow-md">Karte</div>
     
     <div class="w-full h-40">
       <!-- Content inside of the div#map will be overwritten once the map is loaded -->
