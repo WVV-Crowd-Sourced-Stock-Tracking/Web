@@ -11,17 +11,28 @@
       class="w-screen h-screen"
       >
 
-      <Prompt
-        v-if="showThankYouPrompt"
-        v-on:closed="setPromptStatus({thankyou: false, error: false});"
-        type="thankyou"
-      />
+      <transition
+        enter-active-class="transition duration-500"
+        leave-active-class="transition duration-500"
+        enter-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
 
-      <Prompt
-        v-if="showErrorPrompt"
-        v-on:closed="setPromptStatus({thankyou: false, error: false});"
-        type="error"
-      />
+        <Prompt
+          v-if="showThankYouPrompt"
+          v-on:closed="setPromptStatus({thankyou: false, error: false});"
+          type="thankyou"
+        />
+
+        <Prompt
+          v-if="showErrorPrompt"
+          v-on:closed="setPromptStatus({thankyou: false, error: false});"
+          type="error"
+        />
+
+      </transition> 
 
       <router-link
         :to="{
