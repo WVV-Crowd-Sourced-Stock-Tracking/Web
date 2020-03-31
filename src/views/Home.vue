@@ -106,7 +106,6 @@
         if (!navigator.geolocation) {
           
           console.error('Geolocation is not supported by your browser');
-          this.getZip('browser');
 
         } else {
           console.log('Locating…');
