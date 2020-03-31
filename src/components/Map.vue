@@ -1,35 +1,34 @@
 <template>
-  <div class="w-full rounded overflow-hidden shadow-lg">
-    <div class="bg-white">
-      <div class="font-bold text-xl px-4 py-2 shadow-lg">Karte</div>
-      
-      <div class="w-full h-40">
-        <!-- Content inside of the div#map will be overwritten once the map is loaded -->
+  <div class="w-full rounded overflow-hidden shadow-lg bg-white">
 
-        <!-- <div v-show="mapInitiated" id="map" class="w-full h-full">
-          <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
-            Sorry, die Karte konnte nicht geladen werden. Bitte lade die Seite neu :)
-          </div>
-        </div>
+    <div class="font-bold text-xl px-4 py-2 shadow-md">Karte</div>
+    
+    <div class="w-full h-40">
+      <!-- Content inside of the div#map will be overwritten once the map is loaded -->
 
+      <!-- <div v-show="mapInitiated" id="map" class="w-full h-full">
         <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
-          Karte wird geladen...
-        </div> -->
-
-        <div id="map" class="w-full h-full">
-          <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
-            <!-- Sorry, die Karte konnte nicht geladen werden. Bitte lade die Seite neu :) -->
-            Karte wird geladen...
-          </div>
+          Sorry, die Karte konnte nicht geladen werden. Bitte lade die Seite neu :)
         </div>
-
-        <!-- <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
-          Karte wird geladen...
-        </div> -->
-
       </div>
 
+      <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
+        Karte wird geladen...
+      </div> -->
+
+      <div id="map" class="w-full h-full">
+        <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
+          <!-- Sorry, die Karte konnte nicht geladen werden. Bitte lade die Seite neu :) -->
+          Karte wird geladen...
+        </div>
+      </div>
+
+      <!-- <div v-show="!mapInitiated" class="w-full h-full text-xl text-center pt-12">
+        Karte wird geladen...
+      </div> -->
+
     </div>
+
   </div>
 </template>
 

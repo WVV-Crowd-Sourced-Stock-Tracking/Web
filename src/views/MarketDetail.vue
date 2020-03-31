@@ -101,9 +101,9 @@
                 <td v-else class="relative h-full border-t text-left pr-6">
 
                   <div class="inline-block h-4 w-4 rounded-full overflow-hidden align-text-bottom">
-                    <div v-if="product.availability === 'high'" class="w-full h-full bg-green-500"></div>
-                    <div v-else-if="product.availability === 'medium'" class="w-full h-full bg-yellow-500"></div>
-                    <div v-else-if="product.availability === 'low'" class="w-full h-full bg-red-500"></div>
+                    <div v-if="product.availability === 'high'" class="w-full h-full" style="background-color:#6DD400;"></div>
+                    <div v-else-if="product.availability === 'medium'" class="w-full h-full" style="background-color:#F7B500;"></div>
+                    <div v-else-if="product.availability === 'low'" class="w-full h-full" style="background-color:#E02020;"></div>
                     <div v-else class="w-full h-full bg-gray-600"></div>
                   </div>
 
