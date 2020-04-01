@@ -11,6 +11,18 @@
       class="h-screen"
       >
 
+      <Prompt
+        v-if="showThankYouPrompt"
+        v-on:closed="setPromptStatus({thankyou: false, error: false});"
+        type="thankyou"
+      />
+
+      <Prompt
+        v-if="showErrorPrompt"
+        v-on:closed="setPromptStatus({thankyou: false, error: false});"
+        type="error"
+      />
+
       <router-link
         :to="{
           name: 'Home',
@@ -29,7 +41,7 @@
       </router-link>
 
       <div class="w-full h-32">
-        <img class="w-full h-full object-cover object-center" src="/media/items-organized-on-shelves-3687999.jpg" alt="Photo by Mehrad Vosoughi from Pexels" title="Photo by Mehrad Vosoughi from Pexels">
+        <img class="w-full h-full object-cover object-center" src="/media/items-organized-on-shelves_compressed.jpeg" alt="Photo by Mehrad Vosoughi from Pexels" title="Photo by Mehrad Vosoughi from Pexels">
       </div>
 
       <div class="bg-white w-full min-h-full h-auto pb-16">
@@ -102,9 +114,9 @@
                 <td v-else class="relative h-full border-t text-left pr-6">
 
                   <div class="inline-block h-4 w-4 rounded-full overflow-hidden align-text-bottom">
-                    <div v-if="product.availability === 'high'" class="w-full h-full bg-green-500"></div>
-                    <div v-else-if="product.availability === 'medium'" class="w-full h-full bg-yellow-500"></div>
-                    <div v-else-if="product.availability === 'low'" class="w-full h-full bg-red-500"></div>
+                    <div v-if="product.availability === 'high'" class="w-full h-full" style="background-color:#6DD400;"></div>
+                    <div v-else-if="product.availability === 'medium'" class="w-full h-full" style="background-color:#F7B500;"></div>
+                    <div v-else-if="product.availability === 'low'" class="w-full h-full" style="background-color:#E02020;"></div>
                     <div v-else class="w-full h-full bg-gray-600"></div>
                   </div>
 
@@ -168,14 +180,20 @@
 
 <script>
 
-import Market from "../assets/js/market";
-import API from "../assets/js/api";
+import Market from "@/assets/js/market";
+import API from "@/assets/js/api";
+import Prompt from "@/components/Prompt.vue";
 
 export default {
   name: 'MarketDetail',
+  components: {
+    Prompt
+  },
   data() {
     return {
       API: new API('https://wvv2.herokuapp.com/ws/rest'),
+      showThankYouPrompt: false,
+      showErrorPrompt: false,
       loading: {
         finished: false,
         success: true,
@@ -241,8 +259,12 @@ export default {
     }
   },
   methods: {
-    toggleEdit: function() {
+    toggleEdit() {
       this.editMode = !this.editMode;
+    },
+    setPromptStatus(status) {
+      this.showThankYouPrompt = status.thankyou;
+      this.showErrorPrompt = status.error;
     },
     async loadData() {
 
@@ -328,79 +350,85 @@ export default {
       })
 
       try {
+
         result = await this.API.updateMarketStock(this.market.id, filteredProducts);
+        this.setPromptStatus({thankyou: true, error: false});
+
       } catch (err) {
+
         console.error(err);
+        this.setPromptStatus({thankyou: false, error: true});
+
       }
 
       console.log('result:', result);
       
     },
-    async loadDistance() {
+    // async loadDistance() {
 
-      let rawMarkets, rawCurrentMarket, currentMarket;
+    //   let rawMarkets, rawCurrentMarket, currentMarket;
 
-      console.log('this.userPosition.lat:', this.userPosition.lat);
+    //   console.log('this.userPosition.lat:', this.userPosition.lat);
 
-      try {
-        rawMarkets = await this.API.loadMarkets(this.userPosition.lat, this.userPosition.lng, 5000);
-      } catch (err) {
-        console.error(err);
-      }
+    //   try {
+    //     rawMarkets = await this.API.loadMarkets(this.userPosition.lat, this.userPosition.lng, 5000);
+    //   } catch (err) {
+    //     console.error(err);
+    //   }
 
-      [rawCurrentMarket] = rawMarkets.filter(market => market.market_id == this.$route.params.id);
+    //   [rawCurrentMarket] = rawMarkets.filter(market => market.id == this.$route.params.id);
 
-      currentMarket = new Market(
-        rawCurrentMarket.market_id,
-        rawCurrentMarket.market_name,
-        rawCurrentMarket.city,
-        rawCurrentMarket.street,
-        rawCurrentMarket.latitude,
-        rawCurrentMarket.longitude,
-        rawCurrentMarket.distance,
-        rawCurrentMarket.products,
-        rawCurrentMarket.maps_id,
-        rawCurrentMarket.zip,
-        rawCurrentMarket.icon_url,
-        rawCurrentMarket.periods
-      );
+    //   currentMarket = new Market(
+    //     rawCurrentMarket.id,
+    //     rawCurrentMarket.name,
+    //     rawCurrentMarket.city,
+    //     rawCurrentMarket.street,
+    //     rawCurrentMarket.lat,
+    //     rawCurrentMarket.lng,
+    //     rawCurrentMarket.distance,
+    //     rawCurrentMarket.products,
+    //     rawCurrentMarket.mapsId,
+    //     rawCurrentMarket.zip,
+    //     rawCurrentMarket.icon_url,
+    //     rawCurrentMarket.periods
+    //   );
 
-      this.market.distance = currentMarket.distance;
+    //   this.market.distance = currentMarket.distance;
 
-    },
-    async getCurrentPosition() {
+    // },
+    // async getCurrentPosition() {
       
-        if (!navigator.geolocation) {
-          console.error('Geolocation is not supported by your browser');
-        } else {
-          console.log('Locating…');
-          let position;
+    //     if (!navigator.geolocation) {
+    //       console.error('Geolocation is not supported by your browser');
+    //     } else {
+    //       console.log('Locating…');
+    //       let position;
 
-          try {
-            position = await (async () => {
-              return new Promise((resolve, reject) => {
+    //       try {
+    //         position = await (async () => {
+    //           return new Promise((resolve, reject) => {
               
-                navigator.geolocation.getCurrentPosition(position => {
+    //             navigator.geolocation.getCurrentPosition(position => {
 
-                resolve({lat: position.coords.latitude, lng: position.coords.longitude});
+    //             resolve({lat: position.coords.latitude, lng: position.coords.longitude});
                 
-              }, err => {
-                console.error(`Couldn't acces user's position:`, err);
-                reject({lat: 0, lng: 0});
-              });
+    //           }, err => {
+    //             console.error(`Couldn't acces user's position:`, err);
+    //             reject({lat: 0, lng: 0});
+    //           });
               
-              })
-            })();
-          } catch (err) {
-            console.error(err);
-          }
+    //           })
+    //         })();
+    //       } catch (err) {
+    //         console.error(err);
+    //       }
 
-          this.userPosition = position;
-          this.loadDistance();
+    //       this.userPosition = position;
+    //       this.loadDistance();
           
-        }
+    //     }
       
-    }
+    // }
   },
   mounted() {
     // this.$store.commit("getCurrentPosition");

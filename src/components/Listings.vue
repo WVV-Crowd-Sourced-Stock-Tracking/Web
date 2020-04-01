@@ -2,8 +2,8 @@
   <div class="listing">
 
     <MarketInListing
-      :key="index"
-      v-for="(market, index) in markets"
+      :key="market.id"
+      v-for="market in markets"
       :id="market.id"
       :mapsId="market.mapsId"
       :name="market.name"

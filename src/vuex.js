@@ -18,9 +18,10 @@ export const store = new Vuex.Store({
       lng: NaN,
     },
     radius: 2000,
-    zoom: 14,
+    zoom: 13,
     mapsScriptLoaded: false,
     markets: [],
+    locationPermissionStatus: 'pending',
   },
   mutations: {
     SET_USER_POSITION(state, newUserPosition) {
@@ -40,6 +41,9 @@ export const store = new Vuex.Store({
     },
     SET_MARKETS(state, newMarkets) {
       state.markets = newMarkets;
+    },
+    SET_LOCATION_PERMISSION_STATUS(state, newStatus) {
+      state.locationPermissionStatus = newStatus;
     }
   },
   actions: {
@@ -103,7 +107,10 @@ export const store = new Vuex.Store({
 
       context.commit('SET_MARKETS', markets);
       
-    }
+    },
+    updateLocationPermissionStatus(context, newStatus) {
+      context.commit('SET_LOCATION_PERMISSION_STATUS', newStatus);
+    },
   },
   getters: {
     userPosition: state => {
@@ -123,7 +130,10 @@ export const store = new Vuex.Store({
     },
     markets: state => {
       return state.markets;
-    }
+    },
+    locationPermissionStatus: state => {
+      return state.locationPermissionStatus;
+    },
   }
 
 })
