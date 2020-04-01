@@ -57,19 +57,21 @@
             <div class="w-full my-1 text-gray-700" >{{ market.address }}</div>
           </div>
 
-          <div>
-            <div class="text-m text-gray-800 font-semibold tracking-wider">Öffnungszeiten:</div>
-            <div class="w-full my-1 text-gray-700">
-              <span v-if="market.status.class == 'opened'" class="font-medium text-green-600">{{market.status.text}}</span>
-              <span v-else class="font-medium text-red-600">{{market.status.text}}</span>
-              {{market.status.next}}
-            </div>
+          <div class="text-m text-gray-800 font-semibold tracking-wider">Öffnungszeiten:</div>
+          <div class="w-full my-1 text-gray-700">
+            <span v-if="market.status.class == 'opened'" class="font-medium text-green-600">{{market.status.text}}</span>
+            <span v-else class="font-medium text-red-600">{{market.status.text}}</span>
+            {{market.status.next}}
+          </div>
+
+          <div class="mt-4 text-gray-400 italic">
+            zuletzt aktualisiert: {{market.lastUpdated.toLocaleString()}}
           </div>
           
         </div>
 
         <form onsubmit="event.preventDefault();">
-          <table class="relative mt-4 table-fixed w-full">
+          <table class="relative table-fixed w-full">
             <thead class="bg-gray-100 opacity-75 shadow-md text-left tracking-wide">
               <tr class="h-16">
                 <th class="w-1/2 pl-6 font-medium">Produkt</th>
@@ -293,7 +295,8 @@ export default {
         rawMarket.maps_id,
         rawMarket.zip,
         rawMarket.icon_url,
-        rawMarket.periods
+        rawMarket.periods,
+        rawMarket.last_updated
       );
 
       console.log('market:', market);
@@ -390,7 +393,8 @@ export default {
     //     rawCurrentMarket.mapsId,
     //     rawCurrentMarket.zip,
     //     rawCurrentMarket.icon_url,
-    //     rawCurrentMarket.periods
+    //     rawCurrentMarket.periods,
+    //     rawCurrentMarket.last_updated
     //   );
 
     //   this.market.distance = currentMarket.distance;

@@ -1,6 +1,7 @@
 export default class Market {
 
-  constructor (id, name, city, street, lat, lng, distance, products, mapsId, zip, iconUrl, periods) {
+  constructor (id, name, city, street, lat, lng, distance, products, mapsId, zip, iconUrl, periods, lastUpdated) {
+
     this.id = id;
     this.name = name;
     this.city = city;
@@ -14,6 +15,8 @@ export default class Market {
     this.zip = parseInt(zip);
     this.iconUrl = iconUrl;
     this.periods = this.parsePeriods(periods);
+    this.lastUpdated = new Date(lastUpdated);
+    
   }
 
   computeAddress() {

@@ -103,7 +103,8 @@ export const store = new Vuex.Store({
           rawMarket.maps_id,
           rawMarket.zip,
           rawMarket.icon_url,
-          rawMarket.periods
+          rawMarket.periods,
+          rawMarket.last_updated
         ))
       })
 
