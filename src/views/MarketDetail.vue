@@ -437,8 +437,8 @@ export default {
   mounted() {
     // this.$store.commit("getCurrentPosition");
     // if params are missing, this will cause errors because of missing nested objects
-    if (this.$route.params.name != undefined) {
-      this.market = this.$route.params;
+    if (this.$route.params.market != undefined) {
+      this.market = this.$route.params.market;
       this.loadAllProducts();
       this.loading = {finished: true, success: true};
     } else {

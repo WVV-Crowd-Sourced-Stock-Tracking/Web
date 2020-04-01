@@ -4,14 +4,7 @@
     <MarketInListing
       :key="market.id"
       v-for="market in markets"
-      :id="market.id"
-      :mapsId="market.mapsId"
-      :name="market.name"
-      :address="market.address"
-      :distance="market.distance"
-      :status="market.status"
-      :mainProducts="market.products"
-      :zip="market.zip"
+      :market="market"
     />
 
   </div>
