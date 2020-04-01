@@ -1,16 +1,25 @@
 <template>
-  <div id="home" class="text-gray-800">
+  <div id="home" class="absolute top-0 left-0 w-screen text-gray-800">
 
     <vue-headful
       title="Home - WhatsLeft"
       description="What's Left? Crowed Sourced Stock Tracking!"
     />
 
-    <Prompt
-      v-if="showLocationPrompt"
-      v-on:closed="promptHandler($event);"
-      type="location"
-    />
+    <transition
+      enter-active-class="transition duration-500"
+      leave-active-class="transition duration-500"
+      enter-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <Prompt
+        v-if="showLocationPrompt"
+        v-on:closed="promptHandler($event);"
+        type="location"
+      />
+    </transition>
 
     <Header />
 
@@ -163,13 +172,12 @@
         
       }
     },
-    // mounted() {
+    mounted() {
 
-    //   if (locationPermissionStatus == 'granted') {
-    //     this.getCurrentPosition();
-    //   }
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
 
-    // }
+    }
   };
 
 </script>
