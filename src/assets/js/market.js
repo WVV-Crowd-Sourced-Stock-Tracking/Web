@@ -25,7 +25,6 @@ export default class Market {
   }
 
   get status() {
-    //TODO check if finding next open day works
 
     if (this.periods == true) {
       return {
@@ -63,7 +62,7 @@ export default class Market {
         status.class = `unknown`;
         status.next = ``;
       } else {
-        status.next = `(Öffnet am ${nextOpen.day} um ${nextOpen.opens} Uhr)`;
+        status.next = `(Öffnet ${nextOpen.day}., ${nextOpen.opens} Uhr)`;
       }
 
     } else {
@@ -98,7 +97,7 @@ export default class Market {
             
           } while (!nextOpen);
           
-          status.next = `(Öffnet am ${nextOpen.day} um ${nextOpen.opens} Uhr)`;
+          status.next = `(Öffnet ${nextOpen.day}., ${nextOpen.opens} Uhr)`;
           // status.next = `(Öffnet um ${now.getDay() == 6 ? this.periods[0].opens : this.periods[now.getDay()+1].opens} Uhr)`;
           
         } else {
@@ -125,7 +124,7 @@ export default class Market {
   
         if (day != undefined) {
           parsedPeriods[i] = {
-            day: day.open_name,
+            day: day.open_name_short,
             opens: day.open_time,
             closes: day.close_time
           }
