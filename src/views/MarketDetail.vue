@@ -60,8 +60,8 @@
           <div>
             <div class="text-m text-gray-800 font-semibold tracking-wider">Öffnungszeiten:</div>
             <div class="w-full my-1 text-gray-700">
-              <span v-if="market.status.class == 'opened'" class="text-green-600">{{market.status.text}}</span>
-              <span v-else class="text-red-600">{{market.status.text}}</span>
+              <span v-if="market.status.class == 'opened'" class="font-medium text-green-600">{{market.status.text}}</span>
+              <span v-else class="font-medium text-red-600">{{market.status.text}}</span>
               {{market.status.next}}
             </div>
           </div>
@@ -435,6 +435,7 @@ export default {
     // if params are missing, this will cause errors because of missing nested objects
     if (this.$route.params.name != undefined) {
       this.market = this.$route.params;
+      this.loadAllProducts();
       this.loading = {finished: true, success: true};
     } else {
       this.loadData();

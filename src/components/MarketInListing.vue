@@ -29,8 +29,12 @@
 
           </div>
 
-          <div :class="[status.class=='opened' ? 'text-green-700' : 'text-red-700']">{{ status.text }}</div>
-          {{status.next}}
+          <div>
+            <span v-if="status.class == 'opened'" class="font-medium text-green-700">{{ status.text }}</span>
+            <span v-else-if="status.class == 'closed'" class="font-medium text-red-700">{{ status.text }}</span>
+            <span v-else class="font-medium italic">{{ status.text }}</span>
+            {{status.next}}
+          </div>
 
           <div>
 
