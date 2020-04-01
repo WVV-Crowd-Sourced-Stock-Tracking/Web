@@ -53,7 +53,6 @@
           lat: NaN,
           lng: NaN
         },
-        showPrompt: true,
       }
     },
     watch: {
@@ -96,8 +95,11 @@
       locationPermissionStatus: function() {
         return this.$store.getters.locationPermissionStatus;
       },
+      locationPromptResult: function() {
+        return this.$store.getters.locationPromptResult;
+      },
       showLocationPrompt: function() {
-        return (this.locationPermissionStatus == 'prompt' && this.showPrompt);
+        return (this.locationPermissionStatus == 'prompt' && this.locationPromptResult == 'pending');
       }
     },
     methods: {
@@ -148,11 +150,14 @@
       },
       promptHandler(result) {
 
-        this.showPrompt = false;
-        
         if (result) {
+
           this.getCurrentPosition();
+          this.$store.dispatch('updateLocationPromptResult', 'allowed');
+
         } else {
+
+          this.$store.dispatch('updateLocationPromptResult', 'dismissed');
 
           this.userPosition = {
             lat: 52.5204579,
@@ -161,15 +166,34 @@
           
         }
         
+      },
+      getLocationPermissionStatus() {
+
+        if ('permissions' in navigator) {
+
+          navigator.permissions.query({ name: 'geolocation' }).then(permissionStatus => {
+    
+            this.$store.dispatch('updateLocationPermissionStatus', permissionStatus.state);
+            
+          })
+          
+        } else {
+
+          console.log('permission api not available, prompting the user...');
+          this.$store.dispatch('updateLocationPermissionStatus', 'prompt');
+          
+        }
+
       }
     },
-    // mounted() {
+    mounted() {
 
-    //   if (locationPermissionStatus == 'granted') {
-    //     this.getCurrentPosition();
-    //   }
 
-    // }
+      // if (this.locationPromptResult == 'pending') {
+        this.getLocationPermissionStatus();
+      // }
+
+    }
   };
 
 </script>

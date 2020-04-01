@@ -8,24 +8,24 @@
 export default {
   name: "App",
   methods: {
-    getLocationPermissionStatus() {
+    // getLocationPermissionStatus() {
 
-      if ('permissions' in navigator) {
+    //   if ('permissions' in navigator) {
 
-        navigator.permissions.query({ name: 'geolocation' }).then(permissionStatus => {
+    //     navigator.permissions.query({ name: 'geolocation' }).then(permissionStatus => {
   
-          this.$store.dispatch('updateLocationPermissionStatus', permissionStatus.state);
+    //       this.$store.dispatch('updateLocationPermissionStatus', permissionStatus.state);
           
-        })
+    //     })
         
-      } else {
+    //   } else {
 
-        console.log('permission api not available, prompting the user...');
-        this.$store.dispatch('updateLocationPermissionStatus', 'prompt');
+    //     console.log('permission api not available, prompting the user...');
+    //     this.$store.dispatch('updateLocationPermissionStatus', 'prompt');
         
-      }
+    //   }
 
-    }
+    // }
   },
   watch: {
     '$route' (to) {
@@ -33,7 +33,7 @@ export default {
     },
   },
   mounted() {
-    this.getLocationPermissionStatus();
+    // this.getLocationPermissionStatus();
   }
 
 };

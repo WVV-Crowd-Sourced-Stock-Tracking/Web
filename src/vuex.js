@@ -22,6 +22,7 @@ export const store = new Vuex.Store({
     mapsScriptLoaded: false,
     markets: [],
     locationPermissionStatus: 'pending',
+    locationPromptResult: 'pending',
   },
   mutations: {
     SET_USER_POSITION(state, newUserPosition) {
@@ -44,7 +45,10 @@ export const store = new Vuex.Store({
     },
     SET_LOCATION_PERMISSION_STATUS(state, newStatus) {
       state.locationPermissionStatus = newStatus;
-    }
+    },
+    SET_LOCATION_PROMPT_RESULT(state, result) {
+      state.locationPromptResult = result;
+    },
   },
   actions: {
     updateUserPosition(context, newUserPosition) {
@@ -111,6 +115,9 @@ export const store = new Vuex.Store({
     updateLocationPermissionStatus(context, newStatus) {
       context.commit('SET_LOCATION_PERMISSION_STATUS', newStatus);
     },
+    updateLocationPromptResult(context, result) {
+      context.commit('SET_LOCATION_PROMPT_RESULT', result);
+    },
   },
   getters: {
     userPosition: state => {
@@ -133,6 +140,9 @@ export const store = new Vuex.Store({
     },
     locationPermissionStatus: state => {
       return state.locationPermissionStatus;
+    },
+    locationPromptResult: state => {
+      return state.locationPromptResult;
     },
   }
 
