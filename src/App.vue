@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <transition
-      enter-active-class="transition duration-500"
-      leave-active-class="transition duration-500"
-      enter-class="transform translate-x-40"
+      enter-active-class="transition duration-300 ease-out"
+      leave-active-class="transition duration-300 ease-out"
+      enter-class="transform translate-x-64"
       enter-to-class="transform translate-x-0"
       leave-class="opacity-100"
       leave-to-class="opacity-0"
