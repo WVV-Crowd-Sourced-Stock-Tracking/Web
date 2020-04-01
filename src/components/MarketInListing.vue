@@ -33,6 +33,7 @@
 
         <div class="status">
           <span v-bind:class="status.class">{{ status.text }}</span>
+          {{status.next}}
           <!-- statusAction ist entweder 'Schließt' oder 'Öffnet', ne nachdem ob der Markt gerade offen ist.
           statusTime ist die Uhrzeit, zu der der Markt schließt/öffnet -->
         </div>

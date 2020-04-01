@@ -48,8 +48,9 @@
           <div>
             <div class="text-m text-gray-800 font-semibold tracking-wider">Öffnungszeiten:</div>
             <div class="w-full my-1 text-gray-700">
-              <span v-if="market.status.class == 'opened'" class="text-green-600">{{market.status.text}} ({{market.status.next.text}} um {{market.status.next.time}})</span>
-              <span v-else class="text-red-600">{{market.status.text}} ({{market.status.next.text}} um {{market.status.next.time}})</span>
+              <span v-if="market.status.class == 'opened'" class="text-green-600">{{market.status.text}}</span>
+              <span v-else class="text-red-600">{{market.status.text}}</span>
+              {{market.status.next}}
             </div>
           </div>
           
@@ -410,7 +411,6 @@ export default {
     } else {
       this.loadData();
     }
-    this.loadAllProducts();
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
     // this.getCurrentPosition();

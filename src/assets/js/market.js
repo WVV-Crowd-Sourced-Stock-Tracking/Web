@@ -11,7 +11,7 @@ export default class Market {
     this.products = this.parseProducts(products);
     this.address = this.computeAddress();
     this.mapsId = mapsId;
-    this.zip = zip;
+    this.zip = parseInt(zip);
     this.iconUrl = iconUrl;
     this.periods = this.parsePeriods(periods);
   }
@@ -22,66 +22,117 @@ export default class Market {
   }
 
   get status() {
+    //TODO check if finding next open day works
 
+    if (this.periods == true) {
+      return {
+        text: `Geöffnet`,
+        class: `opened`,
+        next: `(durchgängig)`,
+      }
+    }
+    
     let now = new Date();
     let opens = new Date();
     let closes = new Date();
     let dayInfo = this.periods[now.getDay()];
     let status = {};
-    
-    opens.setHours(dayInfo.opens.substr(0, 2));
-    opens.setMinutes(dayInfo.opens.substr(3, 2));
 
-    closes.setHours(dayInfo.closes.substr(0, 2));
-    closes.setMinutes(dayInfo.closes.substr(3, 2));
-    
-    if (opens.getTime() <= now.getTime() && now.getTime() < closes.getTime()) {
-
-      status.text = `Geöffnet`;
-      status.class = `opened`;
-
-      status.next = {
-        text: `Schließt`,
-        time: dayInfo.closes
-      }
-
-    } else {
+    if (!dayInfo) {
 
       status.text = `Geschlossen`;
       status.class = `closed`;
 
-      if (opens.getTime() < now.getTime()) {
-        status.next = {
-          text: `Öffnet`,
-          time: now.getDay() == 6 ? this.periods[0].opens : this.periods[now.getDay()+1].opens
-        }
+      let index = now.getDay();
+      let nextOpen = this.periods[index];
+      let counter = 0;
+
+      do {
+
+        index = index == 6 ? 0 : index+1;
+        nextOpen = this.periods[index];
+        counter++;
+        
+      } while (!nextOpen && counter < 7);
+
+      if (counter == 7) {
+        status.text = `Öffnungszeiten unbekannt`;
+        status.class = `unknown`;
+        status.next = ``;
       } else {
-        status.next = {
-          text: `Öffnet`,
-          time: dayInfo.opens
-        }
+        status.next = `(Öffnet am ${nextOpen.day} um ${nextOpen.opens} Uhr)`;
       }
+
+    } else {
+
+      opens.setHours(dayInfo.opens.substr(0, 2));
+      opens.setMinutes(dayInfo.opens.substr(3, 2));
+  
+      closes.setHours(dayInfo.closes.substr(0, 2));
+      closes.setMinutes(dayInfo.closes.substr(3, 2));
       
+      if (opens.getTime() <= now.getTime() && now.getTime() < closes.getTime()) {
+  
+        status.text = `Geöffnet`;
+        status.class = `opened`;
+  
+        status.next = `(Schließt um ${dayInfo.closes})`;
+      } else {
+  
+        status.text = `Geschlossen`;
+        status.class = `closed`;
+  
+        if (opens.getTime() < now.getTime()) {
+  
+          let index = now.getDay();
+          let nextOpen = this.periods[index];
+  
+          do {
+  
+            index = index == 6 ? 0 : ++index;
+            nextOpen = this.periods[index];
+            console.log('loop');
+            
+          } while (!nextOpen);
+          
+          status.next = `(Öffnet am ${nextOpen.day} um ${nextOpen.opens} Uhr)`;
+          // status.next = `(Öffnet um ${now.getDay() == 6 ? this.periods[0].opens : this.periods[now.getDay()+1].opens} Uhr)`;
+          
+        } else {
+          status.next = `(Öffnet heute um ${dayInfo.opens} Uhr)`;
+        }
+        
+      }
+
     }
-    
 
     return status;
   }
 
   parsePeriods(periods) {
 
-    //TODO if a store isn't open on a day, it won't return info for that day. Handle this.
-
     let parsedPeriods = [];
 
-    periods.forEach(day => {
+    if (periods.length == 1 && periods[0].open_time == '0000') {
+      parsedPeriods = true;
+    } else {
 
-      parsedPeriods[day.open_day_id] = {
-        opens: day.open_time,
-        closes: day.close_time
+      for (let i = 0; i < 7; i++) {
+        const day = periods.find(day => day.open_day_id == i);
+  
+        if (day != undefined) {
+          parsedPeriods[i] = {
+            day: day.open_name,
+            opens: day.open_time,
+            closes: day.close_time
+          }
+        } else {
+          parsedPeriods[i] = false; // not open on this day
+        }
+        
       }
-      
-    })
+
+    }
     
     return parsedPeriods;
     
@@ -89,7 +140,9 @@ export default class Market {
   
   parseProducts(products) {
 
-    products.map(product => {
+    let parsedProducts = [...products];
+
+    parsedProducts.map(product => {
       
       // quantity is a number between 0 and 100, availability is a string
       
@@ -107,7 +160,10 @@ export default class Market {
       
     });
 
-    return products;
+    // filter dups
+    parsedProducts = parsedProducts.filter((product, index) => parsedProducts.indexOf(parsedProducts.find(x => x.id == product.id)) === index);
+
+    return parsedProducts;
     
   }
   
