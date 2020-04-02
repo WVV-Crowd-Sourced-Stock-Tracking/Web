@@ -29,7 +29,10 @@ export const store = new Vuex.Store({
     },
     SET_LOCATION_PERMISSION_STATUS(state, newStatus) {
       state.locationPermissionStatus = newStatus;
-    }
+    },
+    SET_FILTER(state, newFilter) {
+      state.filter = newFilter;
+    },
   },
   actions: {
     updateCenter(context, newCenter) {
@@ -46,6 +49,32 @@ export const store = new Vuex.Store({
     },
     updateLocationPermissionStatus(context, newStatus) {
       context.commit('SET_LOCATION_PERMISSION_STATUS', newStatus);
+    },
+    updateFilter(context, newFilter) {
+      context.commit('SET_FILTER', newFilter);
+    },
+    addToFilter(context, productId) {
+
+      let newFilter = context.getters.filter;
+      newFilter.push(productId);
+
+      // filter dups
+      newFilter = newFilter.filter((item, index) => newFilter.indexOf(item) === index);
+      
+      context.commit('SET_FILTER', newFilter);
+      
+    },
+    removeFromFilter(context, productId) {
+
+      let newFilter = context.getters.filter;
+
+      let index = newFilter.indexOf(productId);
+      if (index != -1) {
+        newFilter.splice(index, 1);
+      }
+
+      context.commit('SET_FILTER', newFilter);
+      
     }
   },
   getters: {
@@ -63,7 +92,10 @@ export const store = new Vuex.Store({
     },
     locationPermissionStatus: state => {
       return state.locationPermissionStatus;
-    }
+    },
+    filter: state => {
+      return state.filter;
+    },
   }
 
 })
