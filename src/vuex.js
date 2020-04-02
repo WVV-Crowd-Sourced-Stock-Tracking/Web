@@ -23,6 +23,7 @@ export const store = new Vuex.Store({
     markets: [],
     locationPermissionStatus: 'pending',
     locationPromptResult: 'pending',
+    filter: [],
   },
   mutations: {
     SET_USER_POSITION(state, newUserPosition) {
@@ -48,6 +49,9 @@ export const store = new Vuex.Store({
     },
     SET_LOCATION_PROMPT_RESULT(state, result) {
       state.locationPromptResult = result;
+    },
+    SET_FILTER(state, newFilter) {
+      state.filter = newFilter;
     },
   },
   actions: {
@@ -119,6 +123,32 @@ export const store = new Vuex.Store({
     updateLocationPromptResult(context, result) {
       context.commit('SET_LOCATION_PROMPT_RESULT', result);
     },
+    updateFilter(context, newFilter) {
+      context.commit('SET_FILTER', newFilter);
+    },
+    addToFilter(context, productId) {
+
+      let newFilter = context.getters.filter;
+      newFilter.push(productId);
+
+      // filter dups
+      newFilter = newFilter.filter((item, index) => newFilter.indexOf(item) === index);
+      
+      context.commit('SET_FILTER', newFilter);
+      
+    },
+    removeFromFilter(context, productId) {
+
+      let newFilter = context.getters.filter;
+
+      let index = newFilter.indexOf(productId);
+      if (index != -1) {
+        newFilter.splice(index, 1);
+      }
+
+      context.commit('SET_FILTER', newFilter);
+      
+    }
   },
   getters: {
     userPosition: state => {
@@ -144,6 +174,9 @@ export const store = new Vuex.Store({
     },
     locationPromptResult: state => {
       return state.locationPromptResult;
+    },
+    filter: state => {
+      return state.filter;
     },
   }
 
