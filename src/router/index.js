@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import MarketDetail from "../views/MarketDetail.vue";
-import Filter from "../views/Filter.vue";
 import FourOhFour from "../views/FourOhFour.vue";
 
 Vue.use(VueRouter);
@@ -24,12 +23,6 @@ const routes = [
     meta: {
       title: 'Store',
     }
-  },
-  {
-    path: "/filter",
-    name: "Filter",
-    component: Filter,
-    props: true
   },
   // 404, leave this as last route!!!
   {
