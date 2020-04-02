@@ -128,11 +128,15 @@ export const store = new Vuex.Store({
     },
     addToFilter(context, productId) {
 
+      console.log('test');
+
       let newFilter = context.getters.filter;
       newFilter.push(productId);
 
       // filter dups
       newFilter = newFilter.filter((item, index) => newFilter.indexOf(item) === index);
+
+      console.log('newFilter:', newFilter);
       
       context.commit('SET_FILTER', newFilter);
       
@@ -178,6 +182,30 @@ export const store = new Vuex.Store({
     filter: state => {
       return state.filter;
     },
+    filteredMarkets: state => {
+
+      return state.markets.filter(market => {
+
+        if (state.filter.length == 0) {
+          return true;
+        }
+
+        let relevantProducts = market.products.filter(product => state.filter.includes(product.id));
+
+        if (relevantProducts.length > 0) {
+          
+          return relevantProducts.every(product => {
+            console.log('product:', product);
+            return product.quantity >= 50;
+          });
+
+        } else {
+          return false;
+        }
+        
+      })
+        
+    }
   }
 
 })

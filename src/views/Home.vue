@@ -28,6 +28,9 @@
       <p>in Ihrer Umgebung</p>
     </div>
 
+    <button @click="$store.dispatch('addToFilter', 3);">Test</button>
+    {{filter}}
+
     <div class="px-2">
 
       <Map
@@ -95,6 +98,11 @@
           }
           
         }
+      },
+      filteredMarkets: {
+        handler: function(x) {
+          console.log('x:', x);
+        }
       }
     },
     computed: {
@@ -109,7 +117,13 @@
       },
       showLocationPrompt: function() {
         return (this.locationPermissionStatus == 'prompt' && this.locationPromptResult == 'pending');
-      }
+      },
+      filteredMarkets: function() {
+        return this.$store.getters.filteredMarkets;
+      },
+      filter: function() {
+        return this.$store.getters.filter;
+      },
     },
     methods: {
       getCurrentPosition() {
