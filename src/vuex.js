@@ -12,6 +12,7 @@ export const store = new Vuex.Store({
     zoom: 13,
     mapsScriptLoaded: false,
     locationPermissionStatus: 'pending',
+    filter: [],
   },
   mutations: {
     SET_CENTER_POSITION(state, newCenter) {
