@@ -21,15 +21,16 @@
       />
     </transition>
 
+    <ProductFilter
+      v-if="showFilter"
+    />
+
     <Header />
 
     <div class="intro m-4">
       <h1 class="text-xl font-semibold">Shops</h1>
       <p>in Ihrer Umgebung</p>
     </div>
-
-    <button @click="$store.dispatch('addToFilter', 3);">Test</button>
-    {{filter}}
 
     <div class="px-2">
 
@@ -50,13 +51,15 @@
   import Listings from "@/components/Listings.vue";
   import Map from "@/components/Map.vue";
   import Prompt from "@/components/Prompt.vue";
+  import ProductFilter from "@/components/ProductFilter.vue";
 
   export default {
     components: {
       Header,
       Listings,
       Map,
-      Prompt
+      Prompt,
+      ProductFilter
     },
     data() {
       return {
@@ -124,6 +127,9 @@
       filter: function() {
         return this.$store.getters.filter;
       },
+      showFilter: function() {
+        return this.$store.getters.showFilter;
+      }
     },
     methods: {
       getCurrentPosition() {

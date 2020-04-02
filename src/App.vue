@@ -43,6 +43,11 @@ export default {
   },
   mounted() {
     // this.getLocationPermissionStatus();
+    console.log('this.$store.getters.products:', this.$store.getters.products);
+    if (this.$store.getters.products.length == 0) {
+      this.$store.dispatch('loadAllProducts');
+    }
+    
   }
 
 };

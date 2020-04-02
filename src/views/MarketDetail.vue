@@ -260,6 +260,9 @@ export default {
       });
       console.log('copy:', copy);
       return copy;
+    },
+    allProducts: function() {
+      return this.$store.getters.products;
     }
   },
   watch: {
@@ -318,28 +321,31 @@ export default {
       this.loadAllProducts();
 
     },
-    async loadAllProducts() {
+    loadAllProducts() {
       
-      let allProducts, allProductsFiltered;
+      let allProductsFiltered;
       
-      try {
-        allProducts = await this.API.loadAllProducts();
-        // temporary fix until backend is cleaned up
-        allProducts.map(product => {
-          product.name = product.product_name || product.name;
-          product.id = product.product_id || product.id;
-          product.quantity = NaN; // quantity unknown
-        })
+      // try {
+      //   allProducts = await this.API.loadAllProducts();
+      //   // temporary fix until backend is cleaned up
+      //   allProducts.map(product => {
+      //     product.name = product.product_name || product.name;
+      //     product.id = product.product_id || product.id;
+      //     product.quantity = NaN; // quantity unknown
+      //   })
 
-        allProducts = this.market.products.concat(allProducts);
+      //   allProducts = this.market.products.concat(allProducts);
 
-      } catch (err) {
-        console.error(err);
-      }
+      // } catch (err) {
+      //   console.error(err);
+      // }
 
-      allProductsFiltered = allProducts.filter((product, index) => {
-        let foundProduct = allProducts.find(x => x.id == product.id);
-        return allProducts.indexOf(foundProduct) === index;
+      let mergedProducts = this.market.products.concat(this.allProducts);
+      console.log('mergedProducts:', mergedProducts);
+
+      allProductsFiltered = mergedProducts.filter((product, index) => {
+        let foundProduct = mergedProducts.find(x => x.id == product.id);
+        return mergedProducts.indexOf(foundProduct) === index;
       });
 
       this.market.products = allProductsFiltered;
