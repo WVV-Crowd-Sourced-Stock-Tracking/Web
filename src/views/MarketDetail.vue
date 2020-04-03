@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute top-0 left-0">
+  <div class="top-0 left-0">
 
     <vue-headful
       :title="market.name + ' - WhatsLeft'"
@@ -8,7 +8,7 @@
 
     <div
       v-if="loading.finished && loading.success"
-      class="w-screen h-screen"
+      class="w-full h-screen"
       >
 
       <transition
