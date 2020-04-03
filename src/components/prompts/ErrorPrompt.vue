@@ -1,5 +1,5 @@
 <template>
-  <div class="w-auto h-full mx-6 my-64 bg-white rounded-md shadow-md p-6 text-center text-gray-900">
+  <div class="w-auto h-full mx-6 my-64 bg-white rounded-md shadow-md p-6 text-center text-gray-900 max-w-lg mx-auto">
       
     <div class="w-full font-bold mb-4">
       Fehler!

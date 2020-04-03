@@ -58,6 +58,11 @@ body {
   background-color: #e5e5e5;
 }
 
+#app {
+
+  max-width: 950px;
+  margin: 0 auto;
+}
 #home {
   padding-bottom: 5rem;
 }
