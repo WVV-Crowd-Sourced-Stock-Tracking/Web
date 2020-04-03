@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed flex flex-col justify-center w-screen h-screen z-10" style="background-color: rgba(0, 0, 0, 0.6);">
+  <div class="fixed flex flex-col justify-center w-screen h-screen z-10 absoulte left-0" style="background-color: rgba(0, 0, 0, 0.6);">
 
     <LocationPrompt
       v-on:closed="$emit('closed', $event);"
