@@ -26,7 +26,7 @@
         Supermärkte anzeigen
       </button>
 
-      <button @click="filter = [];" class="underline text-md mt-4 focus:outline-none">
+      <button @click="filter=[]; $store.dispatch('toggleShowFilter');" class="underline text-md mt-4 focus:outline-none">
         Filter zurücksetzen
       </button>
 
