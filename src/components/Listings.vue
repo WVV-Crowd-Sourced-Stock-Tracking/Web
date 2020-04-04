@@ -1,10 +1,6 @@
 <template>
   <div class="listing">
 
-    <div v-if="markets.length == 0" class="w-full text-center text-2xl mt-10">
-      Märkte werden geladen...
-    </div>
-
     <MarketInListing
       :key="market.id"
       v-for="market in markets"
