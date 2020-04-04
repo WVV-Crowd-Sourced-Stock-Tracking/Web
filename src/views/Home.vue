@@ -1,15 +1,28 @@
 <template>
-  <div id="home" class="text-gray-800">
+  <div id="home" class="absolute top-0 left-0 w-screen text-gray-800">
 
     <vue-headful
       title="Home - WhatsLeft"
       description="What's Left? Crowed Sourced Stock Tracking!"
     />
 
-    <Prompt
-      v-if="showLocationPrompt"
-      v-on:closed="promptHandler($event);"
-      type="location"
+    <transition
+      enter-active-class="transition duration-500"
+      leave-active-class="transition duration-500"
+      enter-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <Prompt
+        v-if="showLocationPrompt"
+        v-on:closed="promptHandler($event);"
+        type="location"
+      />
+    </transition>
+
+    <ProductFilter
+      v-if="showFilter"
     />
 
     <Header />
@@ -38,13 +51,15 @@
   import Listings from "@/components/Listings.vue";
   import Map from "@/components/Map.vue";
   import Prompt from "@/components/Prompt.vue";
+  import ProductFilter from "@/components/ProductFilter.vue";
 
   export default {
     components: {
       Header,
       Listings,
       Map,
-      Prompt
+      Prompt,
+      ProductFilter
     },
     data() {
       return {
@@ -86,6 +101,11 @@
           }
           
         }
+      },
+      filteredMarkets: {
+        handler: function(x) {
+          console.log('x:', x);
+        }
       }
     },
     computed: {
@@ -100,6 +120,15 @@
       },
       showLocationPrompt: function() {
         return (this.locationPermissionStatus == 'prompt' && this.locationPromptResult == 'pending');
+      },
+      filteredMarkets: function() {
+        return this.$store.getters.filteredMarkets;
+      },
+      filter: function() {
+        return this.$store.getters.filter;
+      },
+      showFilter: function() {
+        return this.$store.getters.showFilter;
       }
     },
     methods: {
@@ -188,10 +217,12 @@
     },
     mounted() {
 
-
       // if (this.locationPromptResult == 'pending') {
         this.getLocationPermissionStatus();
       // }
+
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
 
     }
   };

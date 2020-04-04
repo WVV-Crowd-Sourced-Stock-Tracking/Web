@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     markets: function() {
-      return this.$store.getters.markets;
+      return this.$store.getters.filteredMarkets;
     }
   },
 };

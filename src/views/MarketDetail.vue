@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="absolute top-0 left-0">
 
     <vue-headful
       :title="market.name + ' - WhatsLeft'"
@@ -8,20 +8,31 @@
 
     <div
       v-if="loading.finished && loading.success"
-      class="h-screen"
+      class="w-screen h-screen"
       >
 
-      <Prompt
-        v-if="showThankYouPrompt"
-        v-on:closed="setPromptStatus({thankyou: false, error: false});"
-        type="thankyou"
-      />
+      <transition
+        enter-active-class="transition duration-500"
+        leave-active-class="transition duration-500"
+        enter-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
 
-      <Prompt
-        v-if="showErrorPrompt"
-        v-on:closed="setPromptStatus({thankyou: false, error: false});"
-        type="error"
-      />
+        <Prompt
+          v-if="showThankYouPrompt"
+          v-on:closed="setPromptStatus({thankyou: false, error: false});"
+          type="thankyou"
+        />
+
+        <Prompt
+          v-if="showErrorPrompt"
+          v-on:closed="setPromptStatus({thankyou: false, error: false});"
+          type="error"
+        />
+
+      </transition> 
 
       <router-link
         :to="{
@@ -249,6 +260,9 @@ export default {
       });
       console.log('copy:', copy);
       return copy;
+    },
+    allProducts: function() {
+      return this.$store.getters.products;
     }
   },
   watch: {
@@ -307,28 +321,31 @@ export default {
       this.loadAllProducts();
 
     },
-    async loadAllProducts() {
+    loadAllProducts() {
       
-      let allProducts, allProductsFiltered;
+      let allProductsFiltered;
       
-      try {
-        allProducts = await this.API.loadAllProducts();
-        // temporary fix until backend is cleaned up
-        allProducts.map(product => {
-          product.name = product.product_name || product.name;
-          product.id = product.product_id || product.id;
-          product.quantity = NaN; // quantity unknown
-        })
+      // try {
+      //   allProducts = await this.API.loadAllProducts();
+      //   // temporary fix until backend is cleaned up
+      //   allProducts.map(product => {
+      //     product.name = product.product_name || product.name;
+      //     product.id = product.product_id || product.id;
+      //     product.quantity = NaN; // quantity unknown
+      //   })
 
-        allProducts = this.market.products.concat(allProducts);
+      //   allProducts = this.market.products.concat(allProducts);
 
-      } catch (err) {
-        console.error(err);
-      }
+      // } catch (err) {
+      //   console.error(err);
+      // }
 
-      allProductsFiltered = allProducts.filter((product, index) => {
-        let foundProduct = allProducts.find(x => x.id == product.id);
-        return allProducts.indexOf(foundProduct) === index;
+      let mergedProducts = this.market.products.concat(this.allProducts);
+      console.log('mergedProducts:', mergedProducts);
+
+      allProductsFiltered = mergedProducts.filter((product, index) => {
+        let foundProduct = mergedProducts.find(x => x.id == product.id);
+        return mergedProducts.indexOf(foundProduct) === index;
       });
 
       this.market.products = allProductsFiltered;

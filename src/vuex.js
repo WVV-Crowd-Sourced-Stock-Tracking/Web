@@ -21,8 +21,11 @@ export const store = new Vuex.Store({
     zoom: 13,
     mapsScriptLoaded: false,
     markets: [],
+    products: [],
     locationPermissionStatus: 'pending',
     locationPromptResult: 'pending',
+    filter: [],
+    showFilter: false,
   },
   mutations: {
     SET_USER_POSITION(state, newUserPosition) {
@@ -43,11 +46,20 @@ export const store = new Vuex.Store({
     SET_MARKETS(state, newMarkets) {
       state.markets = newMarkets;
     },
+    SET_PRODUCTS(state, newProducts) {
+      state.products = newProducts;
+    },
     SET_LOCATION_PERMISSION_STATUS(state, newStatus) {
       state.locationPermissionStatus = newStatus;
     },
     SET_LOCATION_PROMPT_RESULT(state, result) {
       state.locationPromptResult = result;
+    },
+    SET_FILTER(state, newFilter) {
+      state.filter = newFilter;
+    },
+    SET_SHOW_FILTER(state, newStatus) {
+      state.showFilter = newStatus;
     },
   },
   actions: {
@@ -113,11 +125,65 @@ export const store = new Vuex.Store({
       context.commit('SET_MARKETS', markets);
       
     },
+    async loadAllProducts(context) {
+
+      let allProducts;
+      
+      try {
+
+        allProducts = await api.loadAllProducts();
+
+        allProducts.map(product => {
+          product.name = product.product_name || product.name;
+          product.id = product.product_id || product.id;
+          product.quantity = NaN; // quantity unknown
+        })
+        
+      } catch (err) {
+        console.error(`Couldn't load all products:`, err);
+      }
+
+      context.commit('SET_PRODUCTS', allProducts);
+
+    },
     updateLocationPermissionStatus(context, newStatus) {
       context.commit('SET_LOCATION_PERMISSION_STATUS', newStatus);
     },
     updateLocationPromptResult(context, result) {
       context.commit('SET_LOCATION_PROMPT_RESULT', result);
+    },
+    updateFilter(context, newFilter) {
+      context.commit('SET_FILTER', newFilter);
+    },
+    addToFilter(context, productId) {
+
+      console.log('test');
+
+      let newFilter = context.getters.filter;
+      newFilter.push(productId);
+
+      // filter dups
+      newFilter = newFilter.filter((item, index) => newFilter.indexOf(item) === index);
+
+      console.log('newFilter:', newFilter);
+      
+      context.commit('SET_FILTER', newFilter);
+      
+    },
+    removeFromFilter(context, productId) {
+
+      let newFilter = context.getters.filter;
+
+      let index = newFilter.indexOf(productId);
+      if (index != -1) {
+        newFilter.splice(index, 1);
+      }
+
+      context.commit('SET_FILTER', newFilter);
+      
+    },
+    toggleShowFilter(context) {
+      context.commit('SET_SHOW_FILTER', !context.getters.showFilter);
     },
   },
   getters: {
@@ -139,12 +205,45 @@ export const store = new Vuex.Store({
     markets: state => {
       return state.markets;
     },
+    products: state => {
+      return state.products;
+    },
     locationPermissionStatus: state => {
       return state.locationPermissionStatus;
     },
     locationPromptResult: state => {
       return state.locationPromptResult;
     },
+    filter: state => {
+      return state.filter;
+    },
+    filteredMarkets: state => {
+
+      //TODO filtered markets should offer **every** product, and should have data for every filterd product
+      return state.markets.filter(market => {
+
+        if (state.filter.length == 0) {
+          return true;
+        }
+
+        let relevantProducts = market.products.filter(product => state.filter.includes(product.id));
+
+        if (relevantProducts.length > 0) {
+          
+          return relevantProducts.every(product => {
+            return product.quantity >= 50;
+          });
+
+        } else {
+          return false;
+        }
+        
+      })
+        
+    },
+    showFilter: state => {
+      return state.showFilter;
+    }
   }
 
 })

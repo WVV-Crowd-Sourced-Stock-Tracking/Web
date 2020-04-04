@@ -1,6 +1,15 @@
 <template>
   <div id="app">
-    <router-view />
+    <transition
+      enter-active-class="transition duration-300 ease-out"
+      leave-active-class="transition duration-300 ease-out"
+      enter-class="transform translate-x-64"
+      enter-to-class="transform translate-x-0"
+      leave-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -34,6 +43,11 @@ export default {
   },
   mounted() {
     // this.getLocationPermissionStatus();
+    console.log('this.$store.getters.products:', this.$store.getters.products);
+    if (this.$store.getters.products.length == 0) {
+      this.$store.dispatch('loadAllProducts');
+    }
+    
   }
 
 };
