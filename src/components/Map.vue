@@ -189,7 +189,7 @@ export default {
   methods: {
     loadScript() {
       let mapsApiScript = document.createElement('script');
-      mapsApiScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHJCRgVNdpdHQigIEebTzT4RDiTwt6jk');
+      mapsApiScript.setAttribute('src', `https://maps.googleapis.com/maps/api/js?key=${process.env.MAPS_API_KEY}`);
       document.body.appendChild(mapsApiScript);
       mapsApiScript.onload = () => {
 
