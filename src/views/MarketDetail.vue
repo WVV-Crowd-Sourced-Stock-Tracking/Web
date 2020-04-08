@@ -71,7 +71,7 @@
           <div class="text-m text-gray-800 font-semibold tracking-wider">Öffnungszeiten:</div>
           <div class="w-full my-1 text-gray-700">
             <span v-if="market.status.class == 'opened'" class="font-medium text-green-600">{{market.status.text}}</span>
-            <span v-if="market.status.class == 'closed'" class="font-medium text-red-600">{{market.status.text}}</span>
+            <span v-else-if="market.status.class == 'closed'" class="font-medium text-red-600">{{market.status.text}}</span>
             <span v-else class="font-medium italic">{{market.status.text}}</span>
             {{market.status.next}}
           </div>

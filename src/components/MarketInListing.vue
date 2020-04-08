@@ -33,7 +33,7 @@
 
           <div>
 
-            <ul v-if="market.products.length > 0" class="flex flex-row flex-wrap h-6 mt-2 overflow-hidden">
+            <ul v-if="productInfoAvailable" class="flex flex-row flex-wrap h-6 mt-2 overflow-hidden">
               <li :key="index" v-for="(product, index) in market.products" class="mr-4">
                 <div v-if="product.availability == 'high'" class="inline-block w-3 h-3 rounded-full align-center" style="background-color:#6DD400;"></div>
                 <div v-else-if="product.availability == 'medium'" class="inline-block w-3 h-3 rounded-full align-center" style="background-color:#F7B500;"></div>
@@ -92,5 +92,10 @@ export default {
     // }
     market: Market,
   },
+  computed: {
+    productInfoAvailable: function() {
+      return this.market.products.length > 0 && this.market.products.filter(product => !isNaN(product.quantity)).length > 0;
+    }
+  }
 };
 </script>
