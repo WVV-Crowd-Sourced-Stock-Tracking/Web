@@ -16,8 +16,8 @@ export default class API {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            gps_width: lat,
-            gps_length: lng,
+            latitude: lat,
+            longitude: lng,
             radius: radius,
           })
         })
@@ -118,7 +118,7 @@ export default class API {
         bulkArray.push({
           market_id: marketId,
           product_id: product.id,
-          quantity: product.quantity,
+          availability: product.quantity,
         })
         
       });
@@ -137,7 +137,6 @@ export default class API {
         return response.json();
       })
       .then(result => {
-        console.log('result:', result);
         return resolve(result);
       })
       .catch(err => {

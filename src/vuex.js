@@ -2,8 +2,17 @@ import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex)
 
+import API from '@/assets/js/api';
+import Market from '@/assets/js/market';
+
+const api = new API('https://wvv2.herokuapp.com/ws/rest');
+
 export const store = new Vuex.Store({
   state: {
+    userPosition: {
+      lat: NaN,
+      lng: NaN,
+    },
     center: {
       lat: NaN,
       lng: NaN,
@@ -11,9 +20,17 @@ export const store = new Vuex.Store({
     radius: 2000,
     zoom: 13,
     mapsScriptLoaded: false,
+    markets: [],
+    products: [],
     locationPermissionStatus: 'pending',
+    locationPromptResult: 'pending',
+    filter: [],
+    showFilter: false,
   },
   mutations: {
+    SET_USER_POSITION(state, newUserPosition) {
+      state.userPosition = newUserPosition;
+    },
     SET_CENTER_POSITION(state, newCenter) {
       state.center = newCenter;
     },
@@ -26,16 +43,36 @@ export const store = new Vuex.Store({
     SET_MAPS_SCRIPT_LOADED(state, loaded) {
       state.mapsScriptLoaded = loaded;
     },
+    SET_MARKETS(state, newMarkets) {
+      state.markets = newMarkets;
+    },
+    SET_PRODUCTS(state, newProducts) {
+      state.products = newProducts;
+    },
     SET_LOCATION_PERMISSION_STATUS(state, newStatus) {
       state.locationPermissionStatus = newStatus;
-    }
+    },
+    SET_LOCATION_PROMPT_RESULT(state, result) {
+      state.locationPromptResult = result;
+    },
+    SET_FILTER(state, newFilter) {
+      state.filter = newFilter;
+    },
+    SET_SHOW_FILTER(state, newStatus) {
+      state.showFilter = newStatus;
+    },
   },
   actions: {
+    updateUserPosition(context, newUserPosition) {
+      context.commit('SET_USER_POSITION', newUserPosition);
+    },
     updateCenter(context, newCenter) {
       context.commit('SET_CENTER_POSITION', newCenter);
+      context.dispatch('reloadMarkets');
     },
     updateRadius(context, newRadius) {
       context.commit('SET_RADIUS', newRadius);
+      context.dispatch('reloadMarkets');
     },
     updateZoom(context, newZoom) {
       context.commit('SET_ZOOM', newZoom);
@@ -43,11 +80,116 @@ export const store = new Vuex.Store({
     mapsScriptLoaded(context) {
       context.commit('SET_MAPS_SCRIPT_LOADED', true)
     },
+    async reloadMarkets(context) {
+
+      let rawMarkets;
+      let markets = [];
+
+      try {
+        rawMarkets = await api.loadMarkets(context.getters.center.lat, context.getters.center.lng, context.getters.radius);
+      } catch (err) {
+
+        console.error(err);
+
+        try {
+          rawMarkets = await api.loadMarkets(context.getters.center.lat, context.getters.center.lng, context.getters.radius);
+        } catch (err) {
+          console.error(err);
+          rawMarkets = [];
+        }
+
+      }
+
+      console.log('rawMarkets:', rawMarkets);
+
+      rawMarkets.forEach(rawMarket => {
+        markets.push(new Market(
+          rawMarket.market_id,
+          rawMarket.market_name,
+          rawMarket.city,
+          rawMarket.street,
+          rawMarket.latitude,
+          rawMarket.longitude,
+          rawMarket.distance,
+          rawMarket.products,
+          rawMarket.maps_id,
+          rawMarket.zip,
+          rawMarket.icon_url,
+          rawMarket.periods,
+          rawMarket.last_updated
+        ))
+      })
+
+      console.log('markets:', markets);
+
+      context.commit('SET_MARKETS', markets);
+      
+    },
+    async loadAllProducts(context) {
+
+      let allProducts;
+      
+      try {
+
+        allProducts = await api.loadAllProducts();
+
+        allProducts.map(product => {
+          product.name = product.product_name || product.name;
+          product.id = product.product_id || product.id;
+          product.quantity = NaN; // quantity unknown
+        })
+        
+      } catch (err) {
+        console.error(`Couldn't load all products:`, err);
+      }
+
+      context.commit('SET_PRODUCTS', allProducts);
+
+    },
     updateLocationPermissionStatus(context, newStatus) {
       context.commit('SET_LOCATION_PERMISSION_STATUS', newStatus);
-    }
+    },
+    updateLocationPromptResult(context, result) {
+      context.commit('SET_LOCATION_PROMPT_RESULT', result);
+    },
+    updateFilter(context, newFilter) {
+      context.commit('SET_FILTER', newFilter);
+    },
+    addToFilter(context, productId) {
+
+      console.log('test');
+
+      let newFilter = context.getters.filter;
+      newFilter.push(productId);
+
+      // filter dups
+      newFilter = newFilter.filter((item, index) => newFilter.indexOf(item) === index);
+
+      console.log('newFilter:', newFilter);
+      
+      context.commit('SET_FILTER', newFilter);
+      
+    },
+    removeFromFilter(context, productId) {
+
+      let newFilter = context.getters.filter;
+
+      let index = newFilter.indexOf(productId);
+      if (index != -1) {
+        newFilter.splice(index, 1);
+      }
+
+      context.commit('SET_FILTER', newFilter);
+      
+    },
+    toggleShowFilter(context) {
+      context.commit('SET_SHOW_FILTER', !context.getters.showFilter);
+    },
   },
   getters: {
+    userPosition: state => {
+      return state.userPosition;
+    },
     center: state => {
       return state.center;
     },
@@ -60,8 +202,47 @@ export const store = new Vuex.Store({
     mapsScriptLoaded: state => {
       return state.mapsScriptLoaded;
     },
+    markets: state => {
+      return state.markets;
+    },
+    products: state => {
+      return state.products;
+    },
     locationPermissionStatus: state => {
       return state.locationPermissionStatus;
+    },
+    locationPromptResult: state => {
+      return state.locationPromptResult;
+    },
+    filter: state => {
+      return state.filter;
+    },
+    filteredMarkets: state => {
+
+      //TODO filtered markets should offer **every** product, and should have data for every filterd product
+      return state.markets.filter(market => {
+
+        if (state.filter.length == 0) {
+          return true;
+        }
+
+        let relevantProducts = market.products.filter(product => state.filter.includes(product.id));
+
+        if (relevantProducts.length > 0) {
+          
+          return relevantProducts.every(product => {
+            return product.quantity >= 50;
+          });
+
+        } else {
+          return false;
+        }
+        
+      })
+        
+    },
+    showFilter: state => {
+      return state.showFilter;
     }
   }
 

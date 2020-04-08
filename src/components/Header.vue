@@ -24,12 +24,12 @@
         <img src="@/assets/icons/Settings_Dark.svg" alt="Einstellungen" class="w-6 h-6">
       </a>
       <!-- Filter -->
-      <a
-        href="#"
+      <button
+        @click="$store.dispatch('toggleShowFilter');"
         class="inline-block text-sm px-3 py-3 rounded hover:shadow-md text-black border-white"
       >
         <img src="@/assets/icons/Filter_Dark.svg" alt="Nach Produkten filtern" class="w-6 h-6">
-      </a>
+      </button>
       <!-- Shopping Bag -->
       <a
         href="#"

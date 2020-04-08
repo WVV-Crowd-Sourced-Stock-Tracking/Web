@@ -19,9 +19,6 @@ const routes = [
   {
     path: "/store/:mapsId",
     name: "MarketDetail",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: MarketDetail,
     meta: {
       title: 'Store',
@@ -30,7 +27,8 @@ const routes = [
   // 404, leave this as last route!!!
   {
     path: '/*',
-    component: FourOhFour
+    component: FourOhFour,
+    props: true
   },
 ];
 

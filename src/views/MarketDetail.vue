@@ -68,18 +68,22 @@
             <div class="w-full my-1 text-gray-700" >{{ market.address }}</div>
           </div>
 
-          <div>
-            <div class="text-m text-gray-800 font-semibold tracking-wider">Öffnungszeiten:</div>
-            <div class="w-full my-1 text-gray-700">
-              <span v-if="market.status.class == 'opened'" class="text-green-600">{{market.status.text }}</span>
-              <span v-else class="text-red-600">{{market.status.text }}</span>
-            </div>
+          <div class="text-m text-gray-800 font-semibold tracking-wider">Öffnungszeiten:</div>
+          <div class="w-full my-1 text-gray-700">
+            <span v-if="market.status.class == 'opened'" class="font-medium text-green-600">{{market.status.text}}</span>
+            <span v-else-if="market.status.class == 'closed'" class="font-medium text-red-600">{{market.status.text}}</span>
+            <span v-else class="font-medium italic">{{market.status.text}}</span>
+            {{market.status.next}}
+          </div>
+
+          <div class="mt-4 text-gray-400 italic">
+            zuletzt aktualisiert: {{market.lastUpdated.toLocaleString()}}
           </div>
           
         </div>
 
         <form onsubmit="event.preventDefault();">
-          <table class="relative mt-4 table-fixed w-full">
+          <table class="relative table-fixed w-full">
             <thead class="bg-gray-100 opacity-75 shadow-md text-left tracking-wide">
               <tr class="h-16">
                 <th class="w-1/2 pl-6 font-medium">Produkt</th>
@@ -100,7 +104,7 @@
               >
                 <td class="relative h-16 text-left border-t pl-6 pr-2 overflow-hidden break-words">
                   <div class="inline-block w-full font-bold text-gray-800">
-                    {{ product.name }}
+                    {{product.emoji}} {{ product.name }}
                   </div>
                 </td>
 
@@ -201,7 +205,7 @@ export default {
   },
   data() {
     return {
-      API: new API('https://wvvcrowdmarket.herokuapp.com/ws/rest'),
+      API: new API('https://wvv2.herokuapp.com/ws/rest'),
       showThankYouPrompt: false,
       showErrorPrompt: false,
       loading: {
@@ -257,6 +261,9 @@ export default {
       });
       console.log('copy:', copy);
       return copy;
+    },
+    allProducts: function() {
+      return this.$store.getters.products;
     }
   },
   watch: {
@@ -283,7 +290,7 @@ export default {
       console.log('this.$route.params.id:', this.$route.params.mapsId);
 
       try {
-        rawMarket = (await this.API.loadMarket({mapsId: this.$route.params.mapsId})).supermarket;
+        rawMarket = (await this.API.loadMarket({maps_id: this.$route.params.mapsId})).supermarket;
       } catch (err) {
         console.error(err);
         this.loading = {finished: true, success: false};
@@ -292,17 +299,19 @@ export default {
       console.log('rawMarket:', rawMarket);
 
       let market = new Market(
-        rawMarket.id,
-        rawMarket.name,
+        rawMarket.market_id,
+        rawMarket.market_name,
         rawMarket.city,
         rawMarket.street,
-        rawMarket.lat,
-        rawMarket.lng,
+        rawMarket.latitude,
+        rawMarket.longitude,
         rawMarket.distance,
-        rawMarket.open,
         rawMarket.products.reverse(),
-        rawMarket.mapsId,
+        rawMarket.maps_id,
         rawMarket.zip,
+        rawMarket.icon_url,
+        rawMarket.periods,
+        rawMarket.last_updated
       );
 
       console.log('market:', market);
@@ -313,28 +322,31 @@ export default {
       this.loadAllProducts();
 
     },
-    async loadAllProducts() {
+    loadAllProducts() {
       
-      let allProducts, allProductsFiltered;
+      let allProductsFiltered;
       
-      try {
-        allProducts = await this.API.loadAllProducts();
-        // temporary fix until backend is cleaned up
-        allProducts.map(product => {
-          product.name = product.product_name;
-          product.id = product.product_id;
-          product.quantity = NaN; // quantity unknown
-        })
+      // try {
+      //   allProducts = await this.API.loadAllProducts();
+      //   // temporary fix until backend is cleaned up
+      //   allProducts.map(product => {
+      //     product.name = product.product_name || product.name;
+      //     product.id = product.product_id || product.id;
+      //     product.quantity = NaN; // quantity unknown
+      //   })
 
-        allProducts = this.market.products.concat(allProducts);
+      //   allProducts = this.market.products.concat(allProducts);
 
-      } catch (err) {
-        console.error(err);
-      }
+      // } catch (err) {
+      //   console.error(err);
+      // }
 
-      allProductsFiltered = allProducts.filter((product, index) => {
-        let foundProduct = allProducts.find(x => x.id == product.id);
-        return allProducts.indexOf(foundProduct) === index;
+      let mergedProducts = this.market.products.concat(this.allProducts);
+      console.log('mergedProducts:', mergedProducts);
+
+      allProductsFiltered = mergedProducts.filter((product, index) => {
+        let foundProduct = mergedProducts.find(x => x.id == product.id);
+        return mergedProducts.indexOf(foundProduct) === index;
       });
 
       this.market.products = allProductsFiltered;
@@ -395,9 +407,12 @@ export default {
     //     rawCurrentMarket.lat,
     //     rawCurrentMarket.lng,
     //     rawCurrentMarket.distance,
-    //     rawCurrentMarket.open,
     //     rawCurrentMarket.products,
-    //     rawCurrentMarket.mapsId
+    //     rawCurrentMarket.mapsId,
+    //     rawCurrentMarket.zip,
+    //     rawCurrentMarket.icon_url,
+    //     rawCurrentMarket.periods,
+    //     rawCurrentMarket.last_updated
     //   );
 
     //   this.market.distance = currentMarket.distance;
@@ -440,13 +455,13 @@ export default {
   mounted() {
     // this.$store.commit("getCurrentPosition");
     // if params are missing, this will cause errors because of missing nested objects
-    if (this.$route.params.name != undefined) {
-      this.market = this.$route.params;
+    if (this.$route.params.market != undefined) {
+      this.market = this.$route.params.market;
+      this.loadAllProducts();
       this.loading = {finished: true, success: true};
     } else {
       this.loadData();
     }
-    this.loadAllProducts();
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
     // this.getCurrentPosition();

@@ -3,13 +3,8 @@
     :to="{
       name: 'MarketDetail',
       params: {
-        id: id,
-        mapsId: mapsId,
-        name: name,
-        address: address,
-        status: status,
-        products: mainProducts,
-        zip: zip
+        mapsId: market.mapsId,
+        market: market
       }
     }"
   >
@@ -17,24 +12,29 @@
 
       <div class="w-11/12 pr-4">
 
-        <h2 class="text-xl h-10 overflow-hidden text-gray-800">{{ name }}</h2>
+        <h2 class="text-xl h-10 overflow-hidden text-gray-800">{{ market.name }}</h2>
 
           <div class="flex flex-row justify-between mb-1">
 
             <div class="w-full whitespace-no-wrap overflow-hidden">
-              {{ address }}
+              {{ market.address }}
             </div>
 
-            <div class="w-20 text-right"> {{ distance }} m </div>
+            <div class="w-20 text-right"> {{ market.distance }} m </div>
 
           </div>
 
-          <div :class="[status.class=='opened' ? 'text-green-700' : 'text-red-700']">{{ status.text }}</div>
+          <div>
+            <span v-if="market.status.class == 'opened'" class="font-medium text-green-700">{{ market.status.text }}</span>
+            <span v-else-if="market.status.class == 'closed'" class="font-medium text-red-700">{{ market.status.text }}</span>
+            <span v-else class="font-medium italic">{{ market.status.text }}</span>
+            {{market.status.next}}
+          </div>
 
           <div>
 
-            <ul v-if="mainProducts.length > 0" class="flex flex-row flex-wrap h-6 mt-2 overflow-hidden">
-              <li :key="index" v-for="(product, index) in mainProducts" class="mr-4">
+            <ul v-if="productInfoAvailable" class="flex flex-row flex-wrap h-6 mt-2 overflow-hidden">
+              <li :key="index" v-for="(product, index) in market.products" class="mr-4">
                 <div v-if="product.availability == 'high'" class="inline-block w-3 h-3 rounded-full align-center" style="background-color:#6DD400;"></div>
                 <div v-else-if="product.availability == 'medium'" class="inline-block w-3 h-3 rounded-full align-center" style="background-color:#F7B500;"></div>
                 <div v-else-if="product.availability == 'low'" class="inline-block w-3 h-3 rounded-full align-center" style="background-color:#E02020;"></div>
@@ -69,141 +69,33 @@
 </template>
 
 <script>
+
+import Market from '@/assets/js/market';
+
 export default {
   name: "MarketInListing",
   props: {
-    id: Number,
-    mapsId: String,
-    name: String,
-    address: String,
-    distance: Number,
-    status: {
-      text: String,
-      class: String
-    },
-    mainProducts: Array,
-    zip: Number,
+    // market: {
+    //   id: Number,
+    //   name: String,
+    //   city: String,
+    //   street: String,
+    //   lat: Number,
+    //   lng: Number,
+    //   distance: Number,
+    //   products: [],
+    //   mapsId: String,
+    //   zip: Number,
+    //   iconUrl: String,
+    //   periods: [],
+    //   lastUpdated: Date,
+    // }
+    market: Market,
   },
+  computed: {
+    productInfoAvailable: function() {
+      return this.market.products.length > 0 && this.market.products.filter(product => !isNaN(product.quantity)).length > 0;
+    }
+  }
 };
 </script>
-
-<style scoped>
-
-  /* .traffic-light.high {
-    background-color: #6dd400;
-  }
-  .traffic-light.medium {
-    background-color: #f7b500;
-  }
-  .traffic-light.low {
-    background-color: #e02020;
-  }
-
-  .card {
-    display: block;
-    position: relative;
-    margin-top: 1rem;
-    width: 100%;
-    height: 12rem;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    background: white;
-  }
-  
-  .card .header {
-    display: block;
-    top: 0;
-    width: 100%;
-    padding-left: 1rem;
-  }
-  
-  .card .header h2 {
-    display: inline-block;
-    position: relative;
-    top: 0;
-    width: 90%;
-    height: 100%;
-    font-size: calc(var(--header-height) / 2);
-    font-weight: bold;
-    line-height: 2.5rem;
-  }
-  
-  .card .header img {
-    display: inline-block;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: calc(var(--header-height));
-    height: calc(var(--header-height));
-  }
-  
-  .card .main {
-    position: absolute;
-    top: var(--header-height);
-    width: 100%;
-    height: calc(100% - var(--header-height));
-    padding: 1rem;
-    background-color: white;
-    line-height: 2rem;
-  }
-  
-  .card .main .address {
-    display: inline-block;
-    line-height: 1.5rem;
-    width: 85%;
-  }
-  
-  .card .main .distance {
-    display: inline-block;
-    position: absolute;
-    right: 1rem;
-  }
-  
-  .card .main .status span {
-    font-weight: bold;
-  }
-  
-  .card .main .status span.opened {
-    color: limegreen;
-  }
-  
-  .card .main .status span.closed {
-    color: crimson;
-  }
-  
-  .card .main .categories {
-    display: block;
-    width: 100%;
-    margin-top: .5rem;
-  }
-  
-  .card .main .categories ul {
-    display: flex;
-    flex-direction: right;
-    flex-wrap: wrap;
-    height: 2rem;
-    overflow: hidden;
-  }
-
-  .card .main .categories ul li {
-    margin-right: 1rem;
-  }
-  
-  .card .main .categories ul li .traffic-light {
-    display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    border-radius: 100%;
-  }
-  
-  .card .main .categories ul li .label {
-    margin-left: 0.5rem;
-  }
-  
-  .card .main .updated {
-    width: 100%;
-    text-align: center;
-    margin-top: 0.5rem;
-    color: #c8cbcd;
-  } */
-  </style>

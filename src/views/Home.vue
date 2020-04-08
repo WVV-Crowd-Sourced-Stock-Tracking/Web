@@ -21,6 +21,10 @@
       />
     </transition>
 
+    <ProductFilter
+      v-if="showFilter"
+    />
+
     <Header />
 
     <div class="intro m-4">
@@ -47,13 +51,15 @@
   import Listings from "@/components/Listings.vue";
   import Map from "@/components/Map.vue";
   import Prompt from "@/components/Prompt.vue";
+  import ProductFilter from "@/components/ProductFilter.vue";
 
   export default {
     components: {
       Header,
       Listings,
       Map,
-      Prompt
+      Prompt,
+      ProductFilter
     },
     data() {
       return {
@@ -62,7 +68,6 @@
           lat: NaN,
           lng: NaN
         },
-        showPrompt: true,
       }
     },
     watch: {
@@ -96,6 +101,11 @@
           }
           
         }
+      },
+      filteredMarkets: {
+        handler: function(x) {
+          console.log('x:', x);
+        }
       }
     },
     computed: {
@@ -105,8 +115,20 @@
       locationPermissionStatus: function() {
         return this.$store.getters.locationPermissionStatus;
       },
+      locationPromptResult: function() {
+        return this.$store.getters.locationPromptResult;
+      },
       showLocationPrompt: function() {
-        return (this.locationPermissionStatus == 'prompt' && this.showPrompt);
+        return (this.locationPermissionStatus == 'prompt' && this.locationPromptResult == 'pending');
+      },
+      filteredMarkets: function() {
+        return this.$store.getters.filteredMarkets;
+      },
+      filter: function() {
+        return this.$store.getters.filter;
+      },
+      showFilter: function() {
+        return this.$store.getters.showFilter;
       }
     },
     methods: {
@@ -157,11 +179,14 @@
       },
       promptHandler(result) {
 
-        this.showPrompt = false;
-        
         if (result) {
+
           this.getCurrentPosition();
+          this.$store.dispatch('updateLocationPromptResult', 'allowed');
+
         } else {
+
+          this.$store.dispatch('updateLocationPromptResult', 'dismissed');
 
           this.userPosition = {
             lat: 52.5204579,
@@ -170,9 +195,31 @@
           
         }
         
+      },
+      getLocationPermissionStatus() {
+
+        if ('permissions' in navigator) {
+
+          navigator.permissions.query({ name: 'geolocation' }).then(permissionStatus => {
+    
+            this.$store.dispatch('updateLocationPermissionStatus', permissionStatus.state);
+            
+          })
+          
+        } else {
+
+          console.log('permission api not available, prompting the user...');
+          this.$store.dispatch('updateLocationPermissionStatus', 'prompt');
+          
+        }
+
       }
     },
     mounted() {
+
+      // if (this.locationPromptResult == 'pending') {
+        this.getLocationPermissionStatus();
+      // }
 
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
